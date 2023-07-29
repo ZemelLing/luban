@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="Google.Protobuf" Version="3.24.0-rc2" />
+      <PackageReference Include="NLog" Version="5.2.2" />
+      <PackageReference Include="Scriban" Version="5.7.0" />
+      <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Luban.Any\Luban.Any.csproj" />
+      <ProjectReference Include="..\Luban.CodeGeneration\Luban.CodeGeneration.csproj" />
+      <ProjectReference Include="..\Luban.DataConvertor.Binary\Luban.DataConvertor.Binary.csproj" />
+      <ProjectReference Include="..\Luban.DataExporter.Binary\Luban.DataExporter.Binary.csproj" />
+      <ProjectReference Include="..\Luban.DataSource.Excel\Luban.DataSource.Excel.csproj" />
+    </ItemGroup>
+
+</Project>
