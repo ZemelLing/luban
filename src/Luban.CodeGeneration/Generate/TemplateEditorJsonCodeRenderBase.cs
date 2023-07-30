@@ -1,6 +1,6 @@
-﻿using Luban.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common;
-using Luban.Job.Common.Defs;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
@@ -14,7 +14,7 @@ abstract class TemplateEditorJsonCodeRenderBase :TemplateCodeRenderBase
         return result;
     }
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         ELanguage lan = GetLanguage(ctx);
         ctx.Assembly.CurrentLanguage = lan;

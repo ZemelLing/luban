@@ -1,4 +1,5 @@
-﻿using Luban.Job.Common.Generate;
+﻿using Luban.Core;
+using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
@@ -6,7 +7,7 @@ namespace Luban.Generate;
 [Render("data_template")]
 class TemplateDataRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenArgs.TemplateDataFile;
         foreach (var table in ctx.ExportTables)

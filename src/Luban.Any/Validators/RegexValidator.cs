@@ -21,7 +21,7 @@ class RegexValidator : IValidator
         _regex = new Regex(DataUtil.UnEscapeString(strRegex), RegexOptions.Compiled);
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         switch (Type)
         {

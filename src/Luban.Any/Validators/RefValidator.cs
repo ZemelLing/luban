@@ -126,7 +126,7 @@ public class RefValidator : IValidator
         return (tableName, fieldName, ignoreDefault);
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         string hostTypeName = def.HostType.FullName;
         string fieldName = def.Name;
@@ -177,7 +177,7 @@ public class RefValidator : IValidator
         }
     }
 
-    private void CompileTable(DefFieldBase def, DefTable ct, string indexName, bool ignoreDefault)
+    private void CompileTable(DefField def, DefTable ct, string indexName, bool ignoreDefault)
     {
         _compiledTables.Add((ct, indexName, ignoreDefault));
 

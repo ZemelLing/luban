@@ -1,6 +1,6 @@
-using Luban.Job.Common.Types;
+using Luban.Core.Types;
 
-namespace Luban.Job.Common.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 public abstract class AllTrueVisitor : DecoratorFuncVisitor<bool>
 {

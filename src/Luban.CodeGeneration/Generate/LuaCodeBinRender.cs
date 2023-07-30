@@ -1,5 +1,4 @@
-using Luban.Defs;
-using Luban.Job.Common.Defs;
+using Luban.Core.Defs;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Tpl;
 using Scriban;

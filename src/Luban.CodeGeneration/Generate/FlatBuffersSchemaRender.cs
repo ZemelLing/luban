@@ -1,7 +1,7 @@
-﻿using Luban.Defs;
-using Luban.Job.Common.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
+using Luban.Core.TypeVisitors;
 using Luban.Job.Common.Generate;
-using Luban.Job.Common.TypeVisitors;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
@@ -11,7 +11,7 @@ class FlatBuffersSchemaRender : TemplateCodeRenderBase
 {
     protected override string RenderTemplateDir => "flatbuffers";
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         {
             DefAssembly.LocalAssebmly.CurrentLanguage = Common.ELanguage.FLATBUFFERS;

@@ -1,17 +1,14 @@
-using Luban.Utils;
-using Luban.Job.Common.Utils;
+using Luban.Core.Utils;
 
-namespace Luban.Job.Common.Defs;
+namespace Luban.Core.Defs;
 
 public abstract class DefTypeBase
 {
-    public DefAssemblyBase AssemblyBase { get; set; }
+    public DefAssembly Assembly { get; set; }
 
     public int Id { get; protected set; }
 
-    public string TopModule => AssemblyBase.TopModule;
-
-    public IAgent Agent => AssemblyBase.Agent;
+    public string TopModule => Assembly.TopModule;
 
     public string Name { get; set; }
 
@@ -19,13 +16,13 @@ public abstract class DefTypeBase
 
     public string FullName => TypeUtil.MakeFullName(Namespace, Name);
 
-    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(AssemblyBase.TopModule, Namespace);
+    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(Assembly.TopModule, Namespace);
 
-    public string FullNameWithTopModule => TypeUtil.MakeFullName(AssemblyBase.TopModule, FullName);
+    public string FullNameWithTopModule => TypeUtil.MakeFullName(Assembly.TopModule, FullName);
 
-    public string NamespaceWithEditorTopModule => TypeUtil.MakeNamespace(AssemblyBase.EditorTopModule, Namespace);
+    public string NamespaceWithEditorTopModule => TypeUtil.MakeNamespace(Assembly.EditorTopModule, Namespace);
 
-    public string FullNameWithEditorTopModule => TypeUtil.MakeFullName(AssemblyBase.EditorTopModule, FullName);
+    public string FullNameWithEditorTopModule => TypeUtil.MakeFullName(Assembly.EditorTopModule, FullName);
 
     public string CsFullName => TypeUtil.MakeFullName(Namespace, Name);
 
@@ -39,7 +36,7 @@ public abstract class DefTypeBase
 
     public string CppNamespaceEnd => TypeUtil.MakeCppNamespaceEnd(Namespace);
 
-    public string CppFullNameWithTopModule => TypeUtil.MakeCppFullName(AssemblyBase.TopModule, FullName);
+    public string CppFullNameWithTopModule => TypeUtil.MakeCppFullName(Assembly.TopModule, FullName);
 
     public string TypescriptNamespaceBegin => TypeUtil.MakeTypescriptNamespaceBegin(Namespace);
 
@@ -58,8 +55,6 @@ public abstract class DefTypeBase
     public string FlatBuffersFullName => TypeUtil.MakeFlatBuffersFullName(Namespace, Name);
 
     public string Comment { get; protected set; }
-
-    public string EscapeComment => DefUtil.EscapeCommentByCurrentLanguage(Comment);
 
     public Dictionary<string, string> Tags { get; protected set; }
 

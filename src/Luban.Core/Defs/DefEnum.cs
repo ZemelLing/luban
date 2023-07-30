@@ -1,7 +1,7 @@
-using Luban.Job.Common.RawDefs;
-using Luban.Job.Common.Utils;
+using Luban.Core.RawDefs;
+using Luban.Core.Utils;
 
-namespace Luban.Job.Common.Defs;
+namespace Luban.Core.Defs;
 
 public class DefEnum : DefTypeBase
 {
@@ -19,7 +19,7 @@ public class DefEnum : DefTypeBase
 
         public string Comment { get; set; }
 
-        public string EscapeComment => DefUtil.EscapeCommentByCurrentLanguage(Comment);
+        // public string EscapeComment => DefUtil.EscapeCommentByCurrentLanguage(Comment);
 
         public Dictionary<string, string> Tags { get; set; }
 
@@ -86,7 +86,7 @@ public class DefEnum : DefTypeBase
         }
     }
 
-    public DefEnum(PEnum e)
+    public DefEnum(RawEnum e)
     {
         Name = e.Name;
         Namespace = e.Namespace;

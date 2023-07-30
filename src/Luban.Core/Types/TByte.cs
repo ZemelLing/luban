@@ -1,6 +1,6 @@
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.TypeVisitors;
 
-namespace Luban.Job.Common.Types;
+namespace Luban.Core.Types;
 
 public class TByte : TType
 {

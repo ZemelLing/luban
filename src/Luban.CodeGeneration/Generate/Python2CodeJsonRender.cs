@@ -1,4 +1,5 @@
-using Luban.Defs;
+using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Tpl;
 using Luban.Job.Common.Utils;
@@ -10,11 +11,11 @@ class Python2CodeJsonRender : TemplateCodeRenderBase
 {
     protected override string RenderTemplateDir => "python2_json";
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         ctx.Render = this;
-        ctx.Lan = Common.ELanguage.PYTHON;
-        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Lan;
+        ctx.Language = Common.ELanguage.PYTHON;
+        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Language;
 
         var lines = new List<string>(10000);
         static void PreContent(List<string> fileContent)

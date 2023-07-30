@@ -1,11 +1,12 @@
-﻿using Luban.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
 
 abstract class ProtobufSchemaRenderBase : TemplateCodeRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         DefAssembly.LocalAssebmly.CurrentLanguage = Common.ELanguage.PROTOBUF;
         var file = RenderFileUtil.GetFileOrDefault(ctx.GenArgs.OutputCodeMonolithicFile, "schema.proto");

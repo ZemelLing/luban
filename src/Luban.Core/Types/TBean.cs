@@ -1,24 +1,24 @@
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.TypeVisitors;
-using Luban.Job.Common.Utils;
+using Luban.Core.Defs;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
 
-namespace Luban.Job.Common.Types;
+namespace Luban.Core.Types;
 
 public class TBean : TType
 {
-    public static TBean Create(bool isNullable, DefBeanBase defBean, Dictionary<string, string> tags)
+    public static TBean Create(bool isNullable, DefBean defBean, Dictionary<string, string> tags)
     {
         // TODO
         return new TBean(isNullable, DefUtil.MergeTags(defBean.Tags, tags), defBean);
     }
 
-    public DefBeanBase Bean { get; set; }
+    public DefBean Bean { get; set; }
 
-    public T GetBeanAs<T>() where T : DefBeanBase => (T)Bean;
+    public T GetBeanAs<T>() where T : DefBean => (T)Bean;
 
     public override string TypeName => "bean";
 
-    private TBean(bool isNullable, Dictionary<string, string> attrs, DefBeanBase defBean) : base(isNullable, attrs)
+    private TBean(bool isNullable, Dictionary<string, string> attrs, DefBean defBean) : base(isNullable, attrs)
     {
         this.Bean = defBean;
     }

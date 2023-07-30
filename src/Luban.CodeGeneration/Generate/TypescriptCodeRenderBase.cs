@@ -1,4 +1,5 @@
-using Luban.Defs;
+using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common.Tpl;
 using Luban.Job.Common.Utils;
 
@@ -6,13 +7,13 @@ namespace Luban.Generate;
 
 abstract class TypescriptCodeRenderBase : TemplateCodeRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         var args = ctx.GenArgs;
         ctx.Render = this;
-        ctx.Lan = GetLanguage(ctx);
-        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Lan;
+        ctx.Language = GetLanguage(ctx);
+        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Language;
 
         var lines = new List<string>(10000);
         Action<List<string>> preContent = (fileContent) =>

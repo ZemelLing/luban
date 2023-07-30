@@ -1,4 +1,4 @@
-using Luban.Job.Common.Defs;
+using Luban.Core.Defs;
 
 namespace Luban.Job.Common.Generate;
 

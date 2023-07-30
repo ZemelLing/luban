@@ -1,6 +1,7 @@
-using Luban.Job.Common.Types;
+using Luban.Core.DataVisitors;
+using Luban.Core.Types;
 
-namespace Luban.Datas;
+namespace Luban.Core.Datas;
 
 public class DEnum : DType
 {
@@ -55,7 +56,6 @@ public class DEnum : DType
         switch (obj)
         {
             case DInt dint: return this.Value == dint.Value;
-            case DFint fint: return this.Value == fint.Value;
             case DEnum denum: return this.Value == denum.Value;
             default: return false;
         }

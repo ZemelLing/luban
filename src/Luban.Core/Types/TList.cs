@@ -1,7 +1,7 @@
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Defs;
+using Luban.Core.TypeVisitors;
 
-namespace Luban.Job.Common.Types;
+namespace Luban.Core.Types;
 
 public class TList : TType
 {
@@ -29,7 +29,7 @@ public class TList : TType
 
     public override bool IsCollection => true;
 
-    public override void PostCompile(DefFieldBase field)
+    public override void PostCompile(DefField field)
     {
         base.PostCompile(field);
 

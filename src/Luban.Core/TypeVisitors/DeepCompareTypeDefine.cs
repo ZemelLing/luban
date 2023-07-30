@@ -1,9 +1,7 @@
-using Luban.Defs;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Types;
 
-namespace Luban.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 class DeepCompareTypeDefine : ITypeFuncVisitor<TType, Dictionary<DefTypeBase, bool>, HashSet<DefTypeBase>, bool>
 {
@@ -153,27 +151,12 @@ class DeepCompareTypeDefine : ITypeFuncVisitor<TType, Dictionary<DefTypeBase, bo
         return true;
     }
 
-    public bool Accept(TFshort type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
     public bool Accept(TInt type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
     {
         return true;
     }
 
-    public bool Accept(TFint type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
     public bool Accept(TLong type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
-    public bool Accept(TFlong type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
     {
         return true;
     }
@@ -229,12 +212,12 @@ class DeepCompareTypeDefine : ITypeFuncVisitor<TType, Dictionary<DefTypeBase, bo
         return true;
     }
 
-    public bool Accept(TBytes type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
+    public bool Accept(TText type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
     {
         return true;
     }
 
-    public bool Accept(TText type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
+    public bool Accept(TDateTime type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
     {
         return true;
     }
@@ -263,25 +246,5 @@ class DeepCompareTypeDefine : ITypeFuncVisitor<TType, Dictionary<DefTypeBase, bo
     {
         TMap m = (TMap)x;
         return type.KeyType.Apply(this, m.KeyType, y, z) && type.ValueType.Apply(this, m.ValueType, y, z);
-    }
-
-    public bool Accept(TVector2 type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
-    public bool Accept(TVector3 type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
-    public bool Accept(TVector4 type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
-    }
-
-    public bool Accept(TDateTime type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
-    {
-        return true;
     }
 }

@@ -1,50 +1,17 @@
-using Luban.Defs;
-using Luban.l10n;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
 
-namespace Luban.Datas;
+namespace Luban.Core.Datas;
 
 public class DText : DType
 {
-    public const string KEY_NAME = "key";
-    public const string TEXT_NAME = "text";
-
     public string Key { get; }
-
-    private readonly string _rawValue;
-
-    public string RawValue => _rawValue;
 
     public override string TypeName => "text";
 
-    public DText(string key, string x)
+    public DText(string key)
     {
         Key = key;
-        _rawValue = x;
-    }
-
-    public string GetText(TextTable stringTable, NotConvertTextSet notConvertKeys)
-    {
-        if (stringTable != null)
-        {
-            if (stringTable.TryGetText(Key, out var text))
-            {
-                return text;
-            }
-            else if (notConvertKeys != null)
-            {
-                notConvertKeys.Add(Key, _rawValue);
-            }
-        }
-        return _rawValue;
-    }
-
-    public string TextOfCurrentAssembly
-    {
-        get
-        {
-            var ass = DefAssembly.LocalAssebmly;
-            return GetText(ass.ExportTextTable, ass.NotConvertTextSet);
-        }
     }
 
     public override void Apply<T>(IDataActionVisitor<T> visitor, T x)
@@ -74,11 +41,11 @@ public class DText : DType
 
     public override bool Equals(object obj)
     {
-        return obj is DText o && o._rawValue == this._rawValue && o.Key == this.Key;
+        return obj is DText o && o.Key == this.Key;
     }
 
     public override int GetHashCode()
     {
-        return _rawValue.GetHashCode();
+        return Key.GetHashCode();
     }
 }

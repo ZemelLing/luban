@@ -1,9 +1,7 @@
-using Luban.Defs;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Types;
 
-namespace Luban.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 class RefTypeVisitor : ITypeActionVisitor<Dictionary<string, DefTypeBase>>
 {
@@ -24,27 +22,12 @@ class RefTypeVisitor : ITypeActionVisitor<Dictionary<string, DefTypeBase>>
 
     }
 
-    public void Accept(TFshort type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
     public void Accept(TInt type, Dictionary<string, DefTypeBase> x)
     {
 
     }
 
-    public void Accept(TFint type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
     public void Accept(TLong type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
-    public void Accept(TFlong type, Dictionary<string, DefTypeBase> x)
     {
 
     }
@@ -69,16 +52,15 @@ class RefTypeVisitor : ITypeActionVisitor<Dictionary<string, DefTypeBase>>
 
     }
 
-    public void Accept(TBytes type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
     public void Accept(TText type, Dictionary<string, DefTypeBase> x)
     {
 
     }
 
+    public void Accept(TDateTime type, Dictionary<string, DefTypeBase> x)
+    {
+
+    }
 
     void Walk(DefBean type, Dictionary<string, DefTypeBase> types)
     {
@@ -123,25 +105,5 @@ class RefTypeVisitor : ITypeActionVisitor<Dictionary<string, DefTypeBase>>
     {
         type.KeyType.Apply(this, x);
         type.ValueType.Apply(this, x);
-    }
-
-    public void Accept(TVector2 type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
-    public void Accept(TVector3 type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
-    public void Accept(TVector4 type, Dictionary<string, DefTypeBase> x)
-    {
-
-    }
-
-    public void Accept(TDateTime type, Dictionary<string, DefTypeBase> x)
-    {
-
     }
 }

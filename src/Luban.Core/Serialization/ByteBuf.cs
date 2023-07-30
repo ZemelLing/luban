@@ -2,15 +2,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-
-/// <summary>
-/// TODO  
-/// 1. 整理代码
-/// 2. 优化序列化 (像这样 data[endPos + 1] = (byte)(x >> 8) 挨个字节赋值总感觉很低效，能优化吗)
-/// </summary>
-
-
-namespace Bright.Serialization;
+namespace Luban.Core.Serialization;
 
 public readonly struct SegmentSaveState
 {

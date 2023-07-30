@@ -1,6 +1,6 @@
-using Luban.Job.Common.Types;
+using Luban.Core.Types;
 
-namespace Luban.Job.Common.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 public class RawDefineTypeNameVisitor : ITypeFuncVisitor<string>
 {
@@ -21,29 +21,14 @@ public class RawDefineTypeNameVisitor : ITypeFuncVisitor<string>
         return "short";
     }
 
-    public string Accept(TFshort type)
-    {
-        return "fshort";
-    }
-
     public string Accept(TInt type)
     {
         return "int";
     }
 
-    public string Accept(TFint type)
-    {
-        return "fint";
-    }
-
     public string Accept(TLong type)
     {
         return "long";
-    }
-
-    public string Accept(TFlong type)
-    {
-        return "flong";
     }
 
     public string Accept(TFloat type)
@@ -66,14 +51,14 @@ public class RawDefineTypeNameVisitor : ITypeFuncVisitor<string>
         return "string";
     }
 
-    public string Accept(TBytes type)
-    {
-        return "bytes";
-    }
-
     public string Accept(TText type)
     {
         return "string";
+    }
+
+    public virtual string Accept(TDateTime type)
+    {
+        return "datetime";
     }
 
     public string Accept(TBean type)
@@ -99,25 +84,5 @@ public class RawDefineTypeNameVisitor : ITypeFuncVisitor<string>
     public string Accept(TMap type)
     {
         return $"map,{type.KeyType.Apply(this)},{type.ValueType.Apply(this)}";
-    }
-
-    public string Accept(TVector2 type)
-    {
-        return "vector2";
-    }
-
-    public string Accept(TVector3 type)
-    {
-        return "vector3";
-    }
-
-    public string Accept(TVector4 type)
-    {
-        return "vector4";
-    }
-
-    public virtual string Accept(TDateTime type)
-    {
-        return "datetime";
     }
 }

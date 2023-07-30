@@ -1,7 +1,7 @@
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Defs;
+using Luban.Core.TypeVisitors;
 
-namespace Luban.Job.Common.Types;
+namespace Luban.Core.Types;
 
 public abstract class TType
 {
@@ -38,7 +38,7 @@ public abstract class TType
 
     public abstract bool TryParseFrom(string s);
 
-    public virtual void PostCompile(DefFieldBase field)
+    public virtual void PostCompile(DefField field)
     {
         foreach (var p in Processors)
         {

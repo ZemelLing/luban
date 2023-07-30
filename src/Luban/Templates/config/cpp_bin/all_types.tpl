@@ -2,7 +2,7 @@
 #include <functional>
 
 #include "bright/serialization/ByteBuf.h"
-#include "bright/CfgBean.hpp"
+#include "bright/RawBean.hpp"
 
 using ByteBuf = ::bright::serialization::ByteBuf;
 

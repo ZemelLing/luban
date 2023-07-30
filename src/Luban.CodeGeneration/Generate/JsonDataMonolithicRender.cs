@@ -1,16 +1,17 @@
-﻿using Luban.Job.Common.Generate;
+﻿using Luban.Core;
+using Luban.Job.Common.Generate;
 
 namespace Luban.Generate;
 
 [Render("data_json_monolithic")]
 class JsonDataMonolithicRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         ctx.Tasks.Add(this.GenJsonDataMonolithic(ctx));
     }
 
-    private async Task GenJsonDataMonolithic(GenContext ctx)
+    private async Task GenJsonDataMonolithic(GenerationContext ctx)
     {
         var exportTables = ctx.ExportTables;
         var allJsonTask = new List<Task<string>>();

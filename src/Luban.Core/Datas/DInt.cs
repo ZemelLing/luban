@@ -1,4 +1,6 @@
-namespace Luban.Datas;
+using Luban.Core.DataVisitors;
+
+namespace Luban.Core.Datas;
 
 public class DInt : DType<int>
 {
@@ -60,7 +62,6 @@ public class DInt : DType<int>
         switch (obj)
         {
             case DInt dint: return this.Value == dint.Value;
-            case DFint fint: return this.Value == fint.Value;
             case DEnum denum: return this.Value == denum.Value;
             default: return false;
         }

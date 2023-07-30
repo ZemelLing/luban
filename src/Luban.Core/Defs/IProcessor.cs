@@ -1,6 +1,6 @@
-﻿namespace Luban.Job.Common.Defs;
+﻿namespace Luban.Core.Defs;
 
 public interface IProcessor
 {
-    void Compile(DefFieldBase def);
+    void Compile(DefField def);
 }

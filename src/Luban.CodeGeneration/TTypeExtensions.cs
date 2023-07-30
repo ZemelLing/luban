@@ -1,5 +1,5 @@
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
 
 namespace Luban;
 

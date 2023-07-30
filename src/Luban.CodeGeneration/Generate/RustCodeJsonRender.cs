@@ -1,4 +1,5 @@
-﻿using Luban.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
@@ -9,13 +10,13 @@ class RustCodeJsonRender : TemplateCodeRenderBase
 {
     protected override string RenderTemplateDir => "rust_json";
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         var args = ctx.GenArgs;
         ctx.Render = this;
-        ctx.Lan = GetLanguage(ctx);
-        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Lan;
+        ctx.Language = GetLanguage(ctx);
+        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Language;
 
         var lines = new List<string>();
         GenerateCodeMonolithic(ctx,

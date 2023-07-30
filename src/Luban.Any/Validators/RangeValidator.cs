@@ -17,7 +17,7 @@ class RangeValidator : IValidator
         _range = new Range(strRange);
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         _range.Compile();
     }

@@ -1,4 +1,4 @@
-namespace Luban.Utils;
+namespace Luban.Core.Utils;
 
 public static class TimeUtil
 {

@@ -1,11 +1,10 @@
-using Luban.Utils;
-using Luban.RawDefs;
-using Luban.TypeVisitors;
-using Luban.Job.Common.Defs;
+using Luban.Core.RawDefs;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
 
-namespace Luban.Defs;
+namespace Luban.Core.Defs;
 
-public class DefBean : DefBeanBase
+public class DefBean : DefTypeBase
 {
     public const string FALLBACK_TYPE_NAME_KEY = "__type__";
 
@@ -22,6 +21,57 @@ public class DefBean : DefBeanBase
     public const string EXCEL_TYPE_NAME_KEY = "$type";
     public const string EXCEL_VALUE_NAME_KEY = "$value";
 
+    public bool IsBean => true;
+
+    public string Parent { get; }
+
+    public bool IsValueType { get; }
+
+    public DefBean ParentDefType { get; protected set; }
+
+    public DefBean RootDefType => this.ParentDefType == null ? this : this.ParentDefType.RootDefType;
+
+    public bool IsSerializeCompatible { get; }
+
+    public List<DefBean> Children { get; set; }
+
+    public List<DefBean> HierarchyNotAbstractChildren { get; set; }
+
+    public IEnumerable<DefBean> GetHierarchyChildren()
+    {
+        yield return this;
+        if (Children == null)
+        {
+            yield break;
+        }
+        foreach (var child in Children)
+        {
+            foreach(var c2 in  child.GetHierarchyChildren())
+            {
+                yield return c2;
+            }
+        }
+    }
+
+    public bool IsNotAbstractType => Children == null;
+
+    public bool IsAbstractType => Children != null;
+
+    public List<DefField> HierarchyFields { get; private set; } = new List<DefField>();
+
+    public List<DefField> Fields { get; } = new List<DefField>();
+
+    public string CsClassModifier => IsAbstractType ? "abstract" : "sealed";
+
+    public string CsMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
+
+
+    public string JavaClassModifier => IsAbstractType ? "abstract" : "final";
+
+    public string JavaMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
+
+    public string TsClassModifier => IsAbstractType ? "abstract" : "";
+    
     public string JsonTypeNameKey => JSON_TYPE_NAME_KEY;
 
     public string LuaTypeNameKey => LUA_TYPE_NAME_KEY;
@@ -43,84 +93,32 @@ public class DefBean : DefBeanBase
         return DeepCompareTypeDefine.Ins.Compare(this, b, new Dictionary<DefTypeBase, bool>(), new HashSet<DefTypeBase>());
     }
 
-    public override string GoBinImport
+    public DefBean(RawBean b)
     {
-        get
+        Name = b.Name;
+        Namespace = b.Namespace;
+        Parent = b.Parent;
+        Id = b.TypeId;
+        IsValueType = b.IsValueType;
+        Comment = b.Comment;
+        Tags = DefUtil.ParseAttrs(b.Tags);
+        foreach (var field in b.Fields)
         {
-            var imports = new HashSet<string>();
-            if (IsAbstractType || this.HierarchyExportFields.Count > 0)
-            {
-                imports.Add("errors");
-            }
-            foreach (var f in HierarchyExportFields)
-            {
-                f.CType.Apply(Luban.Job.Common.TypeVisitors.GoBinImport.Ins, imports);
-            }
-            return string.Join('\n', imports.Select(im => $"import \"{im}\""));
+            Fields.Add(CreateField(field, 0));
         }
-    }
-
-    public string GoJsonImport
-    {
-        get
-        {
-            var imports = new HashSet<string>();
-            if (IsAbstractType || this.HierarchyExportFields.Count > 0)
-            {
-                imports.Add("errors");
-            }
-            foreach (var f in HierarchyExportFields)
-            {
-                f.CType.Apply(TypeVisitors.GoJsonImport.Ins, imports);
-            }
-            return string.Join('\n', imports.Select(im => $"import \"{im}\""));
-        }
-    }
-
-    public string UeBpIncludes
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public string EditorCppIncludes
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public string EditorCppForwards
-    {
-        get
-        {
-            var imports = new HashSet<DefTypeBase>();
-            foreach (var f in Fields)
-            {
-                f.CType.Apply(CollectEditorCppForwardDefineVisitor.Ins, imports);
-            }
-            throw new NotImplementedException();
-        }
-    }
-
-    public DefBean(CfgBean b) : base(b)
-    {
         Alias = b.Alias;
         Id = b.TypeId;
         Sep = b.Sep;
     }
 
-    override protected DefFieldBase CreateField(Common.RawDefs.Field f, int idOffset)
+    protected DefField CreateField(RawField f, int idOffset)
     {
-        return new DefField(this, (CfgField)f, idOffset);
+        return new DefField(this, f, idOffset);
     }
 
-    public new DefField GetField(string index)
+    public DefField GetField(string index)
     {
-        return (DefField)HierarchyFields.Where(f => f.Name == index).FirstOrDefault();
+        return HierarchyFields.Where(f => f.Name == index).FirstOrDefault();
     }
 
     internal bool TryGetField(string index, out DefField field, out int fieldIndexId)
@@ -139,7 +137,7 @@ public class DefBean : DefBeanBase
         return false;
     }
 
-    public override DefBeanBase GetNotAbstractChildType(string typeNameOrAliasName)
+    public DefBean GetNotAbstractChildType(string typeNameOrAliasName)
     {
         if (string.IsNullOrWhiteSpace(typeNameOrAliasName))
         {
@@ -157,14 +155,15 @@ public class DefBean : DefBeanBase
 
     public override void PreCompile()
     {
-        base.PreCompile();
+        SetUpParentRecursively();
+        CollectHierarchyFields(HierarchyFields);
         this.ExportFields = this.Fields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
         this.HierarchyExportFields = this.HierarchyFields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
     }
 
     public override void Compile()
     {
-        var cs = new List<DefBeanBase>();
+        var cs = new List<DefBean>();
         if (Children != null)
         {
             CollectHierarchyNotAbstractChildren(cs);
@@ -202,7 +201,7 @@ public class DefBean : DefBeanBase
         }
     }
 
-    public override void PostCompile()
+    public void PostCompile()
     {
         foreach (var field in HierarchyFields)
         {
@@ -215,6 +214,47 @@ public class DefBean : DefBeanBase
             {
                 c.AutoId = ++nextAutoId;
             }
+        }
+    }
+    
+    public void CollectHierarchyNotAbstractChildren(List<DefBean> children)
+    {
+        if (IsAbstractType)
+        {
+            foreach (var c in Children)
+            {
+                c.CollectHierarchyNotAbstractChildren(children);
+            }
+        }
+        else
+        {
+            children.Add(this);
+        }
+    }
+
+    protected void CollectHierarchyFields(List<DefField> fields)
+    {
+        if (ParentDefType != null)
+        {
+            ParentDefType.CollectHierarchyFields(fields);
+        }
+        fields.AddRange(Fields);
+    }
+
+    private void SetUpParentRecursively()
+    {
+        if (ParentDefType == null && !string.IsNullOrEmpty(Parent))
+        {
+            if ((ParentDefType = (DefBean)Assembly.GetDefType(Namespace, Parent)) == null)
+            {
+                throw new Exception($"bean:'{FullName}' parent:'{Parent}' not exist");
+            }
+            if (ParentDefType.Children == null)
+            {
+                ParentDefType.Children = new List<DefBean>();
+            }
+            ParentDefType.Children.Add(this);
+            ParentDefType.SetUpParentRecursively();
         }
     }
 }

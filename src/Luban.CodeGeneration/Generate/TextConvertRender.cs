@@ -1,4 +1,4 @@
-﻿using Luban.DataVisitors;
+﻿using Luban.Core;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
@@ -8,7 +8,7 @@ namespace Luban.Generate;
 [Render("convert_lua")]
 class TextConvertRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         foreach (var table in ctx.ExportTables)

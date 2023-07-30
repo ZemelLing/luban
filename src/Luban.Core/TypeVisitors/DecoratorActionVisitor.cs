@@ -1,6 +1,6 @@
-using Luban.Job.Common.Types;
+using Luban.Core.Types;
 
-namespace Luban.Job.Common.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 public abstract class DecoratorActionVisitor<T> : ITypeActionVisitor<T>
 {
@@ -21,27 +21,12 @@ public abstract class DecoratorActionVisitor<T> : ITypeActionVisitor<T>
         DoAccept(type, x);
     }
 
-    public virtual void Accept(TFshort type, T x)
-    {
-        DoAccept(type, x);
-    }
-
     public virtual void Accept(TInt type, T x)
     {
         DoAccept(type, x);
     }
 
-    public virtual void Accept(TFint type, T x)
-    {
-        DoAccept(type, x);
-    }
-
     public virtual void Accept(TLong type, T x)
-    {
-        DoAccept(type, x);
-    }
-
-    public virtual void Accept(TFlong type, T x)
     {
         DoAccept(type, x);
     }
@@ -71,26 +56,7 @@ public abstract class DecoratorActionVisitor<T> : ITypeActionVisitor<T>
         DoAccept(type, x);
     }
 
-    public virtual void Accept(TBytes type, T x)
-    {
-        DoAccept(type, x);
-    }
-
     public virtual void Accept(TDateTime type, T x)
-    {
-        DoAccept(type, x);
-    }
-    public virtual void Accept(TVector2 type, T x)
-    {
-        DoAccept(type, x);
-    }
-
-    public virtual void Accept(TVector3 type, T x)
-    {
-        DoAccept(type, x);
-    }
-
-    public virtual void Accept(TVector4 type, T x)
     {
         DoAccept(type, x);
     }
@@ -142,27 +108,12 @@ public abstract class DecoratorActionVisitor<T1, T2> : ITypeActionVisitor<T1, T2
         DoAccept(type, x, y);
     }
 
-    public virtual void Accept(TFshort type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
     public virtual void Accept(TInt type, T1 x, T2 y)
     {
         DoAccept(type, x, y);
     }
 
-    public virtual void Accept(TFint type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
     public virtual void Accept(TLong type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
-    public virtual void Accept(TFlong type, T1 x, T2 y)
     {
         DoAccept(type, x, y);
     }
@@ -192,27 +143,7 @@ public abstract class DecoratorActionVisitor<T1, T2> : ITypeActionVisitor<T1, T2
         DoAccept(type, x, y);
     }
 
-    public virtual void Accept(TBytes type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
     public virtual void Accept(TDateTime type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
-    public virtual void Accept(TVector2 type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
-    public virtual void Accept(TVector3 type, T1 x, T2 y)
-    {
-        DoAccept(type, x, y);
-    }
-
-    public virtual void Accept(TVector4 type, T1 x, T2 y)
     {
         DoAccept(type, x, y);
     }

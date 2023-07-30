@@ -97,7 +97,7 @@ public class ValidatorVisitor : TypeActionVisitorAdaptor<DType>
     public override void Accept(TBean type, DType x)
     {
         var beanData = (DBean)x;
-        var defFields = ((DefBean)type.Bean.AssemblyBase.GetDefType(beanData.ImplType.FullName)).HierarchyFields;// beanData.ImplType.HierarchyFields;
+        var defFields = ((DefBean)type.Bean.Assembly.GetDefType(beanData.ImplType.FullName)).HierarchyFields;// beanData.ImplType.HierarchyFields;
         int i = 0;
         foreach (var fieldValue in beanData.Fields)
         {

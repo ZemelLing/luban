@@ -1,4 +1,4 @@
-﻿using Luban.DataVisitors;
+﻿using Luban.Core;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Tpl;
 using Luban.Job.Common.Utils;
@@ -14,7 +14,7 @@ class TemplateConvertRender : DataRenderBase
         return StringTemplateManager.Ins.GetTemplate($"config/convert/{name}");
     }
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
 

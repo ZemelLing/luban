@@ -1,33 +1,12 @@
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Types;
 
-namespace Luban.TypeVisitors;
+namespace Luban.Core.TypeVisitors;
 
 class IsValidTableKeyTypeVisitor : AllTrueVisitor
 {
     public static IsValidTableKeyTypeVisitor Ins { get; } = new();
 
     public override bool Accept(TText type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TBytes type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector2 type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector3 type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector4 type)
     {
         return false;
     }

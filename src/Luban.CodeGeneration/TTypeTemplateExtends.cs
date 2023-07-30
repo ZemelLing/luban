@@ -1,8 +1,6 @@
-using Luban.Defs;
-using Luban.TypeVisitors;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
 using JavaDeserializeVisitor = Luban.TypeVisitors.JavaDeserializeVisitor;
 
 namespace Luban.Utils;

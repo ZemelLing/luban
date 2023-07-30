@@ -1,17 +1,17 @@
-using Luban.RawDefs;
-using Luban.TypeVisitors;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.Utils;
+using Luban.Core.RawDefs;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
 
-namespace Luban.Defs;
+namespace Luban.Core.Defs;
 
 public record class IndexInfo(TType Type, DefField IndexField, int IndexFieldIdIndex);
 
-public class DefTable : CfgDefTypeBase
+public class DefTable : DefTypeBase
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
 
-    public DefTable(Table b)
+    public DefTable(RawTable b)
     {
         Name = b.Name;
         Namespace = b.Namespace;
@@ -49,17 +49,17 @@ public class DefTable : CfgDefTypeBase
 
     public string ValueType { get; }
 
-    public ETableMode Mode { get; }
+    public TableMode Mode { get; }
 
     public Dictionary<string, string> Options { get; } = new Dictionary<string, string>();
 
-    public bool IsMapTable => Mode == ETableMode.MAP;
+    public bool IsMapTable => Mode == TableMode.MAP;
 
-    public bool IsOneValueTable => Mode == ETableMode.ONE;
+    public bool IsOneValueTable => Mode == TableMode.ONE;
 
-    public bool IsSingletonTable => Mode == ETableMode.ONE;
+    public bool IsSingletonTable => Mode == TableMode.ONE;
 
-    public bool IsListTable => Mode == ETableMode.LIST;
+    public bool IsListTable => Mode == TableMode.LIST;
 
     public List<string> InputFiles { get; }
 
@@ -115,14 +115,14 @@ public class DefTable : CfgDefTypeBase
 
         switch (Mode)
         {
-            case ETableMode.ONE:
+            case TableMode.ONE:
             {
                 IsUnionIndex = false;
                 KeyTType = null;
                 Type = ValueTType;
                 break;
             }
-            case ETableMode.MAP:
+            case TableMode.MAP:
             {
                 IsUnionIndex = true;
                 if (!string.IsNullOrWhiteSpace(Index))
@@ -152,7 +152,7 @@ public class DefTable : CfgDefTypeBase
                 this.IndexList.Add(new IndexInfo(KeyTType, IndexField, IndexFieldIdIndex));
                 break;
             }
-            case ETableMode.LIST:
+            case TableMode.LIST:
             {
                 var indexs = Index.Split('+', ',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
                 foreach (var idx in indexs)

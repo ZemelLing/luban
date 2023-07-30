@@ -1,71 +1,12 @@
-using Luban.Datas;
-using Luban.Defs;
-using Luban.Job.Common.Types;
 using System.Text;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
+using Luban.Core.Types;
 
-namespace Luban.Utils;
+namespace Luban.Core.Utils;
 
 static class DataUtil
 {
-    public static string[] SplitVectorString(string x)
-    {
-        return x.Split(',', '_', ';');
-    }
-
-    public static string[] SplitStringByAnySepChar(string x, string sep)
-    {
-        return x.Split(sep.ToCharArray());
-    }
-
-    public static DType CreateVector(TVector2 type, string x)
-    {
-        var values = SplitVectorString(x);
-        if (values.Length != 2)
-        {
-            throw new Exception($"'{x}' 不是合法vector2类型数据");
-        }
-        return new DVector2(new System.Numerics.Vector2(float.Parse(values[0]), float.Parse(values[1])));
-
-    }
-
-    public static DType CreateVector(TVector3 type, string x)
-    {
-        var values = SplitVectorString(x);
-        if (values.Length != 3)
-        {
-            throw new Exception($"'{x}' 不是合法vector3类型数据");
-        }
-        return new DVector3(new System.Numerics.Vector3(float.Parse(values[0]), float.Parse(values[1]), float.Parse(values[2])));
-
-    }
-
-    public static DType CreateVector(TVector4 type, string x)
-    {
-        var values = SplitVectorString(x);
-        if (values.Length != 4)
-        {
-            throw new Exception($"'{x}' 不是合法vector4类型数据");
-        }
-        return new DVector4(new System.Numerics.Vector4(float.Parse(values[0]), float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3])));
-    }
-
-    public static DType CreateBytes(string x)
-    {
-        string[] ss = SplitVectorString(x);
-        return new DBytes(ss.Select(s => byte.Parse(s)).ToArray());
-    }
-
-    //public static DDateTime CreateDateTime(string x, TimeZoneInfo timeZoneInfo)
-    //{
-
-    //    DateTime dateTime = DateTime.ParseExact(x,
-    //        new string[] {
-    //            "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH", "yyyy-MM-dd",
-    //            //"yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM/dd HH", "yyyy/MM/dd",
-    //        },
-    //        System.Globalization.CultureInfo.InvariantCulture);
-    //    return new DDateTime(TimeZoneInfo.ConvertTimeToUtc(dateTime, timeZoneInfo));
-    //}
     private static readonly string[] dateTimeFormats = new string[] {
         "yyyy-M-d HH:mm:ss", "yyyy-M-d HH:mm", "yyyy-M-d HH", "yyyy-M-d",
         //"yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM/dd HH", "yyyy/MM/dd",
@@ -147,29 +88,6 @@ static class DataUtil
     //    return "\"" + s.Replace("\\", "\\\\") + "\"";
     //}
 
-    public static (string Key, string Text) ExtractText(string rawKeyAndText)
-    {
-        string[] keyAndText = rawKeyAndText.Split('|');
-        if (keyAndText.Length != 2)
-        {
-            throw new Exception("text data should like <key>|<text>");
-        }
-        return (keyAndText[0], keyAndText[1]);
-    }
-
-    public static void ValidateText(string key, string text)
-    {
-        if (key == null || text == null)
-        {
-            throw new Exception("text的key或text属性不能为null");
-        }
-        if (key == "" && text != "")
-        {
-            throw new Exception($"text  key为空, 但text:'{text}'不为空");
-        }
-    }
-
-
     public static bool IsIgnoreTag(string tagName)
     {
         return tagName == "##";
@@ -183,14 +101,6 @@ static class DataUtil
         }
         var tags = new List<string>(rawTagStr.Split(',').Select(t => t.Trim().ToLower()).Where(t => !string.IsNullOrEmpty(t)));
         return tags.Count > 0 ? tags : null;
-    }
-
-
-    private const string TAG_UNCHECKED = "unchecked";
-
-    public static bool IsUnchecked(Record rec)
-    {
-        return rec.Tags != null && rec.Tags.Count > 0 && rec.Tags.Contains(TAG_UNCHECKED);
     }
 
     //public const string SimpleContainerSep = ",;|";
@@ -253,23 +163,6 @@ static class DataUtil
             throw new Exception($"module:'{bean.Namespace}' type:'{subType}' 是抽象类. 不能创建实例");
         }
         return defType;
-    }
-
-    public static bool ParseExcelBool(string s)
-    {
-        s = s.ToLower().Trim();
-        switch (s)
-        {
-            case "true":
-            case "1":
-            case "y":
-            case "yes": return true;
-            case "false":
-            case "0":
-            case "n":
-            case "no": return false;
-            default: throw new InvalidExcelDataException($"{s} 不是 bool 类型的值 (true|1|y|yes 或 false|0|n|no)");
-        }
     }
 
     //public static string Data2String(DType data)

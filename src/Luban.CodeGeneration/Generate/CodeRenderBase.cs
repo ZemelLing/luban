@@ -1,13 +1,13 @@
-using Luban.Defs;
+using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common;
-using Luban.Job.Common.Defs;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
 
 abstract class CodeRenderBase : ICfgCodeRender
 {
-    public abstract void Render(GenContext ctx);
+    public abstract void Render(GenerationContext ctx);
 
 
     public abstract string Render(DefEnum c);
@@ -26,17 +26,17 @@ abstract class CodeRenderBase : ICfgCodeRender
         }
     }
 
-    protected virtual ELanguage GetLanguage(GenContext ctx)
+    protected virtual ELanguage GetLanguage(GenerationContext ctx)
     {
         return RenderFileUtil.GetLanguage(ctx.GenType);
     }
 
-    protected void GenerateCodeScatter(GenContext ctx)
+    protected void GenerateCodeScatter(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         ctx.Render = this;
-        ctx.Lan = GetLanguage(ctx);
-        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Lan;
+        ctx.Language = GetLanguage(ctx);
+        DefAssembly.LocalAssebmly.CurrentLanguage = ctx.Language;
         foreach (var c in ctx.ExportTypes)
         {
             ctx.Tasks.Add(Task.Run(() =>
@@ -46,8 +46,8 @@ abstract class CodeRenderBase : ICfgCodeRender
                 {
                     return;
                 }
-                var content = FileHeaderUtil.ConcatAutoGenerationHeader(body, ctx.Lan);
-                var file = RenderFileUtil.GetDefTypePath(c.FullName, ctx.Lan);
+                var content = FileHeaderUtil.ConcatAutoGenerationHeader(body, ctx.Language);
+                var file = RenderFileUtil.GetDefTypePath(c.FullName, ctx.Language);
                 var md5 = CacheFileUtil.GenMd5AndAddCache(file, content);
                 ctx.GenCodeFilesInOutputCodeDir.Add(new FileInfo() { FilePath = file, MD5 = md5 });
             }));
@@ -56,24 +56,24 @@ abstract class CodeRenderBase : ICfgCodeRender
         ctx.Tasks.Add(Task.Run(() =>
         {
             var module = ctx.TopModule;
-            var name = ctx.TargetService.Manager;
+            var name = ctx.TargetRawTarget.Manager;
             var body = ctx.Render.RenderService(name, module, ctx.ExportTables);
             if (string.IsNullOrWhiteSpace(body))
             {
                 return;
             }
-            var content = FileHeaderUtil.ConcatAutoGenerationHeader(body, ctx.Lan);
-            var file = RenderFileUtil.GetDefTypePath(name, ctx.Lan);
+            var content = FileHeaderUtil.ConcatAutoGenerationHeader(body, ctx.Language);
+            var file = RenderFileUtil.GetDefTypePath(name, ctx.Language);
             var md5 = CacheFileUtil.GenMd5AndAddCache(file, content);
             ctx.GenCodeFilesInOutputCodeDir.Add(new FileInfo() { FilePath = file, MD5 = md5 });
         }));
     }
 
-    protected void GenerateCodeMonolithic(GenContext ctx, string outputFile, List<string> fileContent, Action<List<string>> preContent, Action<List<string>> postContent)
+    protected void GenerateCodeMonolithic(GenerationContext ctx, string outputFile, List<string> fileContent, Action<List<string>> preContent, Action<List<string>> postContent)
     {
         ctx.Tasks.Add(Task.Run(() =>
         {
-            fileContent.Add(FileHeaderUtil.GetAutoGenerationHeader(ctx.Lan));
+            fileContent.Add(FileHeaderUtil.GetAutoGenerationHeader(ctx.Language));
 
             preContent?.Invoke(fileContent);
 

@@ -266,7 +266,7 @@ public class JobController
 ";
             res.StackTrace = e.StackTrace;
         }
-        DefAssemblyBase.LocalAssebmly = null;
+        DefAssembly.LocalAssebmly = null;
         timer.EndPhaseAndLog();
 
         agent.Session.ReplyRpc<GenJob, GenJobArg, GenJobRes>(rpc, res);

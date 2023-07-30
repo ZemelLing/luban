@@ -1,6 +1,6 @@
-using Luban.Defs;
+using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common;
-using Luban.Job.Common.Defs;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
@@ -11,7 +11,7 @@ class CppUE4EditorJsonRender : TemplateEditorJsonCodeRenderBase
 {
     protected override string RenderTemplateDir => "cpp_ue_editor_json";
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         var render = new CppUE4EditorJsonRender();
 

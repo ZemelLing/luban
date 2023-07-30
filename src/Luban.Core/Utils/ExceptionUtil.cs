@@ -1,4 +1,4 @@
-﻿namespace Luban.Job.Common.Utils;
+﻿namespace Luban.Core.Utils;
 
 public static class ExceptionUtil
 {

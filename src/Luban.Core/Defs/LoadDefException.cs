@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Luban.Job.Common.Defs;
+namespace Luban.Core.Defs;
 
 public class LoadDefException : Exception
 {

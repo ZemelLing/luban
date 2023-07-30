@@ -1,8 +1,9 @@
-﻿using Luban.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
 using Luban.Utils;
 using Luban.Job.Common.Generate;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
 
 namespace Luban.Generate;
 
@@ -10,7 +11,7 @@ namespace Luban.Generate;
 [Render("convert_excel")]
 class ExcelConvertRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         foreach (var table in ctx.ExportTables)

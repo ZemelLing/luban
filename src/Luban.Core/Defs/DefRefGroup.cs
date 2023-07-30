@@ -1,6 +1,6 @@
-﻿using Luban.RawDefs;
+﻿using Luban.Core.RawDefs;
 
-namespace Luban.Defs;
+namespace Luban.Core.Defs;
 
 public class DefRefGroup
 {
@@ -8,7 +8,7 @@ public class DefRefGroup
 
     public List<string> Refs { get; }
 
-    public DefRefGroup(RefGroup group)
+    public DefRefGroup(RawRefGroup group)
     {
         this.Name = group.Name;
         this.Refs = group.Refs;

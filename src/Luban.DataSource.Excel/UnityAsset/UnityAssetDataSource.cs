@@ -75,7 +75,7 @@ class UnityAssetDataSource : AbstractDataSource
         {
             return null;
         }
-        var data = (DBean)type.Apply(UnityAssetDataCreator.Ins, yamlNode, (DefAssembly)type.Bean.AssemblyBase);
+        var data = (DBean)type.Apply(UnityAssetDataCreator.Ins, yamlNode, (DefAssembly)type.Bean.Assembly);
         var tags = DataUtil.ParseTags(tagName);
         return new Record(data, RawUrl, tags);
     }

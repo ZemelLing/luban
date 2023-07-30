@@ -1,6 +1,7 @@
-using Luban.Job.Common.Types;
+using Luban.Core.DataVisitors;
+using Luban.Core.Types;
 
-namespace Luban.Datas;
+namespace Luban.Core.Datas;
 
 public class DMap : DType
 {

@@ -62,7 +62,7 @@ class JsonDataSource : AbstractDataSource
             tags = null;
         }
 
-        var data = (DBean)type.Apply(JsonDataCreator.Ins, ele, (DefAssembly)type.Bean.AssemblyBase);
+        var data = (DBean)type.Apply(JsonDataCreator.Ins, ele, (DefAssembly)type.Bean.Assembly);
         return new Record(data, RawUrl, tags);
     }
 

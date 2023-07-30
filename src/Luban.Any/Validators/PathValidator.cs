@@ -200,12 +200,12 @@ public class PathValidator : IValidator
         }
     }
 
-    private void ThrowCompileError(DefFieldBase def, string err)
+    private void ThrowCompileError(DefField def, string err)
     {
         throw new System.ArgumentException($"{((DefBean)(def.HostType)).FullName} 字段:{def.Name} {RawPattern} 定义不合法. {err}");
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         string[] ss = RawPattern.Split(';');
         if (ss.Length < 1)

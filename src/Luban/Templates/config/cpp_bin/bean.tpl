@@ -12,7 +12,7 @@
  * {{x.escape_comment}}
  */
 {{~end~}}
-class {{name}} : public {{if parent_def_type}} {{parent_def_type.cpp_full_name}} {{else}} bright::CfgBean {{end}}
+class {{name}} : public {{if parent_def_type}} {{parent_def_type.cpp_full_name}} {{else}} bright::RawBean {{end}}
 {
     public:
 

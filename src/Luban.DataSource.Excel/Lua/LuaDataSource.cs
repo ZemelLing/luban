@@ -63,7 +63,7 @@ class LuaDataSource : AbstractDataSource
         {
             return null;
         }
-        var data = (DBean)type.Apply(LuaDataCreator.Ins, table, (DefAssembly)type.Bean.AssemblyBase);
+        var data = (DBean)type.Apply(LuaDataCreator.Ins, table, (DefAssembly)type.Bean.Assembly);
         var tags = DataUtil.ParseTags(tagName);
         return new Record(data, RawUrl, tags);
     }

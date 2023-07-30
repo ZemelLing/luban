@@ -1,5 +1,5 @@
-﻿using Luban.Defs;
-using Luban.Job.Common.Defs;
+﻿using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common.Tpl;
 using Luban.Job.Common.Utils;
 
@@ -21,7 +21,7 @@ abstract class TemplateCodeRenderBase : CodeRenderBase
         return StringTemplateManager.Ins.GetTemplate($"common/{CommonRenderTemplateDir}/{name}");
     }
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         GenerateCodeScatter(ctx);
     }

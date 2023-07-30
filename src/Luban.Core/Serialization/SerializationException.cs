@@ -10,7 +10,7 @@
 /// </summary>
 
 
-namespace Bright.Serialization;
+namespace Luban.Core.Serialization;
 
 public class SerializationException : Exception
 {

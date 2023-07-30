@@ -1,8 +1,8 @@
-﻿using Luban.Job.Common.Defs;
+﻿using Luban.Core.Defs;
 
-namespace Luban.Job.Common.Utils;
+namespace Luban.Core.Utils;
 
-public class DefUtil
+public static class DefUtil
 {
     private static readonly char[] s_attrSep = new char[] { '#' };
 
@@ -290,51 +290,51 @@ public class DefUtil
         }
     }
 
-    public static string EscapeCommentByCurrentLanguage(string comment)
-    {
-        var curLan = DefAssemblyBase.LocalAssebmly.CurrentLanguage;
-        switch (curLan)
-        {
-            case ELanguage.INVALID: throw new Exception($"not set current language. can't get recommend naming convention name");
-            case ELanguage.CS:
-            case ELanguage.JAVA:
-            case ELanguage.GO:
-            case ELanguage.CPP:
-            case ELanguage.LUA:
-            case ELanguage.JAVASCRIPT:
-            case ELanguage.TYPESCRIPT:
-            case ELanguage.PYTHON:
-            case ELanguage.RUST:
-            case ELanguage.PROTOBUF:
-            case ELanguage.GDSCRIPT:
-                return System.Web.HttpUtility.HtmlEncode(comment).Replace("\n", "<br/>");
-            default: throw new Exception($"unknown language:{curLan}");
-        }
-    }
-
-    public static ELanguage ParseLanguage(string lan)
-    {
-        switch (lan.ToLower())
-        {
-            case "cs":
-            case "c#":
-            case "csharp": return ELanguage.CS;
-            case "java": return ELanguage.JAVA;
-            case "go":
-            case "golang": return ELanguage.GO;
-            case "cpp":
-            case "c++": return ELanguage.CPP;
-            case "lua": return ELanguage.LUA;
-            case "js":
-            case "javascript": return ELanguage.JAVASCRIPT;
-            case "ts":
-            case "typescript": return ELanguage.TYPESCRIPT;
-            case "python": return ELanguage.PYTHON;
-            case "rust": return ELanguage.RUST;
-            case "pb":
-            case "protobuf": return ELanguage.PROTOBUF;
-            case "gdscript": return ELanguage.GDSCRIPT;
-            default: throw new ArgumentException($"parse lan:'{lan}' fail");
-        }
-    }
+    // public static string EscapeCommentByCurrentLanguage(string comment)
+    // {
+    //     var curLan = DefAssembly.LocalAssebmly.CurrentLanguage;
+    //     switch (curLan)
+    //     {
+    //         case ELanguage.INVALID: throw new Exception($"not set current language. can't get recommend naming convention name");
+    //         case ELanguage.CS:
+    //         case ELanguage.JAVA:
+    //         case ELanguage.GO:
+    //         case ELanguage.CPP:
+    //         case ELanguage.LUA:
+    //         case ELanguage.JAVASCRIPT:
+    //         case ELanguage.TYPESCRIPT:
+    //         case ELanguage.PYTHON:
+    //         case ELanguage.RUST:
+    //         case ELanguage.PROTOBUF:
+    //         case ELanguage.GDSCRIPT:
+    //             return System.Web.HttpUtility.HtmlEncode(comment).Replace("\n", "<br/>");
+    //         default: throw new Exception($"unknown language:{curLan}");
+    //     }
+    // }
+    //
+    // public static ELanguage ParseLanguage(string lan)
+    // {
+    //     switch (lan.ToLower())
+    //     {
+    //         case "cs":
+    //         case "c#":
+    //         case "csharp": return ELanguage.CS;
+    //         case "java": return ELanguage.JAVA;
+    //         case "go":
+    //         case "golang": return ELanguage.GO;
+    //         case "cpp":
+    //         case "c++": return ELanguage.CPP;
+    //         case "lua": return ELanguage.LUA;
+    //         case "js":
+    //         case "javascript": return ELanguage.JAVASCRIPT;
+    //         case "ts":
+    //         case "typescript": return ELanguage.TYPESCRIPT;
+    //         case "python": return ELanguage.PYTHON;
+    //         case "rust": return ELanguage.RUST;
+    //         case "pb":
+    //         case "protobuf": return ELanguage.PROTOBUF;
+    //         case "gdscript": return ELanguage.GDSCRIPT;
+    //         default: throw new ArgumentException($"parse lan:'{lan}' fail");
+    //     }
+    // }
 }

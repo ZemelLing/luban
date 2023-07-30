@@ -1,4 +1,6 @@
-namespace Luban.Datas;
+using Luban.Core.DataVisitors;
+
+namespace Luban.Core.Datas;
 
 public class DDouble : DType<double>
 {

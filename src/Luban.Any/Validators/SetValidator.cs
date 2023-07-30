@@ -21,7 +21,7 @@ class SetValidator : IValidator
         _valueSetStr = DefUtil.TrimBracePairs(param);
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         foreach (var p in _valueSetStr.Split(',', ';'))
         {

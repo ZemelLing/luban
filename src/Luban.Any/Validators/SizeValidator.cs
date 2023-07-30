@@ -14,7 +14,7 @@ internal class SizeValidator : IValidator
         _range = new Range(rule);
     }
 
-    public void Compile(DefFieldBase def)
+    public void Compile(DefField def)
     {
         _range.Compile();
     }

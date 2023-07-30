@@ -1,8 +1,8 @@
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.TypeVisitors;
-using Luban.Job.Common.Utils;
+using Luban.Core.Defs;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
 
-namespace Luban.Job.Common.Types;
+namespace Luban.Core.Types;
 
 public class TEnum : TType
 {

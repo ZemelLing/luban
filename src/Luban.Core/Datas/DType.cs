@@ -1,5 +1,7 @@
 
-namespace Luban.Datas;
+using Luban.Core.DataVisitors;
+
+namespace Luban.Core.Datas;
 
 public abstract class DType : System.IComparable<DType>
 {

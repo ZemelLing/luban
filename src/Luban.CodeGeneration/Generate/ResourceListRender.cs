@@ -1,4 +1,4 @@
-﻿using Luban.RawDefs;
+﻿using Luban.Core;
 using Luban.Job.Common.Generate;
 
 namespace Luban.Generate;
@@ -6,7 +6,7 @@ namespace Luban.Generate;
 [Render("data_resources")]
 class ResourceListRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         var genDataTasks = new List<Task<List<ResourceInfo>>>();
         foreach (var c in ctx.ExportTables)

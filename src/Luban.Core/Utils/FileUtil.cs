@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Luban.Utils;
+namespace Luban.Core.Utils;
 
 public static class FileUtil
 {

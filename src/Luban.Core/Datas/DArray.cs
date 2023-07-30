@@ -1,7 +1,8 @@
-using Luban.Utils;
-using Luban.Job.Common.Types;
+using Luban.Core.DataVisitors;
+using Luban.Core.Types;
+using Luban.Core.Utils;
 
-namespace Luban.Datas;
+namespace Luban.Core.Datas;
 
 public class DArray : DType
 {

@@ -1,6 +1,6 @@
-using Luban.Defs;
+using Luban.Core;
+using Luban.Core.Defs;
 using Luban.Job.Common;
-using Luban.Job.Common.Defs;
 using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
@@ -11,7 +11,7 @@ class CppCodeBinRender : TemplateCodeRenderBase
 {
     protected override string RenderTemplateDir => "cpp_bin";
 
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         // ������ ͷ�ļ����� ���ɵ�һ���ļ�
         // ���� const,enum,bean,table, service ��˳������

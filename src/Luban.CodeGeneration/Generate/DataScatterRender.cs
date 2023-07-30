@@ -1,4 +1,5 @@
-﻿using Luban.Job.Common.Generate;
+﻿using Luban.Core;
+using Luban.Job.Common.Generate;
 using Luban.Job.Common.Utils;
 
 namespace Luban.Generate;
@@ -17,7 +18,7 @@ namespace Luban.Generate;
 [Render("data_flatbuffers_json")]
 class DataScatterRender : DataRenderBase
 {
-    public override void Render(GenContext ctx)
+    public override void Render(GenerationContext ctx)
     {
         string genType = ctx.GenType;
         foreach (var table in ctx.ExportTables)

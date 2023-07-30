@@ -1,4 +1,4 @@
-namespace Bright.Serialization;
+namespace Luban.Core.Serialization;
 
 public readonly struct TemporalByteBuf : IDisposable
 {

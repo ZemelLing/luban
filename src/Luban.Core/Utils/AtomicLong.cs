@@ -1,4 +1,4 @@
-namespace Bright.Threading;
+namespace Luban.Core.Utils;
 
 public class AtomicLong
 {

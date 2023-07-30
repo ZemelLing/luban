@@ -1,8 +1,7 @@
-﻿using Luban.Datas;
-using Luban.RawDefs;
-using Luban.Utils;
+﻿using Luban.Core.Datas;
+using Luban.Core.Utils;
 
-namespace Luban.Defs;
+namespace Luban.Core.Defs;
 
 public class TableDataInfo
 {
@@ -60,7 +59,7 @@ public class TableDataInfo
         // TODO 有一个微妙的问题，ref检查虽然通过，但ref的记录有可能未导出
         switch (Table.Mode)
         {
-            case ETableMode.ONE:
+            case TableMode.ONE:
             {
                 // TODO 如果此单例表使用tag,有多个记录，则patchRecords会覆盖全部。
                 // 好像也挺有道理的，毕竟没有key，无法区分覆盖哪个
@@ -71,7 +70,7 @@ public class TableDataInfo
                 FinalRecords = mainRecords;
                 break;
             }
-            case ETableMode.MAP:
+            case TableMode.MAP:
             {
                 var recordMap = new Dictionary<DType, Record>();
                 foreach (Record r in mainRecords)
@@ -111,7 +110,7 @@ public class TableDataInfo
                 FinalRecordMap = recordMap;
                 break;
             }
-            case ETableMode.LIST:
+            case TableMode.LIST:
             {
                 if (patchRecords != null && patchRecords.Count > 0)
                 {
@@ -126,7 +125,7 @@ public class TableDataInfo
                         var unionKeys = table.IndexList.Select(idx => r.Data.Fields[idx.IndexFieldIdIndex]).ToList();
                         if (!unionRecordMap.TryAdd(unionKeys, r))
                         {
-                            throw new Exception($@"配置表 '{table.FullName}' 主文件 主键字段:'{table.Index}' 主键值:'{Bright.Common.StringUtil.CollectionToString(unionKeys)}' 重复.
+                            throw new Exception($@"配置表 '{table.FullName}' 主文件 主键字段:'{table.Index}' 主键值:'{StringUtil.CollectionToString(unionKeys)}' 重复.
         记录1 来自文件:{r.Source}
         记录2 来自文件:{unionRecordMap[unionKeys].Source}
 ");
