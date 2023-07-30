@@ -18,7 +18,10 @@ public class PluginManager
     {
         foreach (string pluginPath in pluginCollector.GetPluginPaths())
         {
-            _plugins.Add(LoadPlugin(pluginPath));
+            if (LoadPlugin(pluginPath, out var plugin))
+            {
+                _plugins.Add(plugin);
+            }
         }
     }
 
@@ -33,27 +36,35 @@ public class PluginManager
     {
         public string Name { get; set; }
         
+        public bool Enabled { get; set; }
+        
         public string EntryDll { get; set; }
     }
     
-    private IPlugin LoadPlugin(string pluginPath)
+    private bool LoadPlugin(string pluginPath, out IPlugin plugin)
     {
         string jsonStr = File.ReadAllText($"{pluginPath}/plugin.json", Encoding.UTF8);
         var pluginConf = JsonSerializer.Deserialize<PluginConfig>(jsonStr);
+        if (!pluginConf.Enabled)
+        {
+            s_logger.Info($"plugin:{pluginPath} is disabled");
+            plugin = null;
+            return false;
+        }
         
         var ass = LoadPluginAssembly(pluginPath, pluginConf.EntryDll);
         if (ass == null)
         {
             throw new PluginLoadException($"plugin:{pluginPath} doesn't exists");
         }
-
+        s_logger.Info($"plugin:{pluginPath} is enabled");
         foreach (var type in ass.GetTypes())
         {
             if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsAbstract)
             {
-                var plugin = (IPlugin)Activator.CreateInstance(type);
+                plugin = (IPlugin)Activator.CreateInstance(type);
                 plugin.Init(jsonStr);
-                return plugin;
+                return true;
             }
         }
         throw new PluginLoadException($"can't find any type derived from IPlugin in plugin:{pluginPath} ");

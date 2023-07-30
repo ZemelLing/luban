@@ -2,6 +2,7 @@
 using Luban.Plugin;
 using Luban.Utils;
 using NLog;
+using System.Reflection;
 using System.Text;
 
 namespace Luban;
@@ -20,7 +21,7 @@ internal class Program
         LogUtil.InitSimpleNLogConfigure(LogLevel.Info);
         s_logger = LogManager.GetCurrentClassLogger();
         s_logger.Info("init logger success");
-        PluginManager.Ins.Init(new DefaultPluginCollector(@"D:\workspace2\luban\src\Luban\bin\Debug\net7.0\Plugins"));
+        PluginManager.Ins.Init(new DefaultPluginCollector($@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/Plugins"));
 
         int processorCount = Environment.ProcessorCount;
         ThreadPool.SetMinThreads(Math.Max(4, processorCount), 5);
