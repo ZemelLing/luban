@@ -6,32 +6,13 @@ namespace Luban.Core.Defs;
 
 public class DefBean : DefTypeBase
 {
-    public const string FALLBACK_TYPE_NAME_KEY = "__type__";
-
-    public const string BEAN_NULL_STR = "null";
-
-    public const string BEAN_NOT_NULL_STR = "{}";
-
-    public const string JSON_TYPE_NAME_KEY = "$type";
-
-    public const string XML_TYPE_NAME_KEY = "type";
-
-    public const string LUA_TYPE_NAME_KEY = "_type_";
-
-    public const string EXCEL_TYPE_NAME_KEY = "$type";
-    public const string EXCEL_VALUE_NAME_KEY = "$value";
-
-    public bool IsBean => true;
-
+    public int Id { get; }
+    
     public string Parent { get; }
 
-    public bool IsValueType { get; }
-
-    public DefBean ParentDefType { get; protected set; }
+    public DefBean ParentDefType { get; private set; }
 
     public DefBean RootDefType => this.ParentDefType == null ? this : this.ParentDefType.RootDefType;
-
-    public bool IsSerializeCompatible { get; }
 
     public List<DefBean> Children { get; set; }
 
@@ -61,20 +42,20 @@ public class DefBean : DefTypeBase
 
     public List<DefField> Fields { get; } = new List<DefField>();
 
-    public string CsClassModifier => IsAbstractType ? "abstract" : "sealed";
-
-    public string CsMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
-
-
-    public string JavaClassModifier => IsAbstractType ? "abstract" : "final";
-
-    public string JavaMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
-
-    public string TsClassModifier => IsAbstractType ? "abstract" : "";
+    // public string CsClassModifier => IsAbstractType ? "abstract" : "sealed";
+    //
+    // public string CsMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
+    //
+    //
+    // public string JavaClassModifier => IsAbstractType ? "abstract" : "final";
+    //
+    // public string JavaMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
+    //
+    // public string TsClassModifier => IsAbstractType ? "abstract" : "";
     
-    public string JsonTypeNameKey => JSON_TYPE_NAME_KEY;
-
-    public string LuaTypeNameKey => LUA_TYPE_NAME_KEY;
+    // public string JsonTypeNameKey => JSON_TYPE_NAME_KEY;
+    //
+    // public string LuaTypeNameKey => LUA_TYPE_NAME_KEY;
 
     public string Alias { get; }
 
@@ -86,8 +67,6 @@ public class DefBean : DefTypeBase
 
     public List<DefField> ExportFields { get; private set; }
 
-    public int AutoId { get; set; }
-
     public bool IsDefineEquals(DefBean b)
     {
         return DeepCompareTypeDefine.Ins.Compare(this, b, new Dictionary<DefTypeBase, bool>(), new HashSet<DefTypeBase>());
@@ -98,8 +77,7 @@ public class DefBean : DefTypeBase
         Name = b.Name;
         Namespace = b.Namespace;
         Parent = b.Parent;
-        Id = b.TypeId;
-        IsValueType = b.IsValueType;
+        Id = TypeUtil.ComputCfgHashIdByName(FullName);
         Comment = b.Comment;
         Tags = DefUtil.ParseAttrs(b.Tags);
         foreach (var field in b.Fields)
@@ -107,7 +85,6 @@ public class DefBean : DefTypeBase
             Fields.Add(CreateField(field, 0));
         }
         Alias = b.Alias;
-        Id = b.TypeId;
         Sep = b.Sep;
     }
 
@@ -169,14 +146,6 @@ public class DefBean : DefTypeBase
             CollectHierarchyNotAbstractChildren(cs);
         }
         HierarchyNotAbstractChildren = cs;
-        if (Id != 0)
-        {
-            throw new Exception($"bean:'{FullName}' beanid:{Id} should be 0!");
-        }
-        else
-        {
-            Id = TypeUtil.ComputCfgHashIdByName(FullName);
-        }
         // 检查别名是否重复
         HashSet<string> nameOrAliasName = cs.Select(b => b.Name).ToHashSet();
         foreach (DefBean c in cs)
@@ -186,34 +155,14 @@ public class DefBean : DefTypeBase
                 throw new Exception($"bean:'{FullName}' alias:{c.Alias} 重复");
             }
         }
-        DefField.CompileFields(this, HierarchyFields, false);
-
-        var allocAutoIds = this.HierarchyFields.Select(f => f.Id).ToHashSet();
-
-        int nextAutoId = 1;
-        foreach (var f in this.HierarchyFields)
-        {
-            while (!allocAutoIds.Add(nextAutoId))
-            {
-                ++nextAutoId;
-            }
-            f.AutoId = nextAutoId;
-        }
+        DefField.CompileFields(this, HierarchyFields);
     }
 
-    public void PostCompile()
+    public override void PostCompile()
     {
         foreach (var field in HierarchyFields)
         {
             field.PostCompile();
-        }
-        if (this.IsAbstractType && this.ParentDefType == null)
-        {
-            int nextAutoId = 0;
-            foreach (DefBean c in this.HierarchyNotAbstractChildren)
-            {
-                c.AutoId = ++nextAutoId;
-            }
         }
     }
     

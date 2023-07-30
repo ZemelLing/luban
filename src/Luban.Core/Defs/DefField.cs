@@ -9,9 +9,7 @@ public class DefField
 {
     public DefAssembly Assembly => HostType.Assembly;
 
-    public DefTypeBase HostType { get; set; }
-
-    public int Id { get; protected set; }
+    public DefBean HostType { get; set; }
 
     public string Name { get; protected set; }
 
@@ -235,11 +233,9 @@ public class DefField
     public bool GenTextKey => this.CType is TText;
 
 
-    public DefField(DefTypeBase host, RawField f, int idOffset)
+    public DefField(DefBean host, RawField f, int idOffset)
     {
         HostType = host;
-        Id = f.Id + idOffset;
-        AutoId = Id;
         Name = f.Name;
         Type = f.Type;
         Comment = f.Comment;
@@ -250,10 +246,7 @@ public class DefField
     }
 
     public void Compile()
-    {       if (Id < 0 || Id > 256)
-        {
-            throw new Exception($"type:'{HostType.FullName}' field:'{Name}' id:{Id} 超出范围");
-        }
+    {
         if (!IgnoreNameValidation && !TypeUtil.IsValidName(Name))
         {
             throw new Exception($"type:'{HostType.FullName}' field name:'{Name}' is reserved");
@@ -340,31 +333,15 @@ public class DefField
         ValidateIndex();
     }
 
-    public static void CompileFields<T>(DefTypeBase hostType, List<T> fields, bool verifyId) where T : DefField
+    public static void CompileFields<T>(DefTypeBase hostType, List<T> fields) where T : DefField
     {
-        if (verifyId)
-        {
-            var ids = new HashSet<int>();
-            foreach (var f in fields)
-            {
-                if (f.Id == 0)
-                {
-                    throw new Exception($"type:'{hostType.FullName}' field:'{f.Name}' id can't be 0");
-                }
-                if (!ids.Add(f.Id))
-                {
-                    throw new Exception($"type:'{hostType.FullName}' field:'{f.Name}' id:{f.Id} duplicate");
-                }
-            }
-        }
-
         var names = new HashSet<string>();
         foreach (var f in fields)
         {
             var fname = f.Name;
             if (fname.Length == 0)
             {
-                throw new Exception($"type:'{hostType.FullName}' field id:{f.Id} name can't be empty");
+                throw new Exception($"type:'{hostType.FullName}' field name can't be empty");
             }
             if (!names.Add(fname))
             {

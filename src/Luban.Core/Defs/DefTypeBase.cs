@@ -6,8 +6,6 @@ public abstract class DefTypeBase
 {
     public DefAssembly Assembly { get; set; }
 
-    public int Id { get; protected set; }
-
     public string TopModule => Assembly.TopModule;
 
     public string Name { get; set; }

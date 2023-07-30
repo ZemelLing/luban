@@ -2,7 +2,7 @@
 
 namespace Luban.Utils;
 
-public static class ConsoleWindow
+public static class ConsoleUtil
 {
     private static class NativeFunctions
     {

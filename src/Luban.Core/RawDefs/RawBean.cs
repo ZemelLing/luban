@@ -10,10 +10,6 @@ public class RawBean
 
     public string Parent { get; set; }
 
-    public bool IsValueType { get; set; }
-
-    public int TypeId { get; set; }
-
     public bool IsSerializeCompatible { get; set; }
 
     public string Comment { get; set; }

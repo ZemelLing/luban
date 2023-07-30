@@ -478,9 +478,6 @@ public class DefAssembly
 
     private static readonly HashSet<string> s_internalOriginTypes = new HashSet<string>
     {
-        "vector2",
-        "vector3",
-        "vector4",
         "datetime",
     };
 
@@ -562,7 +559,7 @@ public class DefAssembly
         }
     }
 
-    protected TType GetOrCreateTBean(DefTypeBase defType, bool nullable, Dictionary<string, string> tags)
+    TType GetOrCreateTBean(DefTypeBase defType, bool nullable, Dictionary<string, string> tags)
     {
         if (tags == null || tags.Count == 0)
         {
