@@ -1,4 +1,3 @@
-using Bright.Threading;
 using Luban.Utils;
 
 namespace Luban.Server.Common;

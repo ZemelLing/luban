@@ -1,0 +1,4 @@
+{
+  "Name": "PluginDemo",
+  "EntryDll" : "PluginDemo.dll"
+}

@@ -7,7 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Luban.Core\Luban.Core.csproj" />
+      <PackageReference Include="NLog" Version="5.2.2" />
+      <PackageReference Include="YamlDotNet.NetCore" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using Luban.Defs;
 using Luban.Utils;
 using Luban.Job.Common.Types;
+using YamlDotNet.RepresentationModel;
 
 namespace Luban.DataSources.Yaml;
 
