@@ -21,28 +21,28 @@ public static class ExternalTypeUtil
     //    }
     //}
 
-    public static ExternalTypeMapper GetExternalTypeMappfer(string typeName)
-    {
-        return DefAssembly.LocalAssebmly.GetExternalTypeMapper(typeName);
-    }
+    // public static ExternalTypeMapper GetExternalTypeMappfer(string typeName)
+    // {
+    //     return GenerationContext.Ins.GetExternalTypeMapper(typeName);
+    // }
 
-    public static string CsMapperToExternalType(DefTypeBase type)
-    {
-        var mapper = DefAssembly.LocalAssebmly.GetExternalTypeMapper(type.FullName);
-        return mapper != null ? mapper.TargetTypeName : type.CsFullName;
-    }
-
-    public static string CsCloneToExternal(string typeName, string src)
-    {
-        var mapper = DefAssembly.LocalAssebmly.GetExternalTypeMapper(typeName);
-        if (mapper == null)
-        {
-            return src;
-        }
-        if (string.IsNullOrWhiteSpace(mapper.CreateExternalObjectFunction))
-        {
-            throw new Exception($"type:{typeName} externaltype:{DefAssembly.LocalAssebmly.GetExternalType(typeName)} lan:{mapper.Lan} selector:{mapper.Selector} 未定义 create_external_object_function 属性");
-        }
-        return $"{mapper.CreateExternalObjectFunction}({src})";
-    }
+    // public static string CsMapperToExternalType(DefTypeBase type)
+    // {
+    //     var mapper = DefAssembly.LocalAssebmly.GetExternalTypeMapper(type.FullName);
+    //     return mapper != null ? mapper.TargetTypeName : type.CsFullName;
+    // }
+    //
+    // public static string CsCloneToExternal(string typeName, string src)
+    // {
+    //     var mapper = DefAssembly.LocalAssebmly.GetExternalTypeMapper(typeName);
+    //     if (mapper == null)
+    //     {
+    //         return src;
+    //     }
+    //     if (string.IsNullOrWhiteSpace(mapper.CreateExternalObjectFunction))
+    //     {
+    //         throw new Exception($"type:{typeName} externaltype:{DefAssembly.LocalAssebmly.GetExternalType(typeName)} lan:{mapper.Lan} selector:{mapper.Selector} 未定义 create_external_object_function 属性");
+    //     }
+    //     return $"{mapper.CreateExternalObjectFunction}({src})";
+    // }
 }

@@ -13,8 +13,6 @@ public class DefField
 
     public string Name { get; protected set; }
 
-    public int AutoId { get; set; }
-
     // public string ConventionName
     // {
     //     get
@@ -222,7 +220,7 @@ public class DefField
 
     //public string CppGetterName => JavaGetterName;
 
-    public bool NeedExport => Assembly.NeedExport(this.Groups);
+    // public bool NeedExport => Assembly.NeedExport(this.Groups);
 
     public TEnum Remapper { get; private set; }
 

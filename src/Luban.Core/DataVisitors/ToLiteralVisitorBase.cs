@@ -53,7 +53,7 @@ abstract class ToLiteralVisitorBase : IDataFuncVisitor<string>
 
     public virtual string Accept(DDateTime type)
     {
-        return type.UnixTimeOfCurrentAssembly.ToString();
+        return type.GetUnixTime(GenerationContext.Ins.Arguments.TimeZone).ToString();
     }
 
     public virtual string Accept(DText type)

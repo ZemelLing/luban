@@ -85,7 +85,7 @@ public class DefTable : DefTypeBase
 
     public List<IndexInfo> IndexList { get; } = new();
 
-    public bool NeedExport => Assembly.NeedExport(this.Groups);
+    // public bool NeedExport => Assembly.NeedExport(this.Groups);
 
     public string OutputDataFile => string.IsNullOrWhiteSpace(_outputFile) ? FullName.Replace('.', '_').ToLower() : _outputFile;
 

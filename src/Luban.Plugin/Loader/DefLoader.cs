@@ -376,13 +376,13 @@ public class DefLoader
     }
     #endregion
 
-    public RawDefines BuildDefines()
+    public RawAssembly BuildDefines()
     {
-        var defines = new RawDefines()
+        var defines = new RawAssembly()
         {
             Patches = _patches,
             Tables = _cfgTables,
-            Services = _cfgServices,
+            Targets = _cfgServices,
             Groups = _cfgGroups,
             RefGroups = _refGroups,
         };

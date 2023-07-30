@@ -57,8 +57,6 @@ public class DDateTime : DType
         }
     }
 
-    public long UnixTimeOfCurrentAssembly => GetUnixTime(DefAssembly.LocalAssebmly.TimeZone);
-
     public override void Apply<T>(IDataActionVisitor<T> visitor, T x)
     {
         visitor.Accept(this, x);

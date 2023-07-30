@@ -6,7 +6,7 @@ public abstract class DefTypeBase
 {
     public DefAssembly Assembly { get; set; }
 
-    public string TopModule => Assembly.TopModule;
+    public string TopModule => GenerationContext.Ins.TopModule;
 
     public string Name { get; set; }
 
@@ -14,13 +14,9 @@ public abstract class DefTypeBase
 
     public string FullName => TypeUtil.MakeFullName(Namespace, Name);
 
-    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(Assembly.TopModule, Namespace);
+    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(TopModule, Namespace);
 
-    public string FullNameWithTopModule => TypeUtil.MakeFullName(Assembly.TopModule, FullName);
-
-    public string NamespaceWithEditorTopModule => TypeUtil.MakeNamespace(Assembly.EditorTopModule, Namespace);
-
-    public string FullNameWithEditorTopModule => TypeUtil.MakeFullName(Assembly.EditorTopModule, FullName);
+    public string FullNameWithTopModule => TypeUtil.MakeFullName(TopModule, FullName);
 
     public string CsFullName => TypeUtil.MakeFullName(Namespace, Name);
 

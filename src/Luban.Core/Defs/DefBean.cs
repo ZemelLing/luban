@@ -42,30 +42,15 @@ public class DefBean : DefTypeBase
 
     public List<DefField> Fields { get; } = new List<DefField>();
 
-    // public string CsClassModifier => IsAbstractType ? "abstract" : "sealed";
-    //
-    // public string CsMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
-    //
-    //
-    // public string JavaClassModifier => IsAbstractType ? "abstract" : "final";
-    //
-    // public string JavaMethodModifier => ParentDefType != null ? "override" : (IsAbstractType ? "virtual" : "");
-    //
-    // public string TsClassModifier => IsAbstractType ? "abstract" : "";
-    
-    // public string JsonTypeNameKey => JSON_TYPE_NAME_KEY;
-    //
-    // public string LuaTypeNameKey => LUA_TYPE_NAME_KEY;
-
     public string Alias { get; }
 
     public bool IsMultiRow { get; set; }
 
     public string Sep { get; }
 
-    public List<DefField> HierarchyExportFields { get; private set; }
-
-    public List<DefField> ExportFields { get; private set; }
+    // public List<DefField> HierarchyExportFields { get; private set; }
+    //
+    // public List<DefField> ExportFields { get; private set; }
 
     public bool IsDefineEquals(DefBean b)
     {
@@ -132,10 +117,10 @@ public class DefBean : DefTypeBase
 
     public override void PreCompile()
     {
-        SetUpParentRecursively();
+        SetupParentRecursively();
         CollectHierarchyFields(HierarchyFields);
-        this.ExportFields = this.Fields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
-        this.HierarchyExportFields = this.HierarchyFields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
+        // this.ExportFields = this.Fields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
+        // this.HierarchyExportFields = this.HierarchyFields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
     }
 
     public override void Compile()
@@ -190,7 +175,7 @@ public class DefBean : DefTypeBase
         fields.AddRange(Fields);
     }
 
-    private void SetUpParentRecursively()
+    private void SetupParentRecursively()
     {
         if (ParentDefType == null && !string.IsNullOrEmpty(Parent))
         {
@@ -203,7 +188,7 @@ public class DefBean : DefTypeBase
                 ParentDefType.Children = new List<DefBean>();
             }
             ParentDefType.Children.Add(this);
-            ParentDefType.SetUpParentRecursively();
+            ParentDefType.SetupParentRecursively();
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace Luban.Core.RawDefs;
 
-public class RawDefines
+public class RawAssembly
 {
     public string TopModule { get; set; } = "";
 
@@ -20,7 +20,7 @@ public class RawDefines
 
     public List<RawGroup> Groups { get; set; } = new();
 
-    public List<RawTarget> Services { get; set; } = new();
+    public List<RawTarget> Targets { get; set; } = new();
 
     public List<RawRefGroup> RefGroups { get; set; } = new();
 }

@@ -313,11 +313,6 @@ public class TTypeTemplateCommonExtends : ScriptObject
         return DefAssembly.LocalAssebmly.GetOptionOr(optionName, defaultValue);
     }
 
-    public static bool GenDatetimeMills(TType type)
-    {
-        return type is TDateTime && !type.IsNullable && ExternalTypeUtil.GetExternalTypeMappfer("datetime") == null;
-    }
-
     public static string CsStartNameSpaceGrace(string np)
     {
         if (string.IsNullOrEmpty(np))
