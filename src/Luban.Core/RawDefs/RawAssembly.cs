@@ -2,13 +2,11 @@ namespace Luban.Core.RawDefs;
 
 public class RawAssembly
 {
-    public string TopModule { get; set; } = "";
-
-    public Dictionary<string, string> Options { get; set; } = new();
+    public Dictionary<string, string> Envs { get; set; } = new();
 
     public HashSet<string> ExternalSelectors { get; set; } = new();
 
-    public Dictionary<string, RawExternalType> ExternalTypes { get; set; } = new();
+    public List<RawExternalType> ExternalTypes { get; set; } = new();
 
     public List<RawBean> Beans { get; set; } = new();
 

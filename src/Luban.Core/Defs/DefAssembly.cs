@@ -21,17 +21,15 @@ public class DefAssembly
 
     private readonly Dictionary<string, DefTypeBase> _notCaseSenseNamespaces = new();
 
-    public string TopModule { get; set; }
-
     public string CurrentLanguage { get; set; }
 
     public HashSet<string> ExternalSelectors { get; private set; }
 
-    private Dictionary<string, RawExternalType> ExternalTypes { get; set; }
+    private List<RawExternalType> ExternalTypes { get; set; }
 
     private readonly Dictionary<string, RawExternalType> _externalTypesByTypeName = new();
 
-    public Dictionary<string, string> Options { get; private set; }
+    public Dictionary<string, string> Envs { get; }
 
 
     private readonly List<RawPatch> _patches;
@@ -44,6 +42,7 @@ public class DefAssembly
     {
         return _targets.Find(t => t.Name == targetName);
     }
+    
     public RawPatch GetPatch(string name)
     {
         return _patches.Find(b => b.Name == name);
@@ -51,10 +50,9 @@ public class DefAssembly
 
     public DefAssembly(RawAssembly assembly)
     {
-        this.TopModule = assembly.TopModule;
         this.ExternalSelectors = assembly.ExternalSelectors;
         this.ExternalTypes = assembly.ExternalTypes;
-        this.Options = assembly.Options;
+        this.Envs = assembly.Envs;
 
         _targets = assembly.Targets;
 
@@ -103,7 +101,7 @@ public class DefAssembly
             type.PostCompile();
         }
 
-        foreach (var externalType in assembly.ExternalTypes.Values)
+        foreach (var externalType in assembly.ExternalTypes)
         {
             AddExternalType(externalType);
         }
@@ -112,17 +110,17 @@ public class DefAssembly
 
     public bool ContainsOption(string optionName)
     {
-        return Options.ContainsKey(optionName);
+        return Envs.ContainsKey(optionName);
     }
 
     public string GetOption(string optionName)
     {
-        return Options.TryGetValue(optionName, out var value) ? value : null;
+        return Envs.TryGetValue(optionName, out var value) ? value : null;
     }
 
     public string GetOptionOr(string optionName, string defaultValue)
     {
-        return Options.TryGetValue(optionName, out var value) ? value : defaultValue;
+        return Envs.TryGetValue(optionName, out var value) ? value : defaultValue;
     }
     
 

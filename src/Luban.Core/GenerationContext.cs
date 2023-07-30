@@ -39,9 +39,7 @@ public class GenerationContext
         return groups.Any(g => Target.Groups.Contains(g));
     }
     
-    public string TopModule => Assembly.TopModule;
-
-    public Func<Task> DataLoader { get; set; }
+    public string TopModule => Target.TopModule;
 
     public List<DefTypeBase> ExportTypes { get; init; }
     public List<DefTable> ExportTables { get; init; }
@@ -87,7 +85,7 @@ public class GenerationContext
         {
             return null;
         }
-        return rawExternalType.Mappers.Find(m => m.Lan == language && CurrentExternalSelectors.Contains(m.Selector));
+        return rawExternalType.Mappers.Find(m => m.Language == language && CurrentExternalSelectors.Contains(m.Selector));
     }
 
     private static IEnumerable<string> SplitTableList(string tables)

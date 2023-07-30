@@ -30,7 +30,7 @@ public abstract class DefTypeBase
 
     public string CppNamespaceEnd => TypeUtil.MakeCppNamespaceEnd(Namespace);
 
-    public string CppFullNameWithTopModule => TypeUtil.MakeCppFullName(Assembly.TopModule, FullName);
+    public string CppFullNameWithTopModule => TypeUtil.MakeCppFullName(TopModule, FullName);
 
     public string TypescriptNamespaceBegin => TypeUtil.MakeTypescriptNamespaceBegin(Namespace);
 

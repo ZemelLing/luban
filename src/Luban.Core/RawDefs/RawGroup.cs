@@ -2,5 +2,7 @@ namespace Luban.Core.RawDefs;
 
 public class RawGroup
 {
-    public List<string> Names { get; set; } = new List<string>();
+    public bool DefaultGroup { get; set; }
+    
+    public List<string> Names { get; set; }
 }
