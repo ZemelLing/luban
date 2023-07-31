@@ -1,11 +1,7 @@
-using System.Xml.Linq;
-using Luban.Core.Datas;
-using Luban.Core.Defs;
-using Luban.Core.RawDefs;
-using Luban.Core.Types;
-using Luban.Core.Utils;
+using Luban.Plugin.Loader;
+using Luban.Plugin.Schema;
 
-namespace Luban.Plugin.Loader;
+namespace Luban.Plugin.SchemaCollector;
 
 public class DefaultSchemaCollector : SchemaCollectorBase
 {
@@ -18,7 +14,6 @@ public class DefaultSchemaCollector : SchemaCollectorBase
 
     public void Load(string rootXml)
     {
-
         var rootLoader = new RootXmlSchemaLoader();
         rootLoader.Load(rootXml, this);
 

@@ -1,4 +1,4 @@
-namespace Luban.Plugin.Loader;
+namespace Luban.Plugin.Schema;
 
 public class SchemaLoaderFactory
 {

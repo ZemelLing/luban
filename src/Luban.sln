@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataConvertor.Binary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataCreator.Binary", "Luban.DataCreator.Binary\Luban.DataCreator.Binary.csproj", "{5703ADD3-DDE3-4A8F-8B58-9AC1020194A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginDemo", "PluginDemo\PluginDemo.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Plugin.SchemaCollector", "Luban.Plugin.SchemaCollector\Luban.Plugin.SchemaCollector.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

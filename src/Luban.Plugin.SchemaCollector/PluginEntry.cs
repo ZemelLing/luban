@@ -1,7 +1,7 @@
 ﻿using Luban.Plugin;
 using NLog;
 
-namespace PluginDemo;
+namespace Luban.Plugin.SchemaCollector;
 
 public class PluginEntry : IPlugin
 {

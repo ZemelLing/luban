@@ -1,4 +1,4 @@
-namespace Luban.Plugin;
+namespace Luban.Plugin.Schema;
 
 public class SchemaRootCollectorAttribute
 {

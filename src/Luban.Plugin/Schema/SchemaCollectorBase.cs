@@ -1,6 +1,6 @@
 using Luban.Core.RawDefs;
 
-namespace Luban.Plugin.Loader;
+namespace Luban.Plugin.Schema;
 
 public abstract class SchemaCollectorBase : ISchemaCollector
 {
@@ -41,47 +41,47 @@ public abstract class SchemaCollectorBase : ISchemaCollector
         };
     }
     
-    public void AddTable(RawTable table)
+    public void Add(RawTable table)
     {
         _tables.Add(table);
     }
 
-    public void AddBean(RawBean bean)
+    public void Add(RawBean bean)
     {
         _beans.Add(bean);
     }
 
-    public void AddEnum(RawEnum @enum)
+    public void Add(RawEnum @enum)
     {
         _enums.Add(@enum);
     }
 
-    public void AddGroup(RawGroup group)
+    public void Add(RawGroup group)
     {
         _groups.Add(group);
     }
 
-    public void AddRefGroup(RawRefGroup refGroup)
+    public void Add(RawRefGroup refGroup)
     {
         _refGroups.Add(refGroup);
     }
 
-    public void AddPatch(RawPatch patch)
+    public void Add(RawPatch patch)
     {
         _patches.Add(patch);
     }
 
-    public void AddTarget(RawTarget target)
+    public void Add(RawTarget target)
     {
         _targets.Add(target);
     }
 
-    public void AddExternalTypeSelector(string selector)
+    public void AddSelector(string selector)
     {
         _externalSelectors.Add(selector);
     }
 
-    public void AddExternalType(RawExternalType externalType)
+    public void Add(RawExternalType externalType)
     {
         _externalTypes.Add(externalType);
     }
