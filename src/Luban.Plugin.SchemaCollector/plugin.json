@@ -1,5 +1,5 @@
 {
-  "Name": "PluginDemo",
+  "Name": "SchemaCollector",
   "Enabled": true,
-  "EntryDll" : "PluginDemo.dll"
+  "EntryDll" : "Luban.Plugin.SchemaCollector.dll"
 }

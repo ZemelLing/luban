@@ -1,5 +1,7 @@
 ﻿using CommandLine;
+using Luban.Core.RawDefs;
 using Luban.Plugin;
+using Luban.Plugin.Schema;
 using Luban.Utils;
 using NLog;
 using System.Reflection;
@@ -21,7 +23,14 @@ internal class Program
         InitSimpleNLogConfigure(LogLevel.Info);
         s_logger = LogManager.GetCurrentClassLogger();
         s_logger.Info("init logger success");
+        
         PluginManager.Ins.Init(new DefaultPluginCollector($@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/Plugins"));
+
+        foreach (var plugin in PluginManager.Ins.Plugins)
+        {
+            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(plugin.GetType().Assembly);
+            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(plugin.GetType().Assembly);
+        }
 
         int processorCount = Environment.ProcessorCount;
         ThreadPool.SetMinThreads(Math.Max(4, processorCount), 5);
@@ -29,6 +38,13 @@ internal class Program
         s_logger.Info("ThreadPool.SetThreads");
         
         s_logger.Info("start");
+
+        string schemaRootFile = @"D:\workspace2\luban_examples\DesignerConfigs\Defines\__root__.xml";
+        string schemaCollectorName = "default";
+        var schemaCollector = SchemaCollectorFactory.Ins.CreateSchemaCollector(schemaCollectorName);
+        schemaCollector.Load(schemaRootFile);
+        RawAssembly ass = schemaCollector.CreateRawAssembly();
+        s_logger.Info("table count:{}", ass.Tables.Count);
         
         s_logger.Info("bye~");
     }

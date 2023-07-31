@@ -13,4 +13,9 @@ public class PluginEntry : IPlugin
     {
         s_logger.Info($"plugin [{Name}] inits success");
     }
+
+    public void Start()
+    {
+
+    }
 }

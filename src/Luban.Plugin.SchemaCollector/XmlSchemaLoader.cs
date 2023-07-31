@@ -3,13 +3,18 @@ using Luban.Core.Defs;
 using Luban.Core.RawDefs;
 using Luban.Core.Utils;
 using Luban.Plugin.Schema;
-using Luban.Plugin.SchemaCollector;
 
-namespace Luban.Plugin.Loader;
+namespace Luban.Plugin.SchemaCollector;
 
+[SchemaLoader("", "xml")]
 public class XmlSchemaLoader : ISchemaLoader
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
+
+    public static ISchemaLoader Create(string type)
+    {
+        return new XmlSchemaLoader();
+    }
 
     private readonly Dictionary<string, Action<XElement>> _tagHandlers = new();
 
@@ -21,7 +26,7 @@ public class XmlSchemaLoader : ISchemaLoader
 
     private string CurNamespace => _namespaceStack.TryPeek(out var ns) ? ns : "";
 
-    public XmlSchemaLoader()
+    private XmlSchemaLoader()
     {
 
         _tagHandlers.Add("module", AddModule);
@@ -143,36 +148,36 @@ public class XmlSchemaLoader : ISchemaLoader
     
     private void AddExternalType(XElement e)
     {
-        XmlSchemaUtil.ValidAttrKeys(_fileName, e, null, _externalRequiredAttrs);
-        string name = XmlUtil.GetRequiredAttribute(e, "name");
-        
-        var et = new RawExternalType()
-        {
-            Name = name,
-            OriginTypeName = XmlUtil.GetRequiredAttribute(e, "origin_type_name"),
-        };
-        var mappers = new Dictionary<string, ExternalTypeMapper>();
-        foreach (XElement mapperEle in e.Elements())
-        {
-            var tagName = mapperEle.Name.LocalName;
-            if (tagName == "mapper")
-            {
-                var mapper = CreateMapper(name, mapperEle);
-                string uniqKey = $"{mapper.Language}##{mapper.Selector}";
-                if (mappers.ContainsKey(uniqKey))
-                {
-                    throw new LoadDefException($"定义文件:{_fileName} externaltype name:{name} mapper(lan='{mapper.Language}',selector='{mapper.Selector}') 重复");
-                }
-                mappers.Add(uniqKey, mapper);
-                et.Mappers.Add(mapper);
-                s_logger.Trace("add mapper. externaltype:{} mapper:{@}", name, mapper);
-            }
-            else
-            {
-                throw new LoadDefException($"定义文件:{_fileName} externaltype:{name} 非法 tag:'{tagName}'");
-            }
-        }
-        _schemaCollector.Add(et);
+        // XmlSchemaUtil.ValidAttrKeys(_fileName, e, null, _externalRequiredAttrs);
+        // string name = XmlUtil.GetRequiredAttribute(e, "name");
+        //
+        // var et = new RawExternalType()
+        // {
+        //     Name = name,
+        //     OriginTypeName = XmlUtil.GetRequiredAttribute(e, "origin_type_name"),
+        // };
+        // var mappers = new Dictionary<string, ExternalTypeMapper>();
+        // foreach (XElement mapperEle in e.Elements())
+        // {
+        //     var tagName = mapperEle.Name.LocalName;
+        //     if (tagName == "mapper")
+        //     {
+        //         var mapper = CreateMapper(name, mapperEle);
+        //         string uniqKey = $"{mapper.Language}##{mapper.Selector}";
+        //         if (mappers.ContainsKey(uniqKey))
+        //         {
+        //             throw new LoadDefException($"定义文件:{_fileName} externaltype name:{name} mapper(lan='{mapper.Language}',selector='{mapper.Selector}') 重复");
+        //         }
+        //         mappers.Add(uniqKey, mapper);
+        //         et.Mappers.Add(mapper);
+        //         s_logger.Trace("add mapper. externaltype:{} mapper:{@}", name, mapper);
+        //     }
+        //     else
+        //     {
+        //         throw new LoadDefException($"定义文件:{_fileName} externaltype:{name} 非法 tag:'{tagName}'");
+        //     }
+        // }
+        // _schemaCollector.Add(et);
     }
 
     private static readonly List<string> _mapperOptionalAttrs = new List<string> { };

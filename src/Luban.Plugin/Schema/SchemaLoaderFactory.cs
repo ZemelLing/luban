@@ -1,36 +1,66 @@
+using System.Reflection;
+using Luban.Core.Utils;
+
 namespace Luban.Plugin.Schema;
 
 public class SchemaLoaderFactory
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
     
-    public static SchemaLoaderFactory Ins { get; } = new SchemaLoaderFactory();
-    
-    private readonly Dictionary<(string, string), Func<string, ISchemaLoader>> _schemaLoaders = new();
+    public static SchemaLoaderFactory Ins { get; } = new ();
 
-    public ISchemaLoader Create(string name, string type)
+    private class LoaderInfo
     {
-        if (_schemaLoaders.TryGetValue((name, type), out var creator))
-        {
-            return creator(type);
-        }
-        else
-        {
-            throw new Exception($"unknown schema loader name:{name} type:{type}");
-        }
+        public string Type { get; init; }
+        
+        public string[] ExtNames { get; init; }
+        
+        public int Priority { get; init; }
+        
+        public Func<string, ISchemaLoader> Creator { get; init; }
     }
     
-    public void RegisterSchemaLoaderCreator(string name, string type, Func<string, ISchemaLoader> creator)
+    private readonly List<LoaderInfo> _schemaLoaders = new();
+
+    public ISchemaLoader Create(string extName, string type)
     {
-        if (_schemaLoaders.ContainsKey((name, type)))
+        LoaderInfo loader = null;
+        
+        foreach (var l in _schemaLoaders)
         {
-            _schemaLoaders.Add((name, type), creator);
-            s_logger.Info("override schema loader creator. name:{} type:{}", name, type);
+            if (l.Type == type && l.ExtNames.Contains(extName))
+            {
+                if (loader == null || loader.Priority < l.Priority)
+                {
+                    loader = l;
+                }
+            }
         }
-        else
+
+        if (loader == null)
         {
-            _schemaLoaders[(name, type)] = creator;
-            s_logger.Info("add schema loader creator. name:{} type:{}", name, type);
+            throw new Exception($"can't find schema loader for type:{type} extName:{extName}");
+        }
+
+        return loader.Creator(type);
+    }
+    
+    public void RegisterSchemaLoaderCreator(string type, string[] extNames, int priority, Func<string, ISchemaLoader> creator)
+    {
+        _schemaLoaders.Add(new LoaderInfo(){ Type = type, ExtNames = extNames, Priority = priority, Creator = creator});
+        s_logger.Info("add schema loader creator. type:{} priority:{} extNames:{}", type, priority, StringUtil.CollectionToString(extNames));
+    }
+    
+    public void ScanRegisterSchemaLoaderCreator(Assembly assembly)
+    {
+        foreach (var t in assembly.GetTypes())
+        {
+            if (t.IsDefined(typeof(SchemaLoaderAttribute), false))
+            {
+                var attr = t.GetCustomAttribute<SchemaLoaderAttribute>();
+                var creator = (Func<string, ISchemaLoader>)Delegate.CreateDelegate(typeof(Func<string, ISchemaLoader>), t, "Create");
+                RegisterSchemaLoaderCreator(attr.Type, attr.ExtNames, attr.Priority, creator);
+            }
         }
     }
 }

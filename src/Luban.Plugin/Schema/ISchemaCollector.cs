@@ -4,6 +4,11 @@ namespace Luban.Plugin.Schema;
 
 public interface ISchemaCollector
 {
+    void Load(string rootFile);
+    
+    RawAssembly CreateRawAssembly();
+    
+    
     void Add(RawTable table);
 
     void Add(RawBean bean);

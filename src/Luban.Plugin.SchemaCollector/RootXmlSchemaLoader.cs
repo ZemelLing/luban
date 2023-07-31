@@ -1,16 +1,20 @@
 using System.Xml.Linq;
-using System.Xml.Schema;
 using Luban.Core.Defs;
 using Luban.Core.RawDefs;
 using Luban.Core.Utils;
 using Luban.Plugin.Schema;
-using Luban.Plugin.SchemaCollector;
 
-namespace Luban.Plugin.Loader;
+namespace Luban.Plugin.SchemaCollector;
 
-public class RootXmlSchemaLoader : ISchemaLoader
+[SchemaLoader("root", "xml")]
+public class RootXmlSchemaLoader : IRootSchemaLoader
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
+    
+    public static ISchemaLoader Create(string type)
+    {
+        return new RootXmlSchemaLoader();
+    }
 
     private readonly Dictionary<string, Action<XElement>> _tagHandlers = new();
     
@@ -19,6 +23,7 @@ public class RootXmlSchemaLoader : ISchemaLoader
     public IReadOnlyList<SchemaFileInfo> ImportFiles => _importFiles;
 
     private string _xmlFileName;
+    private string _curDir;
     private ISchemaCollector _schemaCollector;
 
     public RootXmlSchemaLoader()
@@ -27,7 +32,7 @@ public class RootXmlSchemaLoader : ISchemaLoader
         _tagHandlers.Add("externalselector", AddExternalSelector);
         _tagHandlers.Add("import", AddImport);
         _tagHandlers.Add("patch", AddPatch);
-        _tagHandlers.Add("service", AddTarget);
+        _tagHandlers.Add("target", AddTarget);
         _tagHandlers.Add("group", AddGroup);
         _tagHandlers.Add("refgroup", AddRefGroup);
     }
@@ -36,6 +41,8 @@ public class RootXmlSchemaLoader : ISchemaLoader
     {
         s_logger.Info("load root xml schema file:{}", fileName);
         _xmlFileName = fileName;
+        _schemaCollector = collector;
+        _curDir = Directory.GetParent(fileName).FullName;
         XElement doc = XmlUtil.Open(fileName);
 
         foreach (XElement e in doc.Elements())
@@ -61,22 +68,26 @@ public class RootXmlSchemaLoader : ISchemaLoader
         _schemaCollector.AddEnv(name, XmlUtil.GetRequiredAttribute(e, "value"));
     }
     
-     private static readonly List<string> _excelImportRequireAttrs = new List<string> { "name", "type" };
+     private static readonly List<string> _ImportRequireAttrs = new List<string> { "name" };
+     private static readonly List<string> _ImportOptinalAttrs = new List<string> { "type" };
      
     private void AddImport(XElement e)
     {
-        XmlSchemaUtil.ValidAttrKeys(_xmlFileName, e, null, _excelImportRequireAttrs);
+        XmlSchemaUtil.ValidAttrKeys(_xmlFileName, e, _ImportOptinalAttrs, _ImportRequireAttrs);
         var importName = XmlUtil.GetRequiredAttribute(e, "name");
         if (string.IsNullOrWhiteSpace(importName))
         {
             throw new Exception("import 属性name不能为空");
         }
-        var type = XmlUtil.GetRequiredAttribute(e, "type");
-        if (string.IsNullOrWhiteSpace(type))
+        var type = XmlUtil.GetOptionalAttribute(e, "type");
+        foreach (var subFile in FileUtil.GetFileOrDirectory(Path.Combine(_curDir, importName)))
         {
-            throw new Exception($"import  name:'{importName}' type属性不能为空");
+            // ignore root.xml self
+            if (Path.GetFileName(subFile) != Path.GetFileName(_xmlFileName))
+            {
+                _importFiles.Add(new SchemaFileInfo(){ FileName = subFile, Type = type});
+            }
         }
-        _importFiles.Add(new SchemaFileInfo(){ FileName = importName, Type = type});
     }
 
     private static readonly List<string> _patchRequireAttrs = new List<string> { "name" };
@@ -102,14 +113,14 @@ public class RootXmlSchemaLoader : ISchemaLoader
         _schemaCollector.Add(new RawGroup(){ Names = groupNames, IsDefault = isDefault});
     }
 
-    private readonly List<string> _serviceAttrs = new List<string> { "name", "manager", "group" };
+    private readonly List<string> _targetAttrs = new List<string> { "name", "manager", "group", "topModule" };
 
     private void AddTarget(XElement e)
     {
         var name = XmlUtil.GetRequiredAttribute(e, "name");
         var manager = XmlUtil.GetRequiredAttribute(e, "manager");
         List<string> groups = XmlSchemaUtil.CreateGroups(XmlUtil.GetOptionalAttribute(e, "group"));
-        XmlSchemaUtil.ValidAttrKeys(_xmlFileName, e, _serviceAttrs, _serviceAttrs);
+        XmlSchemaUtil.ValidAttrKeys(_xmlFileName, e, _targetAttrs, _targetAttrs);
         _schemaCollector.Add(new RawTarget() { Name = name, Manager = manager, Groups = groups });
     }
 

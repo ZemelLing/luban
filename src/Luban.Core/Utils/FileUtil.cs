@@ -209,4 +209,28 @@ public static class FileUtil
 
         Directory.Delete(rootDir, false);
     }
+
+    public static IEnumerable<string> GetFileOrDirectory(string fileOrDirectory)
+    {
+        if (Directory.Exists(fileOrDirectory))
+        {
+            foreach (var file in Directory.GetFiles(fileOrDirectory, "*", SearchOption.AllDirectories))
+            {
+                if (file.StartsWith(".") || file.StartsWith("_") || file.StartsWith("~"))
+                {
+                    continue;
+                }
+                yield return file;
+            }
+        }
+        else
+        {
+            yield return fileOrDirectory;
+        }
+    }
+
+    public static string GetExtensionWithDot(string file)
+    {
+        return Path.GetExtension(file).Substring(1);
+    }
 }
