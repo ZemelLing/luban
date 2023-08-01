@@ -5,7 +5,7 @@ public enum NamingConvention
     Invalid,
     LanguangeRecommend,
     None,
-    CameraCase,
+    CamelCase,
     PascalCase,
     UnderScores,
 }

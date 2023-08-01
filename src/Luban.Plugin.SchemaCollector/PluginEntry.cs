@@ -3,18 +3,18 @@ using NLog;
 
 namespace Luban.Plugin.SchemaCollector;
 
-public class PluginEntry : IPlugin
+public class PluginEntry : PluginBase
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     
-    public string Name => "Demo";
+    public override string Name => "SchemaCollector";
     
-    public void Init(string jsonStr)
+    public override void Init(string jsonStr)
     {
         s_logger.Info($"plugin [{Name}] inits success");
     }
 
-    public void Start()
+    public override void Start()
     {
 
     }

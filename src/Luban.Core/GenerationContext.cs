@@ -40,9 +40,10 @@ public class GenerationContext
     }
     
     public string TopModule => Target.TopModule;
-
-    public List<DefTypeBase> ExportTypes { get; init; }
-    public List<DefTable> ExportTables { get; init; }
+    public List<DefTypeBase> ExportTypes { get; }
+    public List<DefTable> ExportTables { get; }
+    public List<DefBean> ExportBeans { get; }
+    public List<DefEnum> ExportEnums { get; }
     public ConcurrentBag<FileInfo> GenCodeFilesInOutputCodeDir { get; init; }
     public ConcurrentBag<FileInfo> GenDataFilesInOutputDataDir { get; init; }
     public ConcurrentBag<FileInfo> GenScatteredFiles { get; init; }

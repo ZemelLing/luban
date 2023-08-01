@@ -1,7 +1,9 @@
 ﻿using CommandLine;
+using Luban.Core.CodeFormat;
+using Luban.Core.CodeGeneration;
 using Luban.Core.RawDefs;
+using Luban.Core.Schema;
 using Luban.Plugin;
-using Luban.Plugin.Schema;
 using Luban.Utils;
 using NLog;
 using System.Reflection;
@@ -23,19 +25,29 @@ internal class Program
         InitSimpleNLogConfigure(LogLevel.Info);
         s_logger = LogManager.GetCurrentClassLogger();
         s_logger.Info("init logger success");
+
+        string appLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        TemplateManager templateManager = TemplateManager.Ins;
+        templateManager.Init();
+        templateManager.AddTemplateSearchPath($"{appLocation}/Templates", true);
+        
+        CodeFormatManager.Ins.Init();
         
         PluginManager.Ins.Init(new DefaultPluginCollector($@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/Plugins"));
 
         foreach (var plugin in PluginManager.Ins.Plugins)
         {
-            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(plugin.GetType().Assembly);
-            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(plugin.GetType().Assembly);
+            Assembly pluginAssembly = plugin.GetType().Assembly;
+            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(pluginAssembly);
+            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(pluginAssembly);
+            CodeFormatManager.Ins.ScanRegisterFormatters(pluginAssembly);
+            CodeFormatManager.Ins.ScanRegisterCodeStyle(pluginAssembly);
+            templateManager.AddTemplateSearchPath($"{plugin.Location}/Templates", false);
         }
 
         int processorCount = Environment.ProcessorCount;
         ThreadPool.SetMinThreads(Math.Max(4, processorCount), 5);
         ThreadPool.SetMaxThreads(Math.Max(16, processorCount * 4), 10);
-        s_logger.Info("ThreadPool.SetThreads");
         
         s_logger.Info("start");
 

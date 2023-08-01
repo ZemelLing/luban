@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Luban.Core\Luban.Core.csproj" >
+      <ProjectReference Include="..\Luban.Core\Luban.Core.csproj">
           
       </ProjectReference>
     </ItemGroup>

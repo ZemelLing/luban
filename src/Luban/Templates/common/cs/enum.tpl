@@ -13,6 +13,8 @@
     /// </summary>
 {{~end~}}
     {{~if x.is_flags~}}
+    
+    
     [System.Flags]
     {{~end~}}
     public enum {{name}}

@@ -1,5 +1,5 @@
+using Luban.Core.Schema;
 using Luban.Core.Utils;
-using Luban.Plugin.Schema;
 
 namespace Luban.Plugin.SchemaCollector;
 

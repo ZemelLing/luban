@@ -16,6 +16,12 @@
 
     <ItemGroup>
       <PackageReference Include="NLog" Version="5.2.2" />
+      <PackageReference Include="Scriban" Version="5.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DataConvert\" />
+      <Folder Include="DataExport\" />
     </ItemGroup>
 
 </Project>
