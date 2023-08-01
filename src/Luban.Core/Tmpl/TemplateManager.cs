@@ -23,9 +23,12 @@ public class TemplateManager
 
     public void AddTemplateSearchPath(string templateSearchPath, bool sureExists = false)
     {
-        if (sureExists && !Directory.Exists(templateSearchPath))
+        if (!Directory.Exists(templateSearchPath))
         {
-            s_logger.Error("template search path:{} not exists", templateSearchPath);
+            if (sureExists)
+            {
+                s_logger.Error("template search path:{} not exists", templateSearchPath);
+            }
             return;
         }
         _templateSearchPaths.Add(templateSearchPath);

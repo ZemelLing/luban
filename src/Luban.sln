@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataCreator.Binary", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Schema.Default", "Luban.Schema.Default\Luban.Schema.Default.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "DemoPlugin\DemoPlugin.csproj", "{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

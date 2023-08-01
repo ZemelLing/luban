@@ -71,6 +71,7 @@ public class DefBean : DefTypeBase
         }
         Alias = b.Alias;
         Sep = b.Sep;
+        Groups = b.Groups;
     }
 
     protected DefField CreateField(RawField f, int idOffset)

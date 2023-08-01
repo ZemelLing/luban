@@ -36,26 +36,14 @@ public class XmlSchemaLoader : ISchemaLoader
         _tagHandlers.Add("table", AddTable);
         _tagHandlers.Add("refgroup", AddRefGroup);
     }
-    
+
     public void Load(string fileName, ISchemaCollector collector)
     {
         _fileName = fileName;
         _schemaCollector = collector;
         
         XElement doc = XmlUtil.Open(fileName);
-
-        foreach (XElement e in doc.Elements())
-        {
-            var tagName = e.Name.LocalName;
-            if (_tagHandlers.TryGetValue(tagName, out var handler))
-            {
-                handler(e);
-            }
-            else
-            {
-                throw new LoadDefException($"定义文件:{fileName} 非法 tag:{tagName}");
-            }
-        }
+        AddModule(doc);
     }
 
     private void AddModule(XElement me)
@@ -109,7 +97,7 @@ public class XmlSchemaLoader : ISchemaLoader
         return XmlUtil.GetRequiredAttribute(e, key);
     }
 
-    private static readonly List<string> _enumOptionalAttrs = new List<string> { "flags", "comment", "tags", "unique" };
+    private static readonly List<string> _enumOptionalAttrs = new List<string> { "flags", "comment", "tags", "unique", "group" };
     private static readonly List<string> _enumRequiredAttrs = new List<string> { "name" };
     
     private static readonly List<string> _enumItemOptionalAttrs = new List<string> { "value", "alias", "comment", "tags" };
@@ -126,6 +114,8 @@ public class XmlSchemaLoader : ISchemaLoader
             IsFlags = XmlUtil.GetOptionBoolAttribute(e, "flags"),
             Tags = XmlUtil.GetOptionalAttribute(e, "tags"),
             IsUniqueItemId = XmlUtil.GetOptionBoolAttribute(e, "unique", true),
+            Groups = XmlSchemaUtil.CreateGroups(XmlUtil.GetOptionalAttribute(e, "group")),
+            Items = new (),
         };
 
         foreach (XElement item in e.Elements())
@@ -140,7 +130,7 @@ public class XmlSchemaLoader : ISchemaLoader
                 Tags = XmlUtil.GetOptionalAttribute(item, "tags"),
             });
         }
-        s_logger.Trace("add enum:{@enum}", en);
+        s_logger.Trace("add enum:{@}", en);
         _schemaCollector.Add(en);
     }
     
@@ -399,7 +389,7 @@ public class XmlSchemaLoader : ISchemaLoader
         return f;
     }
 
-    private static readonly List<string> _beanOptinsAttrs = new List<string> { "parent", "value_type", "alias", "sep", "comment", "tags", "externaltype" };
+    private static readonly List<string> _beanOptinsAttrs = new List<string> { "parent", "value_type", "alias", "sep", "comment", "tags", "group", "externaltype" };
     private static readonly List<string> _beanRequireAttrs = new List<string> { "name" };
 
     protected void AddBean(XElement e, string parent)
@@ -416,6 +406,8 @@ public class XmlSchemaLoader : ISchemaLoader
             Sep = XmlUtil.GetOptionalAttribute(e, "sep"),
             Comment = XmlUtil.GetOptionalAttribute(e, "comment"),
             Tags = XmlUtil.GetOptionalAttribute(e, "tags"),
+            Groups = XmlSchemaUtil.CreateGroups(XmlUtil.GetOptionalAttribute(e, "group")),
+            Fields = new(),
         };
         var childBeans = new List<XElement>();
 

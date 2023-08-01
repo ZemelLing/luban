@@ -7,16 +7,43 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Scriban" Version="5.7.0" />
+      <PackageReference Include="Scriban" Version="5.7.0">
+          <ExcludeAssets>runtime</ExcludeAssets>
+      </PackageReference>
+        <PackageReference Include="NLog" Version="5.2.2">
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Luban.Core\Luban.Core.csproj" />
-      <ProjectReference Include="..\Luban.Plugin\Luban.Plugin.csproj" />
+        <ProjectReference Include="..\Luban.Plugin\Luban.Plugin.csproj">
+            <Private>false</Private>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </ProjectReference>
+        <ProjectReference Include="..\Luban.Core\Luban.Core.csproj">
+            <Private>false</Private>
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Templates\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Templates\cs-bin\bean.tpl">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\cs-bin\table.tpl">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\cs-bin\tables.tpl">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="set TARGET=$(SolutionDir)\Luban\bin\Debug\net7.0\Plugins\$(ProjectName)&#xA;rd /s /q %TARGET%&#xA;xcopy /I /E /Q  $(OutDir) %TARGET%" />
+    </Target>
 
 </Project>

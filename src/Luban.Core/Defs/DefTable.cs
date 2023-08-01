@@ -91,22 +91,22 @@ public class DefTable : DefTypeBase
 
     public string InnerName => "_" + this.Name;
 
-    public List<string> GetPatchInputFiles(string patchName)
-    {
-        return _patchInputFiles.GetValueOrDefault(patchName);
-    }
+    // public List<string> GetPatchInputFiles(string patchName)
+    // {
+    //     return _patchInputFiles.GetValueOrDefault(patchName);
+    // }
 
     public override void Compile()
     {
         var ass = Assembly;
 
-        foreach (var patchName in _patchInputFiles.Keys)
-        {
-            if (ass.GetPatch(patchName) == null)
-            {
-                throw new Exception($"table:'{FullName}' patch_input patch:'{patchName}' 不存在");
-            }
-        }
+        // foreach (var patchName in _patchInputFiles.Keys)
+        // {
+        //     if (ass.GetPatch(patchName) == null)
+        //     {
+        //         throw new Exception($"table:'{FullName}' patch_input patch:'{patchName}' 不存在");
+        //     }
+        // }
 
         if ((ValueTType = (TBean)ass.CreateType(Namespace, ValueType, false)) == null)
         {

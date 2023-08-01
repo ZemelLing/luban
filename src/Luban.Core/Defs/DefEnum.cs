@@ -94,6 +94,7 @@ public class DefEnum : DefTypeBase
         IsUniqueItemId = e.IsUniqueItemId;
         Comment = e.Comment;
         Tags = DefUtil.ParseAttrs(e.Tags);
+        Groups = e.Groups;
         foreach (var item in e.Items)
         {
             Items.Add(new Item

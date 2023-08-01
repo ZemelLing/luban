@@ -1,10 +1,14 @@
 ﻿using CommandLine;
+using Luban.CodeGeneration.CSharp.CodeTargets;
+using Luban.Core;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeGeneration;
+using Luban.Core.Defs;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
 using Luban.Core.Tmpl;
 using Luban.Plugin;
+using Luban.Schema.Default;
 using Luban.Utils;
 using NLog;
 using System.Reflection;
@@ -27,22 +31,31 @@ internal class Program
         s_logger = LogManager.GetCurrentClassLogger();
         s_logger.Info("init logger success");
 
-        string appLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        string curDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         TemplateManager templateManager = TemplateManager.Ins;
         templateManager.Init();
-        templateManager.AddTemplateSearchPath($"{appLocation}/Templates", true);
+        templateManager.AddTemplateSearchPath($"{curDir}/Templates", true);
         
         CodeFormatManager.Ins.Init();
+        CodeTargetManager.Ins.Init();
         
-        PluginManager.Ins.Init(new DefaultPluginCollector($@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/Plugins"));
+        PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
+        
+        var scanAssemblies = PluginManager.Ins.Plugins.Select(p => p.GetType().Assembly).ToList();
+        scanAssemblies.Add(typeof(CsharpBin).Assembly);
+        scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
+
+        foreach (var assembly in scanAssemblies)
+        {
+            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(assembly);
+            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(assembly);
+            CodeFormatManager.Ins.ScanRegisterFormatters(assembly);
+            CodeFormatManager.Ins.ScanRegisterCodeStyle(assembly);
+            CodeTargetManager.Ins.ScanResister(assembly);
+        }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
         {
-            Assembly pluginAssembly = plugin.GetType().Assembly;
-            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(pluginAssembly);
-            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(pluginAssembly);
-            CodeFormatManager.Ins.ScanRegisterFormatters(pluginAssembly);
-            CodeFormatManager.Ins.ScanRegisterCodeStyle(pluginAssembly);
             templateManager.AddTemplateSearchPath($"{plugin.Location}/Templates", false);
         }
 
@@ -58,6 +71,22 @@ internal class Program
         schemaCollector.Load(schemaRootFile);
         RawAssembly ass = schemaCollector.CreateRawAssembly();
         s_logger.Info("table count:{}", ass.Tables.Count);
+        var defAss = new DefAssembly(ass);
+        var genArgs = new GenerationArguments()
+        {
+            Target = "all",
+        };
+
+        var gctx = new GenerationContext(defAss, genArgs);
+        
+        ICodeTarget csBinTarget = CodeTargetManager.Ins.GetCodeTarget("cs-bin");
+        var outputManifest = new OutputFileManifest();
+        csBinTarget.GenerateCode(gctx, outputManifest);
+
+        foreach (var file in outputManifest.DataFiles)
+        {
+            s_logger.Info("file:{} length:{}", file.File, (file.Content as string).Length);
+        }
         
         s_logger.Info("bye~");
     }

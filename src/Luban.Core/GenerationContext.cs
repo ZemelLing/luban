@@ -15,8 +15,6 @@ public class GenerationContext
     public DefAssembly Assembly { get; set; }
     
     public GenerationArguments Arguments { get; set; }
-        
-    public string Language { get; set; }
 
     public RawTarget Target { get; set; }
 
@@ -39,17 +37,125 @@ public class GenerationContext
         return groups.Any(g => Target.Groups.Contains(g));
     }
     
+    public bool NeedExportNotDefault(List<string> groups)
+    {
+        return groups.Any(g => Target.Groups.Contains(g));
+    }
+    
     public string TopModule => Target.TopModule;
-    public List<DefTypeBase> ExportTypes { get; }
+    
+    private List<DefTypeBase> ExportTypes { get; }
+    
     public List<DefTable> ExportTables { get; }
+    
     public List<DefBean> ExportBeans { get; }
+    
     public List<DefEnum> ExportEnums { get; }
-    public ConcurrentBag<FileInfo> GenCodeFilesInOutputCodeDir { get; init; }
-    public ConcurrentBag<FileInfo> GenDataFilesInOutputDataDir { get; init; }
-    public ConcurrentBag<FileInfo> GenScatteredFiles { get; init; }
-    public List<Task> Tasks { get; init; }
     
     private readonly Dictionary<string, RawExternalType> _externalTypesByTypeName = new();
+
+    public GenerationContext(DefAssembly assembly, GenerationArguments args)
+    {
+        Ins = this;
+        Assembly = assembly;
+        Arguments = args;
+        
+        Target = assembly.GetTarget(args.Target);
+
+        InitTables(args);
+        ExportTables = CalculateExportTables();
+        ExportTypes = CalculateExportTypes();
+        ExportBeans = ExportTypes.OfType<DefBean>().ToList();
+        ExportEnums = ExportTypes.OfType<DefEnum>().ToList();
+    }
+
+    private void InitTables(GenerationArguments args)
+    {
+        if (!string.IsNullOrWhiteSpace(args.OutputTables))
+        {
+            foreach (var tableFullName in SplitTableList(args.OutputTables))
+            {
+                if (Assembly.GetCfgTable(tableFullName) == null)
+                {
+                    throw new Exception($"--output:tables 参数中 table:'{tableFullName}' 不存在");
+                }
+                _overrideOutputTables ??= new HashSet<string>();
+                _overrideOutputTables.Add(tableFullName);
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(args.OutputIncludeTables))
+        {
+            foreach (var tableFullName in SplitTableList(args.OutputIncludeTables))
+            {
+                if (Assembly.GetCfgTable(tableFullName) == null)
+                {
+                    throw new Exception($"--output:include_tables 参数中 table:'{tableFullName}' 不存在");
+                }
+                _outputIncludeTables.Add(tableFullName);
+            }
+        }
+        if (!string.IsNullOrWhiteSpace(args.OutputExcludeTables))
+        {
+            foreach (var tableFullName in SplitTableList(args.OutputExcludeTables))
+            {
+                if (Assembly.GetCfgTable(tableFullName) == null)
+                {
+                    throw new Exception($"--output:exclude_tables 参数中 table:'{tableFullName}' 不存在");
+                }
+                _outputExcludeTables.Add(tableFullName);
+            }
+        }
+    }
+    
+    
+    private List<DefTable> CalculateExportTables()
+    {
+        return Assembly.TypeList.Where(t => t is DefTable ct
+                                            && !_outputExcludeTables.Contains(t.FullName)
+                                            && (_outputIncludeTables.Contains(t.FullName) || (_overrideOutputTables == null ? ct.NeedExport() : _overrideOutputTables.Contains(ct.FullName)))
+        ).Select(t => (DefTable)t).ToList();
+    }
+    
+    private List<DefTypeBase> CalculateExportTypes()
+    {
+        var refTypes = new Dictionary<string, DefTypeBase>();
+        var types = Assembly.TypeList;
+        // var targetService = CfgTargetService;
+        // foreach (var refType in targetService.Refs)
+        // {
+        //     if (!this.Types.ContainsKey(refType))
+        //     {
+        //         throw new Exception($"service:'{targetService.Name}' ref:'{refType}' 类型不存在");
+        //     }
+        //     if (!refTypes.TryAdd(refType, this.Types[refType]))
+        //     {
+        //         throw new Exception($"service:'{targetService.Name}' ref:'{refType}' 重复引用");
+        //     }
+        // }
+        foreach (var t in types)
+        {
+            if (!refTypes.ContainsKey(t.FullName))
+            {
+                if (t is DefBean bean && NeedExportNotDefault(t.Groups))
+                {
+                    TBean.Create(false, bean, null).Apply(RefTypeVisitor.Ins, refTypes);
+                    refTypes.Add(t.FullName, t);
+                }
+                else if (t is DefEnum)
+                {
+                    refTypes.Add(t.FullName, t);
+                }
+            }
+        }
+
+        foreach (var table in ExportTables)
+        {
+            refTypes[table.FullName] = table;
+            table.ValueTType.Apply(RefTypeVisitor.Ins, refTypes);
+        }
+
+        return refTypes.Values.ToList();
+    }
 
     public bool HasEnv(string name)
     {
@@ -107,51 +213,6 @@ public class GenerationContext
     {
         return tables.Split(',').Select(t => t.Trim());
     }
-
-    public GenerationContext()
-    {
-        Ins = this;
-    }
-
-    public void Init()
-    {
-        
-
-        if (!string.IsNullOrWhiteSpace(Arguments.OutputTables))
-        {
-            foreach (var tableFullName in SplitTableList(Arguments.OutputTables))
-            {
-                if (Assembly.GetCfgTable(tableFullName) == null)
-                {
-                    throw new Exception($"--output:tables 参数中 table:'{tableFullName}' 不存在");
-                }
-                _overrideOutputTables ??= new HashSet<string>();
-                _overrideOutputTables.Add(tableFullName);
-            }
-        }
-        if (!string.IsNullOrWhiteSpace(Arguments.OutputIncludeTables))
-        {
-            foreach (var tableFullName in SplitTableList(Arguments.OutputIncludeTables))
-            {
-                if (Assembly.GetCfgTable(tableFullName) == null)
-                {
-                    throw new Exception($"--output:include_tables 参数中 table:'{tableFullName}' 不存在");
-                }
-                _outputIncludeTables.Add(tableFullName);
-            }
-        }
-        if (!string.IsNullOrWhiteSpace(Arguments.OutputExcludeTables))
-        {
-            foreach (var tableFullName in SplitTableList(Arguments.OutputExcludeTables))
-            {
-                if (Assembly.GetCfgTable(tableFullName) == null)
-                {
-                    throw new Exception($"--output:exclude_tables 参数中 table:'{tableFullName}' 不存在");
-                }
-                _outputExcludeTables.Add(tableFullName);
-            }
-        }
-    }
     
     
     public void AddDataTable(DefTable table, List<Record> mainRecords, List<Record> patchRecords)
@@ -208,44 +269,5 @@ public class GenerationContext
     public TableDataInfo GetTableDataInfo(DefTable table)
     {
         return _recordsByTables[table.FullName];
-    }
-    
-    public List<DefTable> GetExportTables()
-    {
-        return Assembly.TypeList.Where(t => t is DefTable ct
-           && !_outputExcludeTables.Contains(t.FullName)
-           && (_outputIncludeTables.Contains(t.FullName) || (_overrideOutputTables == null ? ct.NeedExport() : _overrideOutputTables.Contains(ct.FullName)))
-        ).Select(t => (DefTable)t).ToList();
-    }
-    
-    public List<DefTypeBase> GetExportTypes()
-    {
-        var refTypes = new Dictionary<string, DefTypeBase>();
-        foreach (var refType in Target.Refs)
-        {
-            if (!Assembly.Types.ContainsKey(refType))
-            {
-                throw new Exception($"target:'{Target.Name}' ref:'{refType}' 类型不存在");
-            }
-            if (!refTypes.TryAdd(refType, Assembly.Types[refType]))
-            {
-                throw new Exception($"service:'{Target.Name}' ref:'{refType}' 重复引用");
-            }
-        }
-        foreach (var type in Assembly.TypeList)
-        {
-            if (!refTypes.ContainsKey(type.FullName) && type is DefEnum)
-            {
-                refTypes.Add(type.FullName, type);
-            }
-        }
-
-        foreach (var table in GetExportTables())
-        {
-            refTypes[table.FullName] = table;
-            table.ValueTType.Apply(RefTypeVisitor.Ins, refTypes);
-        }
-
-        return refTypes.Values.ToList();
     }
 }

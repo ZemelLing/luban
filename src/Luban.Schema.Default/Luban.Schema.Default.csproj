@@ -9,30 +9,17 @@
 
     <ItemGroup>
       <None Remove="plugin.yml" />
-      <None Update="plugin.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Luban.Plugin\Luban.Plugin.csproj">
-          <Private>false</Private>
-          <ExcludeAssets>runtime</ExcludeAssets>
       </ProjectReference>
         <ProjectReference Include="..\Luban.Core\Luban.Core.csproj">
-            <Private>false</Private>
-            <ExcludeAssets>runtime</ExcludeAssets>
         </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="NLog" Version="5.2.2">
-          <ExcludeAssets>runtime</ExcludeAssets>
       </PackageReference>
     </ItemGroup>
-
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="set TARGET=$(SolutionDir)\Luban\bin\Debug\net7.0\Plugins\$(ProjectName)&#xA;rd /s /q %TARGET%&#xA;xcopy /I /E /Q  $(OutDir) %TARGET%" />
-    </Target>
-
 </Project>

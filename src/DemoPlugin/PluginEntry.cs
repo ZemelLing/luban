@@ -1,13 +1,13 @@
 ﻿using Luban.Plugin;
 using NLog;
 
-namespace Luban.Schema.Default;
+namespace DemoPlugin;
 
 public class PluginEntry : PluginBase
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     
-    public override string Name => "SchemaCollector";
+    public override string Name => "DemoPlugin";
     
     public override void Init(string jsonStr)
     {

@@ -13,40 +13,8 @@ public abstract class DefTypeBase
     public string Namespace { get; set; }
 
     public string FullName => TypeUtil.MakeFullName(Namespace, Name);
-
-    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(TopModule, Namespace);
-
-    public string FullNameWithTopModule => TypeUtil.MakeFullName(TopModule, FullName);
-
-    public string CsFullName => TypeUtil.MakeFullName(Namespace, Name);
-
-    public string JavaFullName => TypeUtil.MakeFullName(Namespace, Name);
-
-    public string GoFullName => TypeUtil.MakeGoFullName(Namespace, Name);
-
-    public string GoPkgName => TypeUtil.MakeGoPkgName(Namespace);
-
-    public string CppNamespaceBegin => TypeUtil.MakeCppNamespaceBegin(Namespace);
-
-    public string CppNamespaceEnd => TypeUtil.MakeCppNamespaceEnd(Namespace);
-
-    public string CppFullNameWithTopModule => TypeUtil.MakeCppFullName(TopModule, FullName);
-
-    public string TypescriptNamespaceBegin => TypeUtil.MakeTypescriptNamespaceBegin(Namespace);
-
-    public string TypescriptNamespaceEnd => TypeUtil.MakeTypescriptNamespaceEnd(Namespace);
-
-    public string CppFullName => TypeUtil.MakeCppFullName(Namespace, Name);
-
-    public string PyFullName => TypeUtil.MakePyFullName(Namespace, Name);
-
-    public string GDScriptFullName => TypeUtil.MakeGDScriptFullName(Namespace, Name);
-
-    public string RustFullName => TypeUtil.MakeRustFullName(Namespace, Name);
-
-    public string PbFullName => TypeUtil.MakePbFullName(Namespace, Name);
-
-    public string FlatBuffersFullName => TypeUtil.MakeFlatBuffersFullName(Namespace, Name);
+    
+    public List<string> Groups { get; set; }
 
     public string Comment { get; protected set; }
 

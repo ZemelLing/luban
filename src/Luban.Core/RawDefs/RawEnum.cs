@@ -15,7 +15,6 @@ public class EnumItem
 
 public class RawEnum
 {
-
     public string Namespace { get; set; }
 
     public string Name { get; set; }
@@ -28,5 +27,7 @@ public class RawEnum
 
     public string Tags { get; set; }
 
-    public List<EnumItem> Items { get; set; } = new List<EnumItem>();
+    public List<EnumItem> Items { get; set; }
+    
+    public List<string> Groups { get; set; }
 }
