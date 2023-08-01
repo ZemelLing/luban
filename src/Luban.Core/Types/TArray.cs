@@ -46,9 +46,9 @@ public class TArray : TType
             p.Compile(field);
         }
 
-        if (ElementType is TBean e && !e.IsDynamic && e.Bean.HierarchyFields.Count == 0)
+        if (ElementType is TBean e && !e.IsDynamic && e.DefBean.HierarchyFields.Count == 0)
         {
-            throw new Exception($"container element type:'{e.Bean.FullName}' can't be empty bean");
+            throw new Exception($"container element type:'{e.DefBean.FullName}' can't be empty bean");
         }
         if (ElementType is TText)
         {

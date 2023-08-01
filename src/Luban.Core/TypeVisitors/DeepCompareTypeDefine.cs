@@ -220,7 +220,7 @@ class DeepCompareTypeDefine : ITypeFuncVisitor<TType, Dictionary<DefTypeBase, bo
 
     public bool Accept(TBean type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)
     {
-        return Compare(type.GetBeanAs<DefBean>(), ((TBean)x).GetBeanAs<DefBean>(), y, z);
+        return Compare(type.DefBean, ((TBean)x).DefBean, y, z);
     }
 
     public bool Accept(TArray type, TType x, Dictionary<DefTypeBase, bool> y, HashSet<DefTypeBase> z)

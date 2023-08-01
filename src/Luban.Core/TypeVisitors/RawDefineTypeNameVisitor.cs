@@ -63,7 +63,7 @@ public class RawDefineTypeNameVisitor : ITypeFuncVisitor<string>
 
     public string Accept(TBean type)
     {
-        return type.Bean.FullName;
+        return type.DefBean.FullName;
     }
 
     public string Accept(TArray type)

@@ -12,15 +12,13 @@ public class TBean : TType
         return new TBean(isNullable, DefUtil.MergeTags(defBean.Tags, tags), defBean);
     }
 
-    public DefBean Bean { get; set; }
-
-    public T GetBeanAs<T>() where T : DefBean => (T)Bean;
+    public DefBean DefBean { get; set; }
 
     public override string TypeName => "bean";
 
     private TBean(bool isNullable, Dictionary<string, string> attrs, DefBean defBean) : base(isNullable, attrs)
     {
-        this.Bean = defBean;
+        this.DefBean = defBean;
     }
 
     public override bool TryParseFrom(string s)
@@ -28,7 +26,7 @@ public class TBean : TType
         throw new NotSupportedException();
     }
 
-    public bool IsDynamic => Bean.IsAbstractType;
+    public bool IsDynamic => DefBean.IsAbstractType;
 
     public override bool IsBean => true;
 

@@ -5,7 +5,7 @@ using Luban.Core.Types;
 
 namespace Luban.Core.Utils;
 
-static class DataUtil
+public static class DataUtil
 {
     private static readonly string[] dateTimeFormats = new string[] {
         "yyyy-M-d HH:mm:ss", "yyyy-M-d HH:mm", "yyyy-M-d HH", "yyyy-M-d",
@@ -111,7 +111,7 @@ static class DataUtil
         {
             return s;
         }
-        return ((DefBean)type.Bean).Sep;
+        return ((DefBean)type.DefBean).Sep;
     }
 
     public static bool IsCollectionEqual(List<DType> a, List<DType> b)

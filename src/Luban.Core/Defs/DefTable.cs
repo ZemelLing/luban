@@ -127,7 +127,7 @@ public class DefTable : DefTypeBase
                 IsUnionIndex = true;
                 if (!string.IsNullOrWhiteSpace(Index))
                 {
-                    if (ValueTType.GetBeanAs<DefBean>().TryGetField(Index, out var f, out var i))
+                    if (ValueTType.DefBean.TryGetField(Index, out var f, out var i))
                     {
                         IndexField = f;
                         IndexFieldIdIndex = i;
@@ -137,13 +137,13 @@ public class DefTable : DefTypeBase
                         throw new Exception($"table:'{FullName}' index:'{Index}' 字段不存在");
                     }
                 }
-                else if (ValueTType.Bean.HierarchyFields.Count == 0)
+                else if (ValueTType.DefBean.HierarchyFields.Count == 0)
                 {
                     throw new Exception($"table:'{FullName}' 必须定义至少一个字段");
                 }
                 else
                 {
-                    IndexField = (DefField)ValueTType.Bean.HierarchyFields[0];
+                    IndexField = (DefField)ValueTType.DefBean.HierarchyFields[0];
                     Index = IndexField.Name;
                     IndexFieldIdIndex = 0;
                 }
@@ -157,7 +157,7 @@ public class DefTable : DefTypeBase
                 var indexs = Index.Split('+', ',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToList();
                 foreach (var idx in indexs)
                 {
-                    if (ValueTType.GetBeanAs<DefBean>().TryGetField(idx, out var f, out var i))
+                    if (ValueTType.DefBean.TryGetField(idx, out var f, out var i))
                     {
                         if (IndexField == null)
                         {

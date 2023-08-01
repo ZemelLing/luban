@@ -4,6 +4,8 @@ namespace Luban.Core.CodeGeneration;
 
 public interface ICodeTarget
 {
+    string TargetName { get; }
+    
     string FileHeader { get; }
 
     string GetPathFromFullName(string fullName);

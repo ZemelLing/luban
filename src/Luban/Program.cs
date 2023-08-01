@@ -3,6 +3,7 @@ using Luban.Core.CodeFormat;
 using Luban.Core.CodeGeneration;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
+using Luban.Core.Tmpl;
 using Luban.Plugin;
 using Luban.Utils;
 using NLog;

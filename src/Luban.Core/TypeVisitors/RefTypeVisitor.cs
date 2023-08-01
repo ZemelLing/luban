@@ -82,7 +82,7 @@ class RefTypeVisitor : ITypeActionVisitor<Dictionary<string, DefTypeBase>>
 
     public void Accept(TBean type, Dictionary<string, DefTypeBase> x)
     {
-        var root = (DefBean)type.Bean.RootDefType;
+        var root = (DefBean)type.DefBean.RootDefType;
         Walk(root, x);
     }
 

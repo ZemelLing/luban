@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataSource.Excel", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Core", "Luban.Core\Luban.Core.csproj", "{C89F41B6-D378-4558-A8F8-AEE4A68600DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.CodeGeneration", "Luban.CodeGeneration\Luban.CodeGeneration.csproj", "{EDEA1339-94A4-4A2D-8C09-707296306F60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.CodeGeneration.CSharp", "Luban.CodeGeneration.CSharp\Luban.CodeGeneration.CSharp.csproj", "{EDEA1339-94A4-4A2D-8C09-707296306F60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataConvertor.Binary", "Luban.DataConvertor.Binary\Luban.DataConvertor.Binary.csproj", "{CDC56AF7-340B-47E1-9930-420808093703}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataCreator.Binary", "Luban.DataCreator.Binary\Luban.DataCreator.Binary.csproj", "{5703ADD3-DDE3-4A8F-8B58-9AC1020194A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Plugin.SchemaCollector", "Luban.Plugin.SchemaCollector\Luban.Plugin.SchemaCollector.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Schema.Default", "Luban.Schema.Default\Luban.Schema.Default.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

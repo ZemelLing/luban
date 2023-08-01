@@ -13,52 +13,6 @@ public class DefField
 
     public string Name { get; protected set; }
 
-    // public string ConventionName
-    // {
-    //     get
-    //     {
-    //         string cn;
-    //         ELanguage curLan = Assembly.CurrentLanguage;
-    //         switch (Assembly.NamingConventionBeanMember)
-    //         {
-    //             case NamingConvention.None: cn = Name; break;
-    //             case NamingConvention.CameraCase: cn = TypeUtil.ToCamelCase(Name); break;
-    //             case NamingConvention.PascalCase: cn = TypeUtil.ToPascalCase(Name); break;
-    //             case NamingConvention.UnderScores: cn = TypeUtil.ToUnderScores(Name); break;
-    //             case NamingConvention.Invalid: throw new Exception($"invalid NamingConvention");
-    //             case NamingConvention.LanguangeRecommend:
-    //             {
-    //                 switch (curLan)
-    //                 {
-    //                     case ELanguage.INVALID: throw new Exception($"not set current language. can't get recommend naming convention name");
-    //                     case ELanguage.CS: cn = TypeUtil.ToPascalCase(Name); break;
-    //                     case ELanguage.JAVA: cn = TypeUtil.ToCamelCase(Name); break;
-    //                     case ELanguage.GO: cn = TypeUtil.ToPascalCase(Name); break;
-    //                     case ELanguage.CPP: cn = TypeUtil.ToCamelCase(Name); break;
-    //                     case ELanguage.LUA: cn = TypeUtil.ToUnderScores(Name); break;
-    //                     case ELanguage.JAVASCRIPT: cn = TypeUtil.ToCamelCase(Name); break;
-    //                     case ELanguage.TYPESCRIPT: cn = TypeUtil.ToCamelCase(Name); break;
-    //                     case ELanguage.PYTHON: cn = TypeUtil.ToUnderScores(Name); break;
-    //                     case ELanguage.GDSCRIPT: cn = TypeUtil.ToUnderScores(Name); break;
-    //                     case ELanguage.RUST: cn = TypeUtil.ToUnderScores(Name); break;
-    //                     case ELanguage.PROTOBUF: cn = Name; break;
-    //                     default: throw new Exception($"unknown language:{curLan}");
-    //                 }
-    //                 break;
-    //             }
-    //             default: throw new Exception($"unknown NamingConvention:{Assembly.NamingConventionBeanMember}");
-    //         }
-    //         if (curLan == ELanguage.RUST)
-    //         {
-    //             if (cn == "type")
-    //             {
-    //                 cn = "r#type";
-    //             }
-    //         }
-    //         return cn;
-    //     }
-    // }
-
     public string Type { get; }
 
     public TType CType { get; protected set; }
@@ -268,17 +222,17 @@ public class DefField
         {
             case TArray t:
             {
-                if (t.ElementType is TBean e && !e.IsDynamic && e.Bean.HierarchyFields.Count == 0)
+                if (t.ElementType is TBean e && !e.IsDynamic && e.DefBean.HierarchyFields.Count == 0)
                 {
-                    throw new Exception($"container element type:'{e.Bean.FullName}' can't be empty bean");
+                    throw new Exception($"container element type:'{e.DefBean.FullName}' can't be empty bean");
                 }
                 break;
             }
             case TList t:
             {
-                if (t.ElementType is TBean e && !e.IsDynamic && e.Bean.HierarchyFields.Count == 0)
+                if (t.ElementType is TBean e && !e.IsDynamic && e.DefBean.HierarchyFields.Count == 0)
                 {
-                    throw new Exception($"container element type:'{e.Bean.FullName}' can't be empty bean");
+                    throw new Exception($"container element type:'{e.DefBean.FullName}' can't be empty bean");
                 }
                 break;
             }
@@ -306,14 +260,14 @@ public class DefField
         {
             if ((CType is TArray tarray) && (tarray.ElementType is TBean b))
             {
-                if ((IndexField = b.GetBeanAs<DefBean>().GetField(Index)) == null)
+                if ((IndexField = b.DefBean.GetField(Index)) == null)
                 {
                     throw new Exception($"type:'{HostType.FullName}' field:'{Name}' index:'{Index}'. index not exist");
                 }
             }
             else if ((CType is TList tlist) && (tlist.ElementType is TBean tb))
             {
-                if ((IndexField = tb.GetBeanAs<DefBean>().GetField(Index)) == null)
+                if ((IndexField = tb.DefBean.GetField(Index)) == null)
                 {
                     throw new Exception($"type:'{HostType.FullName}' field:'{Name}' index:'{Index}'. index not exist");
                 }

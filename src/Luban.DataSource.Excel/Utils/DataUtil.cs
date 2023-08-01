@@ -201,7 +201,7 @@ static class DataUtil
         {
             return s;
         }
-        return ((DefBean)type.Bean).Sep;
+        return ((DefBean)type.DefBean).Sep;
     }
 
     public static bool IsCollectionEqual(List<DType> a, List<DType> b)

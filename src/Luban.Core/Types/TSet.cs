@@ -40,7 +40,7 @@ public class TSet : TType
 
         if (ElementType is TBean beanType)
         {
-            throw new Exception($"bean:{field.HostType.FullName} field:{field.Name} element type can't be bean:{beanType.Bean.FullName}");
+            throw new Exception($"bean:{field.HostType.FullName} field:{field.Name} element type can't be bean:{beanType.DefBean.FullName}");
         }
         if (ElementType is TText)
         {

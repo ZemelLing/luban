@@ -9,7 +9,7 @@ public class DBean : DType
 {
     public TBean TType { get; }
 
-    public DefBean Type => (DefBean)TType.Bean;
+    public DefBean Type => (DefBean)TType.DefBean;
 
     public DefBean ImplType { get; }
 

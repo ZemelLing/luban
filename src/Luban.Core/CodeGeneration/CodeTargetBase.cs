@@ -1,10 +1,11 @@
+using System.Reflection;
 using Luban.Core.Defs;
 
 namespace Luban.Core.CodeGeneration;
 
 public abstract class CodeTargetBase : ICodeTarget
 {
-    public void GenerateCode(GenerationContext ctx, OutputFileManifest manifest)
+    public virtual void GenerateCode(GenerationContext ctx, OutputFileManifest manifest)
     {
         List<Task<OutputFile>> tasks = new();
         tasks.Add(Task.Run(() =>
@@ -51,6 +52,7 @@ public abstract class CodeTargetBase : ICodeTarget
         }
     }
 
+    public string TargetName => GetType().GetCustomAttribute<CodeTargetAttribute>().Name;
 
     public abstract string FileHeader { get; }
     
@@ -67,7 +69,6 @@ public abstract class CodeTargetBase : ICodeTarget
         return fullName.Replace('.', '/') + "." + FileSuffixName;
     }
     
-    public abstract void GenerateCode(GenerationContext ctx, CodeWriter writer);
     public abstract void GenerateTables(GenerationContext ctx, List<DefTable> tables, CodeWriter writer);
     public abstract void GenerateTable(GenerationContext ctx, DefTable table, CodeWriter writer);
     public abstract void GenerateBean(GenerationContext ctx, DefBean bean, CodeWriter writer);

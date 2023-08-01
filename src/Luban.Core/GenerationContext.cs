@@ -51,6 +51,20 @@ public class GenerationContext
     
     private readonly Dictionary<string, RawExternalType> _externalTypesByTypeName = new();
 
+    public bool HasEnv(string name)
+    {
+        return Assembly.Envs.ContainsKey(name);
+    }
+    
+    public string GetEnv(string name)
+    {
+        return Assembly.Envs[name];
+    }
+    
+    public string GetEnvOrDefault(string name, string defaultValue)
+    {
+        return Assembly.Envs.TryGetValue(name, out var value) ? value : defaultValue;
+    }
 
     public List<string> CurrentExternalSelectors { get; private set; }
 
