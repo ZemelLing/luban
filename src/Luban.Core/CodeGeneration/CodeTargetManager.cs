@@ -28,7 +28,7 @@ public class CodeTargetManager
         }
     }
 
-    public void ScanResister(Assembly assembly)
+    public void ScanResisterCodeTarget(Assembly assembly)
     {
         foreach (var type in assembly.GetTypes())
         {

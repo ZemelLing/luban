@@ -1,6 +1,6 @@
 using Scriban.Runtime;
 
-namespace Luban.Core.Tmpl;
+namespace Luban.Core.TemplateExtensions;
 
 public class ContextTemplateExtends : ScriptObject
 {

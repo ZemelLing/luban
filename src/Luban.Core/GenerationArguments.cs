@@ -9,11 +9,10 @@ public class GenerationArguments
     public string OutputIncludeTables { get; set; }
     
     public string OutputExcludeTables { get; set; }
-    
 
     public TimeZoneInfo TimeZone { get; set; }
 
-    public bool OutputCompactJson { get; set; }
-
     public List<string> ExcludeTags { get; set; }
+    
+    public Dictionary<string, string> GeneralArgs { get; set; }
 }

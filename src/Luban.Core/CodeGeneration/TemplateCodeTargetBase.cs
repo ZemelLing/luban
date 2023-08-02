@@ -1,4 +1,6 @@
+using Luban.Core.CodeFormat;
 using Luban.Core.Defs;
+using Luban.Core.TemplateExtensions;
 using Luban.Core.Tmpl;
 using Luban.Core.Utils;
 using Scriban;
@@ -9,6 +11,10 @@ namespace Luban.Core.CodeGeneration;
 public abstract class TemplateCodeTargetBase : CodeTargetBase
 {
     protected virtual string CommonTemplateSearchPath => $"common/{FileSuffixName}";
+
+    protected virtual ICodeStyle DefaultCodeStyle => CodeFormatManager.Ins.NoneCodeStyle;
+
+    protected virtual ICodeStyle CodeStyle => GenerationContext.Ins.GetCodeStyle(TargetName) ?? DefaultCodeStyle;
     
     private TemplateContext CreateTemplateContext(Template template)
     {
@@ -49,6 +55,7 @@ public abstract class TemplateCodeTargetBase : CodeTargetBase
             { "__name", ctx.Target.Manager },
             { "__namespace", ctx.Target.TopModule },
             { "__tables", tables },
+            { "__code_style", CodeStyle},
         };
         tplCtx.PushGlobal(extraEnvs);
         writer.Write(template.Render(tplCtx));
@@ -62,7 +69,11 @@ public abstract class TemplateCodeTargetBase : CodeTargetBase
         {
             { "__ctx", ctx},
             { "__name", table.Name },
+            { "__namespace", table.Namespace },
+            { "__namespace_with_top_module", table.NamespaceWithTopModule },
+            { "__full_name_with_top_module", table.FullNameWithTopModule },
             { "__table", table },
+            { "__code_style", CodeStyle},
         };
         tplCtx.PushGlobal(extraEnvs);
         writer.Write(template.Render(tplCtx));
@@ -76,7 +87,11 @@ public abstract class TemplateCodeTargetBase : CodeTargetBase
         {
             { "__ctx", ctx},
             { "__name", bean.Name },
+            { "__namespace", bean.Namespace },
+            { "__namespace_with_top_module", bean.NamespaceWithTopModule },
+            { "__full_name_with_top_module", bean.FullNameWithTopModule },
             { "__bean", bean },
+            { "__code_style", CodeStyle},
         };
         tplCtx.PushGlobal(extraEnvs);
         writer.Write(template.Render(tplCtx));
@@ -90,7 +105,11 @@ public abstract class TemplateCodeTargetBase : CodeTargetBase
         {
             { "__ctx", ctx},
             { "__name", @enum.Name },
+            { "__namespace", @enum.Namespace },
+            { "__namespace_with_top_module", @enum.NamespaceWithTopModule },
+            { "__full_name_with_top_module", @enum.FullNameWithTopModule },
             { "__enum", @enum },
+            { "__code_style", CodeStyle},
         };
         tplCtx.PushGlobal(extraEnvs);
         writer.Write(template.Render(tplCtx));

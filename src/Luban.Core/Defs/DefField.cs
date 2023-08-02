@@ -19,8 +19,6 @@ public class DefField
 
     public bool IsNullable => CType.IsNullable;
 
-    public string UpperCaseName => Name.ToUpper();
-
     public string Comment { get; }
 
     // public string EscapeComment => DefUtil.EscapeCommentByCurrentLanguage(Comment);
@@ -44,11 +42,8 @@ public class DefField
     public List<string> Groups { get; }
 
     public DefField IndexField { get; private set; }
-    
 
-    public TEnum Remapper { get; private set; }
-
-    public RawField RawDefine { get; }
+    public RawField RawField { get; }
 
 
     public DefField(DefBean host, RawField f, int idOffset)
@@ -60,7 +55,7 @@ public class DefField
         Tags = DefUtil.ParseAttrs(f.Tags);
         IgnoreNameValidation = f.IgnoreNameValidation;
         this.Groups = f.Groups;
-        this.RawDefine = f;
+        this.RawField = f;
     }
 
     public void Compile()

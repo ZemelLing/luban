@@ -119,9 +119,10 @@ public class RootXmlSchemaLoader : IRootSchemaLoader
     {
         var name = XmlUtil.GetRequiredAttribute(e, "name");
         var manager = XmlUtil.GetRequiredAttribute(e, "manager");
+        var topModule = XmlUtil.GetRequiredAttribute(e, "topModule");
         List<string> groups = XmlSchemaUtil.CreateGroups(XmlUtil.GetOptionalAttribute(e, "group"));
         XmlSchemaUtil.ValidAttrKeys(_xmlFileName, e, _targetAttrs, _targetAttrs);
-        _schemaCollector.Add(new RawTarget() { Name = name, Manager = manager, Groups = groups });
+        _schemaCollector.Add(new RawTarget() { Name = name, Manager = manager, Groups = groups, TopModule = topModule});
     }
 
     private void AddRefGroup(XElement e)

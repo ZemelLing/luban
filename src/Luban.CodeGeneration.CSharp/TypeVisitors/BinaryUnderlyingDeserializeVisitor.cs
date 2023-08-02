@@ -55,7 +55,7 @@ public class BinaryUnderlyingDeserializeVisitor : ITypeFuncVisitor<string, strin
 
     public string Accept(TText type, string bufName, string fieldName, int depth)
     {
-        return $"{fieldName}{TText.L10N_FIELD_SUFFIX} = {bufName}.ReadString(); {fieldName} = {bufName}.ReadString();";
+        return $"{fieldName} = {bufName}.ReadString();";
     }
 
     public string Accept(TDateTime type, string bufName, string fieldName, int depth)

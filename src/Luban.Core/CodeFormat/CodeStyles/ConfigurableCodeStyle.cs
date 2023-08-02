@@ -7,14 +7,17 @@ public class ConfigurableCodeStyle : CodeStyleBase
     private readonly INamingConventionFormatter _methodFormatter;
     private readonly INamingConventionFormatter _propertyFormatter;
     private readonly INamingConventionFormatter _fieldFormatter;
+    private readonly INamingConventionFormatter _enumItemFormatter;
     
-    public ConfigurableCodeStyle(string namespaceFormatterName, string typeFormatterName, string methodFormatterName, string propertyFormatterName, string fieldFormatterName)
+    public ConfigurableCodeStyle(string namespaceFormatterName, string typeFormatterName, string methodFormatterName,
+        string propertyFormatterName, string fieldFormatterName, string enumItemFormatterName)
     {
         _namespaceFormatter = CodeFormatManager.Ins.GetFormatter(namespaceFormatterName);
         _typeFormatter = CodeFormatManager.Ins.GetFormatter(typeFormatterName);
         _methodFormatter = CodeFormatManager.Ins.GetFormatter(methodFormatterName);
         _propertyFormatter = CodeFormatManager.Ins.GetFormatter(propertyFormatterName);
         _fieldFormatter = CodeFormatManager.Ins.GetFormatter(fieldFormatterName);
+        _enumItemFormatter = CodeFormatManager.Ins.GetFormatter(enumItemFormatterName);
     }
 
     public override string FormatNamespace(string ns)
@@ -40,5 +43,10 @@ public class ConfigurableCodeStyle : CodeStyleBase
     public override string FormatField(string fieldName)
     {
         return _fieldFormatter.FormatName(fieldName);
+    }
+    
+    public override string FormatEnumItemName(string enumItemName)
+    {
+        return _enumItemFormatter.FormatName(enumItemName);
     }
 }

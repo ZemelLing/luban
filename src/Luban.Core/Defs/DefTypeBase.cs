@@ -6,13 +6,15 @@ public abstract class DefTypeBase
 {
     public DefAssembly Assembly { get; set; }
 
-    public string TopModule => GenerationContext.Ins.TopModule;
-
     public string Name { get; set; }
 
     public string Namespace { get; set; }
 
     public string FullName => TypeUtil.MakeFullName(Namespace, Name);
+    
+    public string NamespaceWithTopModule => TypeUtil.MakeNamespace(GenerationContext.Ins.TopModule, Namespace);
+    
+    public string FullNameWithTopModule => TypeUtil.MakeNamespace(GenerationContext.Ins.TopModule, FullName);
     
     public List<string> Groups { get; set; }
 

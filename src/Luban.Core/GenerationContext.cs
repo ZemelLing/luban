@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Luban.Core.CodeFormat;
 using Luban.Core.Datas;
 using Luban.Core.Defs;
 using Luban.Core.RawDefs;
@@ -269,5 +270,53 @@ public class GenerationContext
     public TableDataInfo GetTableDataInfo(DefTable table)
     {
         return _recordsByTables[table.FullName];
+    }
+    
+    public string GetOutputCodePath(string family)
+    {
+        return GetOption(family, "outputCodeDir", true);
+    }
+    
+    public string GetOutputDataPath(string family)
+    {
+        return GetOption(family, "outputDataDir", true);
+    }
+
+    public ICodeStyle GetCodeStyle(string family)
+    {
+        if (TryGetOption(family, "codeStyle", true, out var codeStyleName))
+        {
+            return CodeFormatManager.Ins.GetCodeStyle(codeStyleName);
+        }
+        return null;
+    }
+    
+    public string GetOption(string family, string name, bool useGlobalIfNotExits)
+    {
+        string nameWithFamily = family + "." + name;
+        if (Arguments.GeneralArgs.TryGetValue(nameWithFamily, out var value))
+        {
+            return value;
+        }
+        if (useGlobalIfNotExits && Arguments.GeneralArgs.TryGetValue("global." + name, out value))
+        {
+            return value;
+        }
+        throw new Exception($"option '{nameWithFamily}' not exists");
+    }
+    
+    public bool TryGetOption(string family, string name, bool useGlobalIfNotExits, out string value)
+    {
+        string nameWithFamily = family + "." + name;
+        if (Arguments.GeneralArgs.TryGetValue(nameWithFamily, out value))
+        {
+            return true;
+        }
+        if (useGlobalIfNotExits && Arguments.GeneralArgs.TryGetValue("global." + name, out value))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

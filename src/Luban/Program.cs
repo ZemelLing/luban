@@ -48,7 +48,7 @@ internal class Program
         var scanAssemblies = PluginManager.Ins.Plugins.Select(p => p.GetType().Assembly).ToList();
         scanAssemblies.Add(typeof(CsharpBin).Assembly);
         scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
-        scanAssemblies.Add(typeof(GenerationContext).Assembly);
+        //scanAssemblies.Add(typeof(GenerationContext).Assembly);
 
         foreach (var assembly in scanAssemblies)
         {
@@ -84,8 +84,8 @@ internal class Program
             Target = "all",
             GeneralArgs = new()
             {
-                {"global.outputCodeDir", @"Output/Code"},
-                {"global.outputDataDir", @"Output/Data"},
+                {"global.outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
+                {"global.outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
             },
         };
 

@@ -12,4 +12,6 @@ public abstract class CodeStyleBase : ICodeStyle
     }
 
     public abstract string FormatField(string fieldName);
+    
+    public abstract string FormatEnumItemName(string enumItemName);
 }

@@ -14,21 +14,21 @@ public class DataToStringVisitor : DecoratorFuncVisitor<string, string>
 
     public override string Accept(TArray type, string fieldName)
     {
-        return $"Bright.Common.StringUtil.CollectionToString({fieldName})";
+        return $"Luban.StringUtil.CollectionToString({fieldName})";
     }
 
     public override string Accept(TList type, string fieldName)
     {
-        return $"Bright.Common.StringUtil.CollectionToString({fieldName})";
+        return $"Luban.StringUtil.CollectionToString({fieldName})";
     }
 
     public override string Accept(TSet type, string fieldName)
     {
-        return $"Bright.Common.StringUtil.CollectionToString({fieldName})";
+        return $"Luban.StringUtil.CollectionToString({fieldName})";
     }
 
     public override string Accept(TMap type, string fieldName)
     {
-        return $"Bright.Common.StringUtil.CollectionToString({fieldName})";
+        return $"Luban.StringUtil.CollectionToString({fieldName})";
     }
 }

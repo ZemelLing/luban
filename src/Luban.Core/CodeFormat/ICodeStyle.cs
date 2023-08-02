@@ -11,4 +11,6 @@ public interface ICodeStyle
     string FormatProperty(string propertyName);
 
     string FormatField(string fieldName);
+    
+    string FormatEnumItemName(string enumItemName);
 }

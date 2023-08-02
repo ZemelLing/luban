@@ -48,9 +48,14 @@ public class DefBean : DefTypeBase
 
     public string Sep { get; }
 
-    // public List<DefField> HierarchyExportFields { get; private set; }
-    //
-    // public List<DefField> ExportFields { get; private set; }
+
+    private List<DefField> _hierarchyExportFields;
+    
+    public List<DefField> HierarchyExportFields => _hierarchyExportFields ??= HierarchyFields.Where(f => f.NeedExport()).ToList();
+
+    private List<DefField> _exportFields;
+    
+    public List<DefField> ExportFields => _exportFields ??= Fields.Where(f => f.NeedExport()).ToList();
 
     public bool IsDefineEquals(DefBean b)
     {
@@ -120,8 +125,6 @@ public class DefBean : DefTypeBase
     {
         SetupParentRecursively();
         CollectHierarchyFields(HierarchyFields);
-        // this.ExportFields = this.Fields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
-        // this.HierarchyExportFields = this.HierarchyFields.Select(f => (DefField)f).Where(f => f.NeedExport).ToList();
     }
 
     public override void Compile()

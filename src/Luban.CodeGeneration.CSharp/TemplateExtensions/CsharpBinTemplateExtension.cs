@@ -9,5 +9,8 @@ namespace Luban.CodeGeneration.CSharp.TemplateExtensions;
 
 public class CsharpBinTemplateExtension : ScriptObject
 {
-    
+    public static string Deserialize(string bufName, string fieldName, TType type)
+    {
+        return type.Apply(BinaryDeserializeVisitor.Ins, bufName, fieldName);
+    }
 }

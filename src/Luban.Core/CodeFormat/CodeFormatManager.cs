@@ -47,14 +47,14 @@ public class CodeFormatManager
         SnakeCaseFormatter = GetFormatter("snake");
         
         ScanRegisterCodeStyle(GetType().Assembly);
-        NoneCodeStyle = RegisterCodeStyle("none", "none", "none", "none", "none", "none");
-        CsharpDefaultCodeStyle = RegisterCodeStyle("csharp-default", "pascal", "pascal", "pascal", "pascal", "camel");
-        JavaDefaultCodeStyle = RegisterCodeStyle("java-default", "pascal", "pascal", "camel", "camel", "camel");
-        GoDefaultCodeStyle = RegisterCodeStyle("go-default", "snake", "pascal", "camel", "camel", "pascal");
-        LuaDefaultCodeStyle = RegisterCodeStyle("lua-default", "snake", "pascal", "camel", "camel", "snake");
-        TypescriptDefaultCodeStyle = RegisterCodeStyle("typescript-default", "pascal", "pascal", "camel", "camel", "camel");
-        CppDefaultCodeStyle = RegisterCodeStyle("cpp-default", "snake", "pascal", "pascal", "pascal", "camel");
-        PythonDefaultCodeStyle = RegisterCodeStyle("python-default", "snake", "pascal", "snake", "snake", "snake");
+        NoneCodeStyle = RegisterCodeStyle("none", "none", "none", "none", "none", "none", "none");
+        CsharpDefaultCodeStyle = RegisterCodeStyle("csharp-default", "pascal", "pascal", "pascal", "pascal", "camel", "pascal");
+        JavaDefaultCodeStyle = RegisterCodeStyle("java-default", "pascal", "pascal", "camel", "camel", "camel", "upper");
+        GoDefaultCodeStyle = RegisterCodeStyle("go-default", "snake", "pascal", "camel", "camel", "pascal", "upper");
+        LuaDefaultCodeStyle = RegisterCodeStyle("lua-default", "snake", "pascal", "camel", "camel", "snake", "upper");
+        TypescriptDefaultCodeStyle = RegisterCodeStyle("typescript-default", "pascal", "pascal", "camel", "camel", "camel", "pascal");
+        CppDefaultCodeStyle = RegisterCodeStyle("cpp-default", "snake", "pascal", "pascal", "pascal", "camel", "upper");
+        PythonDefaultCodeStyle = RegisterCodeStyle("python-default", "snake", "pascal", "snake", "snake", "snake", "upper");
     }
     
     public void RegisterFormatter(string name, INamingConventionFormatter formatter)
@@ -87,6 +87,13 @@ public class CodeFormatManager
             }
         }
     }
+    
+    public ICodeStyle GetCodeStyle(string codeStyleName)
+    {
+        return _codeStyles.TryGetValue(codeStyleName, out var codeStyle)
+            ? codeStyle
+            : throw new Exception($"code style:{codeStyleName} not exists");
+    }
 
     public void RegisterCodeStyle(string name, ICodeStyle codeStyle)
     {
@@ -97,10 +104,10 @@ public class CodeFormatManager
     }
 
     public ICodeStyle RegisterCodeStyle(string name, string namespaceNamingConvention, string typeNamingConvention,
-        string methodNamingConvention, string propertyNamingConvention, string fieldNamingConvention)
+        string methodNamingConvention, string propertyNamingConvention, string fieldNamingConvention, string enumNamingConvention)
     {
         var codeStyle = new ConfigurableCodeStyle(namespaceNamingConvention, typeNamingConvention,
-            methodNamingConvention, propertyNamingConvention, fieldNamingConvention);
+            methodNamingConvention, propertyNamingConvention, fieldNamingConvention, enumNamingConvention);
         RegisterCodeStyle(name, codeStyle);
         return codeStyle;
     }

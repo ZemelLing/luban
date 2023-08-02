@@ -12,7 +12,7 @@ public abstract class CodeTargetBase : ICodeTarget
         {
             var writer = new CodeWriter();
             GenerateTables(ctx, ctx.ExportTables, writer);
-            return new OutputFile(){ File = ctx.Target.Manager, Content = writer.ToResult(FileHeader) };
+            return new OutputFile(){ File = $"{ctx.Target.Manager}.{FileSuffixName}", Content = writer.ToResult(FileHeader) };
         }));
 
         foreach (var table in ctx.ExportTables)
@@ -21,7 +21,7 @@ public abstract class CodeTargetBase : ICodeTarget
             {
                 var writer = new CodeWriter();
                 GenerateTable(ctx, table, writer);
-                return new OutputFile(){ File = table.FullName, Content = writer.ToResult(FileHeader) };
+                return new OutputFile(){ File = $"{table.FullName}.{FileSuffixName}", Content = writer.ToResult(FileHeader) };
             }));
         }
 
@@ -31,7 +31,7 @@ public abstract class CodeTargetBase : ICodeTarget
             {
                 var writer = new CodeWriter();
                 GenerateBean(ctx, bean, writer);
-                return new OutputFile(){ File = bean.FullName, Content = writer.ToResult(FileHeader) };
+                return new OutputFile(){ File = $"{bean.FullName}.{FileSuffixName}", Content = writer.ToResult(FileHeader) };
             }));
         }
 
@@ -41,7 +41,7 @@ public abstract class CodeTargetBase : ICodeTarget
             {
                 var writer = new CodeWriter();
                 GenerateEnum(ctx, @enum, writer);
-                return new OutputFile(){ File = @enum.FullName, Content = writer.ToResult(FileHeader) };
+                return new OutputFile(){ File = $"{@enum.FullName}.{FileSuffixName}", Content = writer.ToResult(FileHeader) };
             }));
         }
 

@@ -10,7 +10,7 @@ public class OutputSaverManager
 
     public void Init()
     {
-        
+        ScanRegisterOutputSaver(GetType().Assembly);
     }
     
     public IOutputSaver GetOutputSaver(string name)

@@ -42,8 +42,4 @@
       </None>
     </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="set TARGET=$(SolutionDir)\Luban\bin\Debug\net7.0\Plugins\$(ProjectName)&#xA;rd /s /q %TARGET%&#xA;xcopy /I /E /Q  $(OutDir) %TARGET%" />
-    </Target>
-
 </Project>

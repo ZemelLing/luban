@@ -141,11 +141,11 @@ public static class TypeUtil
 
     public static string MakeNamespace(string module, string subModule)
     {
-        if (module.Length == 0)
+        if (string.IsNullOrWhiteSpace(module))
         {
             return subModule;
         }
-        if (subModule.Length == 0)
+        if (string.IsNullOrWhiteSpace(subModule))
         {
             return module;
         }
