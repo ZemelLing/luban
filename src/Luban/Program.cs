@@ -4,6 +4,8 @@ using Luban.Core;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeGeneration;
 using Luban.Core.Defs;
+using Luban.Core.OutputSaver;
+using Luban.Core.PostProcess;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
 using Luban.Core.Tmpl;
@@ -38,12 +40,15 @@ internal class Program
         
         CodeFormatManager.Ins.Init();
         CodeTargetManager.Ins.Init();
+        PostProcessManager.Ins.Init();
+        OutputSaverManager.Ins.Init();
         
         PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
         
         var scanAssemblies = PluginManager.Ins.Plugins.Select(p => p.GetType().Assembly).ToList();
         scanAssemblies.Add(typeof(CsharpBin).Assembly);
         scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
+        scanAssemblies.Add(typeof(GenerationContext).Assembly);
 
         foreach (var assembly in scanAssemblies)
         {
@@ -51,7 +56,9 @@ internal class Program
             SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(assembly);
             CodeFormatManager.Ins.ScanRegisterFormatters(assembly);
             CodeFormatManager.Ins.ScanRegisterCodeStyle(assembly);
-            CodeTargetManager.Ins.ScanResister(assembly);
+            CodeTargetManager.Ins.ScanResisterCodeTarget(assembly);
+            PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
+            OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
         }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
@@ -75,18 +82,24 @@ internal class Program
         var genArgs = new GenerationArguments()
         {
             Target = "all",
+            GeneralArgs = new()
+            {
+                {"global.outputCodeDir", @"Output/Code"},
+                {"global.outputDataDir", @"Output/Data"},
+            },
         };
 
-        var gctx = new GenerationContext(defAss, genArgs);
+        var genCtx = new GenerationContext(defAss, genArgs);
         
         ICodeTarget csBinTarget = CodeTargetManager.Ins.GetCodeTarget("cs-bin");
         var outputManifest = new OutputFileManifest();
-        csBinTarget.GenerateCode(gctx, outputManifest);
+        csBinTarget.GenerateCode(genCtx, outputManifest);
 
-        foreach (var file in outputManifest.DataFiles)
-        {
-            s_logger.Info("file:{} length:{}", file.File, (file.Content as string).Length);
-        }
+        var output2 = new OutputFileManifest();
+        PostProcessManager.Ins.GetPostProcess("nop").PostProcess(outputManifest, output2);
+
+        var saver = OutputSaverManager.Ins.GetOutputSaver("local");
+        saver.Save(output2);
         
         s_logger.Info("bye~");
     }

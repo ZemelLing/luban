@@ -1,6 +1,6 @@
-namespace Luban.Utils;
+namespace Luban.Core.Utils;
 
-class FileCleaner
+public class FileCleaner
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -91,19 +91,14 @@ class FileCleaner
         }
     }
 
-    public class SaveFileInfo
-    {
-        public string FilePath { get; set; }
-    }
-
-    public static void Clean(string outputDir, List<SaveFileInfo> savedFiles)
+    public static void Clean(string outputDir, List<string> savedFiles)
     {
         var cleaner = new FileCleaner();
         cleaner.AddOutputDir(outputDir);
         cleaner.AddIgnoreExtension("meta"); // for unity
         foreach (var file in savedFiles)
         {
-            cleaner.AddSavedFile(file.FilePath);
+            cleaner.AddSavedFile(file);
         }
 
         cleaner.RemoveUnusedFiles();

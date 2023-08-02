@@ -1,6 +1,6 @@
 namespace Luban.Core.PostProcess;
 
-public abstract class PostProcessCodeBase : IPostProcessCode
+public abstract class PostProcessBase : IPostProcess
 {
     public virtual void PostProcess(OutputFileManifest oldOutputFileManifest, OutputFileManifest newOutputFileManifest)
     {
@@ -10,9 +10,6 @@ public abstract class PostProcessCodeBase : IPostProcessCode
         }
     }
 
-    public virtual void PostProcess(OutputFileManifest oldOutputFileManifest, OutputFileManifest newOutputFileManifest,
-        OutputFile outputFile)
-    {
-        newOutputFileManifest.AddFile(outputFile);
-    }
+    public abstract void PostProcess(OutputFileManifest oldOutputFileManifest, OutputFileManifest newOutputFileManifest,
+        OutputFile outputFile);
 }
