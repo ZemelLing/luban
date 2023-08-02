@@ -1,8 +1,4 @@
-﻿using Luban.Core;
-using Luban.Job.Common.Generate;
-using Luban.Job.Common.Utils;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 [Render("convert_json")]
 [Render("convert_lua")]

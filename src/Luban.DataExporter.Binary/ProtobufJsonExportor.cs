@@ -1,12 +1,6 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
 using System.Text.Json;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class ProtobufJsonExportor : JsonExportor
 {

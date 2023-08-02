@@ -1,10 +1,4 @@
-using Luban.Core;
-using Luban.Core.Defs;
-using Luban.Job.Common.Generate;
-using Luban.Job.Common.Tpl;
-using Luban.Job.Common.Utils;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_python3_json")]
 class Python3CodeJsonRender : TemplateCodeRenderBase

@@ -1,6 +1,4 @@
-﻿using Luban.Core;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 interface IRender
 {

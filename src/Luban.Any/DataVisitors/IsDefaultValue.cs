@@ -1,7 +1,6 @@
-using Luban.Datas;
 using System.Numerics;
 
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 class IsDefaultValue : IDataFuncVisitor<bool>
 {

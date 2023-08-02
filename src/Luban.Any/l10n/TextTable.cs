@@ -1,9 +1,4 @@
-﻿using Luban.Datas;
-using Luban.Defs;
-using Luban.RawDefs;
-using Luban.Job.Common.Types;
-
-namespace Luban.l10n;
+﻿namespace Luban.Any.l10n;
 
 public class TextTable
 {

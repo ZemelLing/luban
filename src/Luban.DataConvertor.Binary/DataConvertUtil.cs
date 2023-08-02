@@ -1,7 +1,6 @@
-﻿using Luban.DataConverts;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace Luban.Utils;
+namespace Luban.DataConvertor;
 
 static class DataConvertUtil
 {

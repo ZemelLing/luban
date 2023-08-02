@@ -1,16 +1,8 @@
-﻿using Bright.Serialization;
-using Luban.DataExporters;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.l10n;
-using Luban.RawDefs;
-using Luban.Job.Common.Types;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using System.Xml;
 
-namespace Luban.Utils;
+namespace Luban.ExportData.Binary;
 
 public static class DataExporterUtil
 {

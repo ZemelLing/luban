@@ -1,8 +1,4 @@
-using Luban.Datas;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-
-namespace Luban.Validators;
+namespace Luban.Any.Validators;
 
 [Validator("range")]
 class RangeValidator : IValidator

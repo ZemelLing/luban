@@ -5,7 +5,7 @@ namespace Luban.Core.CodeGeneration;
 
 public abstract class CodeTargetBase : ICodeTarget
 {
-    public virtual void GenerateCode(GenerationContext ctx, OutputFileManifest manifest)
+    public virtual void Handle(GenerationContext ctx, OutputFileManifest manifest)
     {
         List<Task<OutputFile>> tasks = new();
         tasks.Add(Task.Run(() =>
@@ -52,7 +52,7 @@ public abstract class CodeTargetBase : ICodeTarget
         }
     }
 
-    public string TargetName => GetType().GetCustomAttribute<CodeTargetAttribute>().Name;
+    public string Name => GetType().GetCustomAttribute<CodeTargetAttribute>().Name;
 
     public abstract string FileHeader { get; }
     

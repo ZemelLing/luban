@@ -1,6 +1,4 @@
-using Scriban;
-
-namespace Luban;
+namespace Luban.Any;
 
 public static class RenderExtension
 {

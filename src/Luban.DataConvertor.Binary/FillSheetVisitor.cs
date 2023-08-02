@@ -1,4 +1,4 @@
-﻿namespace Luban.DataConverts;
+﻿namespace Luban.DataConvertor;
 
 public class FillSheetVisitor : IDataFuncVisitor<TType, Title, int>
 {
@@ -119,9 +119,9 @@ public class FillSheetVisitor : IDataFuncVisitor<TType, Title, int>
         {
             if (data.Type.IsAbstractType)
             {
-                if (!x.SubTitles.TryGetValue(DefBean.EXCEL_TYPE_NAME_KEY, out var typeTitle) && !x.SubTitles.TryGetValue(DefBean.FALLBACK_TYPE_NAME_KEY, out typeTitle))
+                if (!x.SubTitles.TryGetValue(FieldNames.EXCEL_TYPE_NAME_KEY, out var typeTitle) && !x.SubTitles.TryGetValue(FieldNames.FALLBACK_TYPE_NAME_KEY, out typeTitle))
                 {
-                    throw new Exception($"多态bean:{data.Type.FullName} 缺失 {DefBean.EXCEL_TYPE_NAME_KEY} 标题列");
+                    throw new Exception($"多态bean:{data.Type.FullName} 缺失 {FieldNames.EXCEL_TYPE_NAME_KEY} 标题列");
                 }
                 if (data.ImplType != null)
                 {
@@ -129,7 +129,7 @@ public class FillSheetVisitor : IDataFuncVisitor<TType, Title, int>
                 }
                 else
                 {
-                    SetTitleValue(typeTitle, DefBean.BEAN_NULL_STR);
+                    SetTitleValue(typeTitle, FieldNames.BEAN_NULL_STR);
                 }
             }
             else

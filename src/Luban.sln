@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Plugin", "Luban.Plugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Any", "Luban.Any\Luban.Any.csproj", "{D407324C-D638-4B51-86CE-D06BF926E710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataSource.Excel", "Luban.DataSource.Excel\Luban.DataSource.Excel.csproj", "{2200760D-A03B-46F8-8968-6818FB0984CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataLoader.Builtin", "Luban.DataLoader.Builtin\Luban.DataLoader.Builtin.csproj", "{2200760D-A03B-46F8-8968-6818FB0984CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Core", "Luban.Core\Luban.Core.csproj", "{C89F41B6-D378-4558-A8F8-AEE4A68600DE}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataConvertor.Binary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataCreator.Binary", "Luban.DataCreator.Binary\Luban.DataCreator.Binary.csproj", "{5703ADD3-DDE3-4A8F-8B58-9AC1020194A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Schema.Default", "Luban.Schema.Default\Luban.Schema.Default.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Schema.Builtin", "Luban.Schema.Builtin\Luban.Schema.Builtin.csproj", "{701EA9C0-C680-4FA3-B51B-CEC79BCFE56B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "DemoPlugin\DemoPlugin.csproj", "{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}"
 EndProject

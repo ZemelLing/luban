@@ -1,7 +1,4 @@
-using Luban.Core.Defs;
-using Luban.Core.Types;
-
-namespace Luban.Core.TypeVisitors;
+namespace Luban.Any.TypeVisitors;
 
 class CollectUeCppIncludeVisitor : ITypeActionVisitor<HashSet<DefTypeBase>>
 {

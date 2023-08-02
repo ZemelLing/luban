@@ -1,6 +1,4 @@
-using Luban.Datas;
-
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 class IsSimpleLiteralDataVisitor : IDataFuncVisitor<bool>
 {

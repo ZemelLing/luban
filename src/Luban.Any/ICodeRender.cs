@@ -1,6 +1,4 @@
-using Luban.Core.Defs;
-
-namespace Luban.Job.Common.Generate;
+namespace Luban.Any;
 
 public interface ICodeRender<T> where T : DefTypeBase
 {

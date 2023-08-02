@@ -1,9 +1,4 @@
-﻿using Luban.Datas;
-using Luban.DataSources;
-using Luban.Defs;
-using Luban.Utils;
-
-namespace Luban.DataExporters;
+﻿namespace Luban.ExportData.Binary;
 
 class MsgPackExportor
 {
@@ -175,7 +170,7 @@ class MsgPackExportor
         writer.WriteMapHeader(exportCount);
         if (type.Type.IsAbstractType)
         {
-            writer.Write(DefBean.JSON_TYPE_NAME_KEY);
+            writer.Write(FieldNames.JSON_TYPE_NAME_KEY);
             writer.Write(DataUtil.GetImplTypeName(type));
         }
 

@@ -1,10 +1,6 @@
-﻿using Luban.Core;
-using Luban.Core.Defs;
-using Luban.Core.TypeVisitors;
-using Luban.Job.Common.Generate;
-using Luban.Job.Common.Utils;
+﻿using Luban.Any.TypeVisitors;
 
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_flatbuffers")]
 class FlatBuffersSchemaRender : TemplateCodeRenderBase

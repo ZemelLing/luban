@@ -1,4 +1,4 @@
-﻿namespace Luban.Validators;
+﻿namespace Luban.Any.Validators;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 internal class ValidatorAttribute : Attribute

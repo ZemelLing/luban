@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Luban.DataConverts;
+namespace Luban.DataConvertor;
 
 class JsonConvertor : DataExporters.JsonExportor
 {
@@ -27,7 +27,7 @@ class JsonConvertor : DataExporters.JsonExportor
 
         if (type.Type.IsAbstractType)
         {
-            x.WritePropertyName(DefBean.JSON_TYPE_NAME_KEY);
+            x.WritePropertyName(FieldNames.JSON_TYPE_NAME_KEY);
             x.WriteStringValue(type.ImplType.Name);
         }
 

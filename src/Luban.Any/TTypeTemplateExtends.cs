@@ -1,9 +1,6 @@
-using Luban.Core.Defs;
-using Luban.Core.Types;
-using Luban.Core.TypeVisitors;
-using JavaDeserializeVisitor = Luban.TypeVisitors.JavaDeserializeVisitor;
+using Luban.Any.TypeVisitors;
 
-namespace Luban.Utils;
+namespace Luban.Any;
 
 class TTypeTemplateExtends : TTypeTemplateCommonExtends
 {

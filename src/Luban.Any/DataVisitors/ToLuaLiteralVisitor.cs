@@ -1,9 +1,6 @@
-using Luban.Datas;
-using Luban.Defs;
-using Luban.Utils;
 using System.Text;
 
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 class ToLuaLiteralVisitor : ToLiteralVisitorBase
 {
@@ -24,7 +21,7 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
         var x = new StringBuilder();
         if (type.Type.IsAbstractType)
         {
-            x.Append($"{{ {DefBean.LUA_TYPE_NAME_KEY}='{DataUtil.GetImplTypeName(type)}',");
+            x.Append($"{{ {FieldNames.LUA_TYPE_NAME_KEY}='{DataUtil.GetImplTypeName(type)}',");
         }
         else
         {

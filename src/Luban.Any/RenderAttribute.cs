@@ -1,4 +1,4 @@
-﻿namespace Luban.Job.Common.Generate;
+﻿namespace Luban.Any;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class RenderAttribute : System.Attribute

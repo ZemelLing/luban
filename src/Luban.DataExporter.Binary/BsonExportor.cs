@@ -1,10 +1,4 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Utils;
-
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class BsonExportor : IDataActionVisitor<BsonDataWriter>
 {
@@ -101,7 +95,7 @@ class BsonExportor : IDataActionVisitor<BsonDataWriter>
 
         if (type.Type.IsAbstractType)
         {
-            x.WritePropertyName(DefBean.JSON_TYPE_NAME_KEY);
+            x.WritePropertyName(FieldNames.JSON_TYPE_NAME_KEY);
             x.WriteValue(DataUtil.GetImplTypeName(type));
         }
 

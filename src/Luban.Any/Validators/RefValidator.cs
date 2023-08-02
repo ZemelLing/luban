@@ -1,13 +1,6 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.RawDefs;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.Utils;
+using Luban.Any.DataVisitors;
 
-namespace Luban.Validators;
+namespace Luban.Any.Validators;
 
 [Validator("ref")]
 public class RefValidator : IValidator

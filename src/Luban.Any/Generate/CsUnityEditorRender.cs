@@ -1,6 +1,4 @@
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_cs_unity_editor_json")]
 class CsUnityEditorRender : TemplateEditorJsonCodeRenderBase

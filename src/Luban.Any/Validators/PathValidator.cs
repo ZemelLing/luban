@@ -1,11 +1,6 @@
-using Luban.Datas;
-using Luban.Defs;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.Utils;
 using System.Text.RegularExpressions;
 
-namespace Luban.Validators;
+namespace Luban.Any.Validators;
 
 interface IPathPattern
 {

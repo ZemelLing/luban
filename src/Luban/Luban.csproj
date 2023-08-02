@@ -15,8 +15,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Luban.CodeGeneration.CSharp\Luban.CodeGeneration.CSharp.csproj" />
+      <ProjectReference Include="..\Luban.DataLoader.Builtin\Luban.DataLoader.Builtin.csproj" />
       <ProjectReference Include="..\Luban.Plugin\Luban.Plugin.csproj" />
-      <ProjectReference Include="..\Luban.Schema.Default\Luban.Schema.Default.csproj" />
+      <ProjectReference Include="..\Luban.Schema.Builtin\Luban.Schema.Builtin.csproj" />
     </ItemGroup>
 
     <ItemGroup>

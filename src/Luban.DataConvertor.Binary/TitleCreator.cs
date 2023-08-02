@@ -1,4 +1,4 @@
-﻿namespace Luban.DataConverts;
+﻿namespace Luban.DataConvertor;
 
 class TitleCreator : ITypeActionVisitor<Title, int>
 {
@@ -25,7 +25,7 @@ class TitleCreator : ITypeActionVisitor<Title, int>
         {
             title.AddSubTitle(new Title()
             {
-                Name = DefBean.EXCEL_TYPE_NAME_KEY,
+                Name = FieldNames.EXCEL_TYPE_NAME_KEY,
                 FromIndex = lastColumn + 1,
                 ToIndex = lastColumn + 1,
                 Tags = new Dictionary<string, string>(),

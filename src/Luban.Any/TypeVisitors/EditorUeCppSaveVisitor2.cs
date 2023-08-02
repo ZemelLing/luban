@@ -1,6 +1,4 @@
-using Luban.Core.Types;
-
-namespace Luban.Core.TypeVisitors;
+namespace Luban.Any.TypeVisitors;
 
 class EditorUeCppSaveVisitor2 : ITypeFuncVisitor<string, string, string>
 {

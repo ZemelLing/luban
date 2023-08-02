@@ -1,6 +1,4 @@
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_typescript_json")]
 class TypescriptCodeJsonRender : TypescriptCodeRenderBase

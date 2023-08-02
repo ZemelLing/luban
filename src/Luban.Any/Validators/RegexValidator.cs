@@ -1,10 +1,6 @@
-﻿using Luban.Datas;
-using Luban.Utils;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace Luban.Validators;
+namespace Luban.Any.Validators;
 
 [Validator("regex")]
 class RegexValidator : IValidator

@@ -1,9 +1,4 @@
-using Bright.Serialization;
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.Defs;
-
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class BinaryIndexExportor
 {

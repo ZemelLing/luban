@@ -1,11 +1,6 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Utils;
 using System.Text.Json;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
 {
@@ -102,7 +97,7 @@ class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
 
         if (type.Type.IsAbstractType)
         {
-            x.WritePropertyName(DefBean.JSON_TYPE_NAME_KEY);
+            x.WritePropertyName(FieldNames.JSON_TYPE_NAME_KEY);
             x.WriteStringValue(DataUtil.GetImplTypeName(type));
         }
 

@@ -1,7 +1,4 @@
-using Luban.Utils;
-using Luban.Server.Common;
-
-namespace Luban.Job.Utils;
+namespace Luban.Any.Utils;
 
 public static class CacheFileUtil
 {

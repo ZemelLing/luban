@@ -1,4 +1,4 @@
-namespace Luban.RawDefs;
+namespace Luban.ExportData.Binary;
 
 public class ResourceInfo
 {

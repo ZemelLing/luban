@@ -1,6 +1,4 @@
-﻿using CommandLine;
-
-namespace Luban.Job.Common;
+﻿namespace Luban.Any;
 
 public class GenArgsBase
 {

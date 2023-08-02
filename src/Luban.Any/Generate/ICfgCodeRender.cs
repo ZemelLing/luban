@@ -1,7 +1,4 @@
-using Luban.Core.Defs;
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 interface ICfgCodeRender : ICodeRender<DefTable>, IRender
 {

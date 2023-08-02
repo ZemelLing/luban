@@ -1,4 +1,4 @@
-﻿namespace Luban.Job.Common;
+﻿namespace Luban.Any;
 
 public enum NamingConvention
 {

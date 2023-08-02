@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Luban.Core.CodeFormat;
+using Luban.Core.DataLoader;
 using Luban.Core.Datas;
 using Luban.Core.Defs;
 using Luban.Core.RawDefs;
@@ -11,6 +12,8 @@ namespace Luban.Core;
 
 public class GenerationContext
 {
+    private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
+    
     public static GenerationContext Ins { get; private set; }
 
     public DefAssembly Assembly { get; set; }
@@ -25,8 +28,6 @@ public class GenerationContext
 
     private readonly HashSet<string> _outputExcludeTables = new();
     
-    
-
     private readonly ConcurrentDictionary<string, TableDataInfo> _recordsByTables = new();
     
     public bool NeedExport(List<string> groups)
@@ -44,6 +45,8 @@ public class GenerationContext
     }
     
     public string TopModule => Target.TopModule;
+
+    public List<DefTable> Tables => Assembly.GetAllTables();
     
     private List<DefTypeBase> ExportTypes { get; }
     
@@ -54,6 +57,21 @@ public class GenerationContext
     public List<DefEnum> ExportEnums { get; }
     
     private readonly Dictionary<string, RawExternalType> _externalTypesByTypeName = new();
+
+    private bool _dataLoaded;
+
+    public void LoadDatas()
+    {
+        lock(this)
+        {
+            if (_dataLoaded)
+            {
+                return;
+            }
+            DataLoaderManager.Ins.LoadDatas(this);
+            _dataLoaded = true;
+        }
+    }
 
     public GenerationContext(DefAssembly assembly, GenerationArguments args)
     {
@@ -215,9 +233,9 @@ public class GenerationContext
         return tables.Split(',').Select(t => t.Trim());
     }
     
-    
     public void AddDataTable(DefTable table, List<Record> mainRecords, List<Record> patchRecords)
     {
+        s_logger.Info("AddDataTable name:{} record count:{}", table.FullName, mainRecords.Count);
         _recordsByTables[table.FullName] = new TableDataInfo(table, mainRecords, patchRecords);
     }
 
@@ -271,52 +289,28 @@ public class GenerationContext
     {
         return _recordsByTables[table.FullName];
     }
+
+    public string GetInputDataPath()
+    {
+        return Arguments.GetOption("", "inputDataDir", true);
+    }
     
     public string GetOutputCodePath(string family)
     {
-        return GetOption(family, "outputCodeDir", true);
+        return Arguments.GetOption(family, "outputCodeDir", true);
     }
     
     public string GetOutputDataPath(string family)
     {
-        return GetOption(family, "outputDataDir", true);
+        return Arguments.GetOption(family, "outputDataDir", true);
     }
 
     public ICodeStyle GetCodeStyle(string family)
     {
-        if (TryGetOption(family, "codeStyle", true, out var codeStyleName))
+        if (Arguments.TryGetOption(family, "codeStyle", true, out var codeStyleName))
         {
             return CodeFormatManager.Ins.GetCodeStyle(codeStyleName);
         }
         return null;
-    }
-    
-    public string GetOption(string family, string name, bool useGlobalIfNotExits)
-    {
-        string nameWithFamily = family + "." + name;
-        if (Arguments.GeneralArgs.TryGetValue(nameWithFamily, out var value))
-        {
-            return value;
-        }
-        if (useGlobalIfNotExits && Arguments.GeneralArgs.TryGetValue("global." + name, out value))
-        {
-            return value;
-        }
-        throw new Exception($"option '{nameWithFamily}' not exists");
-    }
-    
-    public bool TryGetOption(string family, string name, bool useGlobalIfNotExits, out string value)
-    {
-        string nameWithFamily = family + "." + name;
-        if (Arguments.GeneralArgs.TryGetValue(nameWithFamily, out value))
-        {
-            return true;
-        }
-        if (useGlobalIfNotExits && Arguments.GeneralArgs.TryGetValue("global." + name, out value))
-        {
-            return true;
-        }
-
-        return false;
     }
 }

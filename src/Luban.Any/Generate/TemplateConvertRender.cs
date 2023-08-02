@@ -1,10 +1,4 @@
-﻿using Luban.Core;
-using Luban.Job.Common.Generate;
-using Luban.Job.Common.Tpl;
-using Luban.Job.Common.Utils;
-using Scriban;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 [Render("convert_template")]
 class TemplateConvertRender : DataRenderBase

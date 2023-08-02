@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Luban.l10n;
+namespace Luban.Any.l10n;
 
 public class NotConvertTextSet
 {

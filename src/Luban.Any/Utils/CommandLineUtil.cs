@@ -1,6 +1,4 @@
-﻿using CommandLine;
-
-namespace Luban.Utils;
+﻿namespace Luban.Any.Utils;
 
 public static class CommandLineUtil
 {

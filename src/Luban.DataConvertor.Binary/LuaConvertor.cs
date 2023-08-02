@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Luban.DataConverts;
+namespace Luban.DataConvertor;
 
 class LuaConvertor : DataVisitors.ToLuaLiteralVisitor
 {
@@ -35,7 +35,7 @@ class LuaConvertor : DataVisitors.ToLuaLiteralVisitor
         x.AppendLine("{");
         if (type.Type.IsAbstractType)
         {
-            x.Append(subIndent).AppendLine($"{DefBean.LUA_TYPE_NAME_KEY} = '{type.ImplType.Name}',");
+            x.Append(subIndent).AppendLine($"{FieldNames.LUA_TYPE_NAME_KEY} = '{type.ImplType.Name}',");
         }
 
         int index = 0;

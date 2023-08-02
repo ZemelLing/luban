@@ -1,6 +1,4 @@
-using Luban.Job.Common.Types;
-
-namespace Luban.Validators;
+namespace Luban.Any.Validators;
 
 static class ValidatorFactory
 {

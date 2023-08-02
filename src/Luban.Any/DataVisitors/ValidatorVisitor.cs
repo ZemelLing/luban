@@ -1,12 +1,6 @@
-using Luban.Utils;
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.Defs;
-using Luban.Validators;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
+using Luban.Any.Validators;
 
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 public class ValidatorVisitor : TypeActionVisitorAdaptor<DType>
 {

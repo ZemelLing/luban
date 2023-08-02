@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -182,6 +183,21 @@ public static class FileUtil
         return bytes;
     }
 
+    public static bool WriteAllBytes(string file, byte[] bytes)
+    {
+        if (File.Exists(file))
+        {
+            var oldBytes = ReadAllBytes(file);
+            if (oldBytes.Length == bytes.Length &&
+                StructuralComparisons.StructuralEqualityComparer.Equals(bytes, oldBytes))
+            {
+                return false;
+            }
+        }
+        WriteAllBytes(file, bytes);
+        return true;
+    }
+
     public static async Task WriteAllBytesAsync(string file, byte[] bytes)
     {
         using var fs = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
@@ -210,8 +226,9 @@ public static class FileUtil
         Directory.Delete(rootDir, false);
     }
 
-    public static IEnumerable<string> GetFileOrDirectory(string fileOrDirectory)
+    public static List<string> GetFileOrDirectory(string fileOrDirectory)
     {
+        var files = new List<string>();
         if (Directory.Exists(fileOrDirectory))
         {
             foreach (var file in Directory.GetFiles(fileOrDirectory, "*", SearchOption.AllDirectories))
@@ -220,13 +237,16 @@ public static class FileUtil
                 {
                     continue;
                 }
-                yield return file;
+                files.Add(file.Replace('\\', '/'));
             }
+            // must sort files for making generation stable.
+            files.Sort(string.CompareOrdinal);
         }
         else
         {
-            yield return fileOrDirectory;
+            files.Add(fileOrDirectory);
         }
+        return files;
     }
 
     public static string GetExtensionWithDot(string file)

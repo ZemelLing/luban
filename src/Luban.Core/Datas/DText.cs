@@ -9,7 +9,12 @@ public class DText : DType
 
     public override string TypeName => "text";
 
-    public DText(string key)
+    public static DText ValueOf(string key)
+    {
+        return new DText(key);
+    }
+
+    private DText(string key)
     {
         Key = key;
     }

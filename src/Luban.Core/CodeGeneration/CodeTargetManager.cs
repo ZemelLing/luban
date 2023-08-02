@@ -1,4 +1,5 @@
 using System.Reflection;
+using Luban.Core.Mission;
 
 namespace Luban.Core.CodeGeneration;
 
@@ -26,6 +27,7 @@ public class CodeTargetManager
         {
             throw new Exception($"code target:{name} already exists");
         }
+        MissionManager.Ins.RegisterMission(name, codeTarget);
     }
 
     public void ScanResisterCodeTarget(Assembly assembly)

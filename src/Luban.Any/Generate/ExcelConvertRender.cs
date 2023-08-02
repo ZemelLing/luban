@@ -1,11 +1,4 @@
-﻿using Luban.Core;
-using Luban.Core.Defs;
-using Luban.Core.Types;
-using Luban.Core.TypeVisitors;
-using Luban.Utils;
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 [Render("convert_xlsx")]
 [Render("convert_excel")]

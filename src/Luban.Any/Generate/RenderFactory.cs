@@ -1,7 +1,6 @@
-﻿using Luban.Job.Common.Generate;
-using System.Reflection;
+﻿using System.Reflection;
 
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 static class RenderFactory
 {

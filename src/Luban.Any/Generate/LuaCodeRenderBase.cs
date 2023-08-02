@@ -1,8 +1,4 @@
-﻿using Luban.Core;
-using Luban.Core.Defs;
-using Luban.Job.Common.Utils;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 abstract class LuaCodeRenderBase : TemplateCodeRenderBase
 {

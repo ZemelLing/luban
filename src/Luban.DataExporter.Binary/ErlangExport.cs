@@ -1,10 +1,6 @@
-﻿using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using System.Text;
+﻿using System.Text;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class ErlangExport
 {

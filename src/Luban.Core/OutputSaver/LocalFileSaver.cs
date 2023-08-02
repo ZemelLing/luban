@@ -18,7 +18,9 @@ public class LocalFileSaver : OutputSaverBase
     {
         string fullOutputPath = $"{OutputDir}/{outputFile.File}";
         Directory.CreateDirectory(Path.GetDirectoryName(fullOutputPath));
-        File.WriteAllBytes(fullOutputPath, outputFile.GetContentBytes());
-        s_logger.Info("save file:{} ", fullOutputPath);
+        if (FileUtil.WriteAllBytes(fullOutputPath, outputFile.GetContentBytes()))
+        {
+            s_logger.Info("save file:{} ", fullOutputPath);
+        }
     }
 }

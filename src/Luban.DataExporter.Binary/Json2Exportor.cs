@@ -1,11 +1,6 @@
-﻿using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.RawDefs;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class Json2Exportor : JsonExportor
 {

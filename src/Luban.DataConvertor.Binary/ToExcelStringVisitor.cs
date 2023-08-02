@@ -1,4 +1,4 @@
-﻿namespace Luban.DataConverts;
+﻿namespace Luban.DataConvertor;
 
 public class ToExcelStringVisitor : IDataFuncVisitor<string, string>
 {
@@ -92,11 +92,11 @@ public class ToExcelStringVisitor : IDataFuncVisitor<string, string>
         var sb = new List<string>();
         if (type.Type.IsAbstractType)
         {
-            sb.Add(type.ImplType != null ? type.ImplType.Name : DefBean.BEAN_NULL_STR);
+            sb.Add(type.ImplType != null ? type.ImplType.Name : FieldNames.BEAN_NULL_STR);
         }
         else if (type.TType.IsNullable)
         {
-            sb.Add(type.ImplType != null ? type.ImplType.Name : DefBean.BEAN_NULL_STR);
+            sb.Add(type.ImplType != null ? type.ImplType.Name : FieldNames.BEAN_NULL_STR);
         }
 
         foreach (var field in type.Fields)

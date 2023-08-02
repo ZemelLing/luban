@@ -1,9 +1,4 @@
-﻿using Luban.Datas;
-using Luban.Job.Common.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.Utils;
-
-namespace Luban.Validators;
+﻿namespace Luban.Any.Validators;
 
 [Validator("set")]
 class SetValidator : IValidator

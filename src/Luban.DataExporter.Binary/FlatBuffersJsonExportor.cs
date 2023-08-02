@@ -1,11 +1,6 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.Defs;
-using Luban.Job.Common.Types;
-using Luban.Job.Common.TypeVisitors;
 using System.Text.Json;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class FlatBuffersJsonExportor : JsonExportor
 {
@@ -43,7 +38,7 @@ class FlatBuffersJsonExportor : JsonExportor
         // flatc 不允许有多余字段
         //if (type.Type.IsAbstractType)
         //{
-        //    x.WritePropertyName(DefBean.TYPE_NAME_KEY);
+        //    x.WritePropertyName(FieldNames.TYPE_NAME_KEY);
         //    x.WriteStringValue(type.ImplType.Name);
         //}
 

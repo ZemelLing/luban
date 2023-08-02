@@ -1,7 +1,4 @@
-using Luban.Core.Datas;
-using Luban.Core.Types;
-
-namespace Luban.Core.TypeVisitors;
+namespace Luban.Any.TypeVisitors;
 
 class RustJsonUnderingConstructorVisitor : ITypeFuncVisitor<string, string>
 {

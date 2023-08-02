@@ -1,10 +1,4 @@
-using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Utils;
-
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 class YamlExportor : IDataFuncVisitor<YamlNode>
 {
@@ -111,7 +105,7 @@ class YamlExportor : IDataFuncVisitor<YamlNode>
 
         if (type.Type.IsAbstractType)
         {
-            m.Add(DefBean.JSON_TYPE_NAME_KEY, ToText(DataUtil.GetImplTypeName(type)));
+            m.Add(FieldNames.JSON_TYPE_NAME_KEY, ToText(DataUtil.GetImplTypeName(type)));
         }
         var defFields = type.ImplType.HierarchyFields;
         int index = 0;

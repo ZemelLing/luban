@@ -1,7 +1,6 @@
-﻿using Luban.Datas;
-using Luban.l10n;
+﻿using Luban.Any.l10n;
 
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 /// <summary>
 /// 检查 相同key的text,原始值必须相同

@@ -1,10 +1,7 @@
-using Luban.Utils;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Validators;
+using Luban.Any.DataVisitors;
+using Luban.Any.Validators;
 
-namespace Luban;
+namespace Luban.Any;
 
 public class PathQuery
 {

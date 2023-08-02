@@ -1,16 +1,13 @@
 using Luban.Core.Defs;
+using Luban.Core.Mission;
 
 namespace Luban.Core.CodeGeneration;
 
-public interface ICodeTarget
+public interface ICodeTarget : IMission
 {
-    string TargetName { get; }
-    
     string FileHeader { get; }
 
     string GetPathFromFullName(string fullName);
-    
-    void GenerateCode(GenerationContext ctx, OutputFileManifest manifest);
     
     void GenerateTables(GenerationContext ctx, List<DefTable> tables, CodeWriter writer);
 

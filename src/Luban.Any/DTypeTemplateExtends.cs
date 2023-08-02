@@ -1,7 +1,6 @@
-﻿using Luban.Datas;
-using Luban.DataVisitors;
+﻿using Luban.Any.DataVisitors;
 
-namespace Luban.Utils;
+namespace Luban.Any;
 
 class DTypeTemplateExtends : TTypeTemplateExtends
 {

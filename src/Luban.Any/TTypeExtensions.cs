@@ -1,7 +1,4 @@
-using Luban.Core.Types;
-using Luban.Core.TypeVisitors;
-
-namespace Luban;
+namespace Luban.Any;
 
 static class TTypeExtensions
 {

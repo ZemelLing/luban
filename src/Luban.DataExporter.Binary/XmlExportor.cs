@@ -1,12 +1,7 @@
-﻿using Luban.Datas;
-using Luban.DataSources;
-using Luban.DataVisitors;
-using Luban.Defs;
-using Luban.Utils;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Xml;
 
-namespace Luban.DataExporters;
+namespace Luban.ExportData.Binary;
 
 public class XmlExportor : IDataActionVisitor<XmlWriter>
 {
@@ -130,7 +125,7 @@ public class XmlExportor : IDataActionVisitor<XmlWriter>
     {
         if (type.Type.IsAbstractType)
         {
-            w.WriteAttributeString(DefBean.XML_TYPE_NAME_KEY, DataUtil.GetImplTypeName(type));
+            w.WriteAttributeString(FieldNames.XML_TYPE_NAME_KEY, DataUtil.GetImplTypeName(type));
         }
 
         var defFields = type.ImplType.HierarchyFields;

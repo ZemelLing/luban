@@ -1,7 +1,4 @@
-﻿using Luban.Core;
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 [Render("data_resources")]
 class ResourceListRender : DataRenderBase

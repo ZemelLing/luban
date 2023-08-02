@@ -1,6 +1,4 @@
-﻿using Luban.Core.Types;
-
-namespace Luban.Core.TypeVisitors;
+﻿namespace Luban.Any.TypeVisitors;
 
 public abstract class TypeActionVisitorAdaptor<T> : ITypeActionVisitor<T>
 {

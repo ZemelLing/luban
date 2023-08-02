@@ -1,6 +1,4 @@
-using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_java_json")]
 class JavaCodeJsonRender : TemplateCodeRenderBase

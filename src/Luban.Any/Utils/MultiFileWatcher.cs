@@ -1,4 +1,4 @@
-﻿namespace Luban.Client.Utils;
+﻿namespace Luban.Any.Utils;
 
 public class MultiFileWatcher
 {

@@ -1,11 +1,6 @@
-﻿
-using Luban.Cache;
-using Luban.DataSources;
-using Luban.Defs;
-using Luban.Job.Common.Types;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
-namespace Luban.Utils;
+namespace Luban.Any;
 
 public static class DataLoaderUtil
 {

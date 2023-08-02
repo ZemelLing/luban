@@ -1,4 +1,4 @@
-namespace Luban.Job.Common.Utils;
+namespace Luban.Any;
 
 public static class FileHeaderUtil
 {

@@ -3,12 +3,14 @@ using Luban.CodeGeneration.CSharp.CodeTargets;
 using Luban.Core;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeGeneration;
+using Luban.Core.DataLoader;
 using Luban.Core.Defs;
 using Luban.Core.OutputSaver;
 using Luban.Core.PostProcess;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
 using Luban.Core.Tmpl;
+using Luban.DataLoader.Builtin;
 using Luban.Plugin;
 using Luban.Schema.Default;
 using Luban.Utils;
@@ -42,13 +44,14 @@ internal class Program
         CodeTargetManager.Ins.Init();
         PostProcessManager.Ins.Init();
         OutputSaverManager.Ins.Init();
+        DataLoaderManager.Ins.Init();
         
         PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
         
         var scanAssemblies = PluginManager.Ins.Plugins.Select(p => p.GetType().Assembly).ToList();
         scanAssemblies.Add(typeof(CsharpBin).Assembly);
         scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
-        //scanAssemblies.Add(typeof(GenerationContext).Assembly);
+        scanAssemblies.Add(typeof(FieldNames).Assembly);
 
         foreach (var assembly in scanAssemblies)
         {
@@ -59,6 +62,7 @@ internal class Program
             CodeTargetManager.Ins.ScanResisterCodeTarget(assembly);
             PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
             OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
+            DataLoaderManager.Ins.ScanRegisterDataLoader(assembly);
         }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
@@ -72,34 +76,21 @@ internal class Program
         
         s_logger.Info("start");
 
-        string schemaRootFile = @"D:\workspace2\luban_examples\DesignerConfigs\Defines\__root__.xml";
-        string schemaCollectorName = "default";
-        var schemaCollector = SchemaCollectorFactory.Ins.CreateSchemaCollector(schemaCollectorName);
-        schemaCollector.Load(schemaRootFile);
-        RawAssembly ass = schemaCollector.CreateRawAssembly();
-        s_logger.Info("table count:{}", ass.Tables.Count);
-        var defAss = new DefAssembly(ass);
         var genArgs = new GenerationArguments()
         {
             Target = "all",
+            Missions = new List<string>{"cs-bin", "data-bin"},
             GeneralArgs = new()
             {
+                {"global.schemaCollector", "default"},
+                {"global.rootSchemaFile", @"D:\workspace2\luban_examples\DesignerConfigs\Defines\__root__.xml"},
+                {"global.inputDataDir", @"D:\workspace2\luban_examples\DesignerConfigs\Datas"},
                 {"global.outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
                 {"global.outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
             },
         };
-
-        var genCtx = new GenerationContext(defAss, genArgs);
-        
-        ICodeTarget csBinTarget = CodeTargetManager.Ins.GetCodeTarget("cs-bin");
-        var outputManifest = new OutputFileManifest();
-        csBinTarget.GenerateCode(genCtx, outputManifest);
-
-        var output2 = new OutputFileManifest();
-        PostProcessManager.Ins.GetPostProcess("nop").PostProcess(outputManifest, output2);
-
-        var saver = OutputSaverManager.Ins.GetOutputSaver("local");
-        saver.Save(output2);
+        var pipeline = new Pipeline(genArgs);
+        pipeline.Run();
         
         s_logger.Info("bye~");
     }

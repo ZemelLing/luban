@@ -1,4 +1,4 @@
-﻿namespace Luban.Validators;
+﻿namespace Luban.Any.Validators;
 
 internal class Range
 {

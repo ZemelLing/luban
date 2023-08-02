@@ -1,9 +1,4 @@
-using Luban.Datas;
-using Luban.Defs;
-using Luban.RawDefs;
-using Luban.Job.Common.Types;
-
-namespace Luban.DataVisitors;
+namespace Luban.Any.DataVisitors;
 
 class ResourceExportor : IDataActionVisitor<TType, List<ResourceInfo>>
 {

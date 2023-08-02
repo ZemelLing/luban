@@ -1,9 +1,4 @@
-using Luban.Core.Defs;
-using Luban.Job.Common.Generate;
-using Luban.Job.Common.Tpl;
-using Scriban;
-
-namespace Luban.Generate;
+namespace Luban.Any.Generate;
 
 [Render("code_lua_bin")]
 class LuaCodeBinRender : LuaCodeRenderBase

@@ -1,6 +1,4 @@
-using Luban.Core.Types;
-
-namespace Luban.Core.TypeVisitors;
+namespace Luban.Any.TypeVisitors;
 
 class JavaUnderingDeserializeVisitor : ITypeFuncVisitor<string, string, string>
 {

@@ -1,6 +1,4 @@
-﻿using Luban.Job.Common.Generate;
-
-namespace Luban.Generate;
+﻿namespace Luban.Any.Generate;
 
 [Render("code_protobuf3")]
 class Protobuf3SchemaRender : ProtobufSchemaRenderBase

@@ -1,7 +1,6 @@
-﻿using Luban.Validators;
-using Luban.Job.Common.Types;
+﻿using Luban.Any.Validators;
 
-namespace Luban.Utils;
+namespace Luban.Any;
 
 static class ValidatorUtil
 {
