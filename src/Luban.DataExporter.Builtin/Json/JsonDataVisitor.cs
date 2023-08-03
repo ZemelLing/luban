@@ -1,20 +1,16 @@
 using System.Text.Json;
+using Luban.Core;
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Utils;
+using Luban.DataLoader.Builtin;
 
 namespace Luban.DataExporter.Builtin.Json;
 
-class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
+public class JsonDataVisitor : IDataActionVisitor<Utf8JsonWriter>
 {
-    public static JsonExportor Ins { get; } = new JsonExportor();
-
-    public void WriteAsArray(List<Record> datas, Utf8JsonWriter x)
-    {
-        x.WriteStartArray();
-        foreach (var d in datas)
-        {
-            d.Data.Apply(this, x);
-        }
-        x.WriteEndArray();
-    }
+    public static JsonDataVisitor Ins { get; } = new JsonDataVisitor();
 
     public void Accept(DBool type, Utf8JsonWriter x)
     {
@@ -31,27 +27,12 @@ class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
         x.WriteNumberValue(type.Value);
     }
 
-    public void Accept(DFshort type, Utf8JsonWriter x)
-    {
-        x.WriteNumberValue(type.Value);
-    }
-
     public void Accept(DInt type, Utf8JsonWriter x)
     {
         x.WriteNumberValue(type.Value);
     }
 
-    public void Accept(DFint type, Utf8JsonWriter x)
-    {
-        x.WriteNumberValue(type.Value);
-    }
-
     public void Accept(DLong type, Utf8JsonWriter x)
-    {
-        x.WriteNumberValue(type.Value);
-    }
-
-    public void Accept(DFlong type, Utf8JsonWriter x)
     {
         x.WriteNumberValue(type.Value);
     }
@@ -76,19 +57,14 @@ class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
         x.WriteStringValue(type.Value);
     }
 
-    public void Accept(DBytes type, Utf8JsonWriter x)
-    {
-        throw new NotImplementedException();
-    }
-
     public virtual void Accept(DText type, Utf8JsonWriter x)
     {
-        x.WriteStartObject();
-        x.WritePropertyName(DText.KEY_NAME);
         x.WriteStringValue(type.Key);
-        x.WritePropertyName(DText.TEXT_NAME);
-        x.WriteStringValue(type.TextOfCurrentAssembly);
-        x.WriteEndObject();
+    }
+
+    public virtual void Accept(DDateTime type, Utf8JsonWriter x)
+    {
+        x.WriteNumberValue(type.GetUnixTime(GenerationContext.Ins.Arguments.TimeZone));
     }
 
     public virtual void Accept(DBean type, Utf8JsonWriter x)
@@ -109,7 +85,7 @@ class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
 
             // 特殊处理 bean 多态类型
             // 另外，不生成  xxx:null 这样
-            if (d == null || !defField.NeedExport)
+            if (d == null || !defField.NeedExport())
             {
                 //x.WriteNullValue();
             }
@@ -158,37 +134,5 @@ class JsonExportor : IDataActionVisitor<Utf8JsonWriter>
             x.WriteEndArray();
         }
         x.WriteEndArray();
-    }
-
-    public void Accept(DVector2 type, Utf8JsonWriter x)
-    {
-        x.WriteStartObject();
-        x.WriteNumber("x", type.Value.X);
-        x.WriteNumber("y", type.Value.Y);
-        x.WriteEndObject();
-    }
-
-    public void Accept(DVector3 type, Utf8JsonWriter x)
-    {
-        x.WriteStartObject();
-        x.WriteNumber("x", type.Value.X);
-        x.WriteNumber("y", type.Value.Y);
-        x.WriteNumber("z", type.Value.Z);
-        x.WriteEndObject();
-    }
-
-    public void Accept(DVector4 type, Utf8JsonWriter x)
-    {
-        x.WriteStartObject();
-        x.WriteNumber("x", type.Value.X);
-        x.WriteNumber("y", type.Value.Y);
-        x.WriteNumber("z", type.Value.Z);
-        x.WriteNumber("w", type.Value.W);
-        x.WriteEndObject();
-    }
-
-    public virtual void Accept(DDateTime type, Utf8JsonWriter x)
-    {
-        x.WriteNumberValue(type.UnixTimeOfCurrentAssembly);
     }
 }

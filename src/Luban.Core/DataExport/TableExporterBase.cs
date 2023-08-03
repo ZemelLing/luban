@@ -5,6 +5,8 @@ namespace Luban.Core.DataExport;
 
 public abstract class TableExporterBase : ITableExporter
 {
+    public const string FamilyPrefix = "tableExporter";
+    
     public bool AllTablesInOneFile => GetType().GetCustomAttribute<TableExporterAttribute>().AllTablesInOneFile;
     
     protected abstract string OutputFileExt { get; }

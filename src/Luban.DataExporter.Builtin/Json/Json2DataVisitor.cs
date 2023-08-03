@@ -2,9 +2,9 @@
 
 namespace Luban.DataExporter.Builtin.Json;
 
-class Json2Exportor : JsonExportor
+class Json2DataVisitor : JsonDataVisitor
 {
-    public static new Json2Exportor Ins { get; } = new();
+    public static new Json2DataVisitor Ins { get; } = new();
 
     public void WriteAsObject(DefTable table, List<Record> datas, Utf8JsonWriter x)
     {
@@ -33,7 +33,7 @@ class Json2Exportor : JsonExportor
             }
             case ETableMode.LIST:
             {
-                JsonExportor.Ins.WriteAsArray(datas, x);
+                JsonDataVisitor.Ins.WriteAsArray(datas, x);
                 break;
             }
             default:

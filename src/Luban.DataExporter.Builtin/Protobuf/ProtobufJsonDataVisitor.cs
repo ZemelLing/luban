@@ -4,9 +4,9 @@ using Luban.DataExporter.Builtin.Json;
 
 namespace Luban.DataExporter.Builtin.Protobuf;
 
-class ProtobufJsonExportor : JsonExportor
+class ProtobufJsonDataVisitor : JsonDataVisitor
 {
-    public static new FlatBuffersJsonExportor Ins { get; } = new();
+    public static new FlatBuffersJsonDataVisitor Ins { get; } = new();
 
     public void WriteAsTable(List<Record> datas, Utf8JsonWriter x)
     {

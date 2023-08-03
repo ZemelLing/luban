@@ -1,17 +1,13 @@
 using System.Text;
 using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
 using Luban.Core.Utils;
 
 namespace Luban.DataExporter.Builtin.Erlang;
 
-class ToErlangLiteralVisitor : ToLiteralVisitorBase
+public class ToErlangLiteralVisitor : ToLiteralVisitorBase
 {
     public static ToErlangLiteralVisitor Ins { get; } = new();
-
-    public override string Accept(DText type)
-    {
-        return $"#{{{DText.KEY_NAME}=>\"{type.Key}\",{DText.TEXT_NAME}=>\"{DataUtil.EscapeString(type.TextOfCurrentAssembly)}\"}}";
-    }
 
     public override string Accept(DBean type)
     {
@@ -99,23 +95,5 @@ class ToErlangLiteralVisitor : ToLiteralVisitorBase
         }
         x.Append('}');
         return x.ToString();
-    }
-
-    public override string Accept(DVector2 type)
-    {
-        var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y}}}";
-    }
-
-    public override string Accept(DVector3 type)
-    {
-        var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z}}}";
-    }
-
-    public override string Accept(DVector4 type)
-    {
-        var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z},w=>{v.W}}}";
     }
 }

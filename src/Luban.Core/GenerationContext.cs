@@ -319,6 +319,22 @@ public class GenerationContext
     {
         return Arguments.TryGetOption(family, name, useGlobalIfNotExits, out string value) ? value : defaultValue;
     }
+    
+    public bool GetBoolOptionOrDefault(string family, string name, bool useGlobalIfNotExits, bool defaultValue)
+    {
+        if (Arguments.TryGetOption(family, name, useGlobalIfNotExits, out string value))
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "0":
+                case "false": return false;
+                case "1":
+                case "true": return true;
+                default: throw new Exception($"invalid bool option value:{value}");
+            }   
+        }
+        return defaultValue;
+    }
 
     public ICodeStyle GetCodeStyle(string family)
     {

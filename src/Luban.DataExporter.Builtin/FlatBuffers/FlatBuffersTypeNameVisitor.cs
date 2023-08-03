@@ -1,4 +1,8 @@
-﻿namespace Luban.Any.TypeVisitors;
+﻿using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
+
+namespace Luban.DataExporter.Builtin.FlatBuffers;
 
 public class FlatBuffersTypeNameVisitor : ITypeFuncVisitor<string>
 {
@@ -19,27 +23,12 @@ public class FlatBuffersTypeNameVisitor : ITypeFuncVisitor<string>
         return "int16";
     }
 
-    public string Accept(TFshort type)
-    {
-        return "int16";
-    }
-
     public string Accept(TInt type)
     {
         return "int32";
     }
 
-    public string Accept(TFint type)
-    {
-        return "int32";
-    }
-
     public string Accept(TLong type)
-    {
-        return "int64";
-    }
-
-    public string Accept(TFlong type)
     {
         return "int64";
     }
@@ -56,7 +45,7 @@ public class FlatBuffersTypeNameVisitor : ITypeFuncVisitor<string>
 
     public string Accept(TEnum type)
     {
-        return type.DefineEnum.FlatBuffersFullName;
+        return TypeUtil.MakeFlatBuffersFullName(type.DefineEnum.Namespace, type.DefineEnum.Name);
     }
 
     public string Accept(TString type)
@@ -69,26 +58,6 @@ public class FlatBuffersTypeNameVisitor : ITypeFuncVisitor<string>
         return "string";
     }
 
-    public string Accept(TBytes type)
-    {
-        return "[ubyte]";
-    }
-
-    public string Accept(TVector2 type)
-    {
-        return "Vector2";
-    }
-
-    public string Accept(TVector3 type)
-    {
-        return "Vector3";
-    }
-
-    public string Accept(TVector4 type)
-    {
-        return "Vector4";
-    }
-
     public string Accept(TDateTime type)
     {
         return "int64";
@@ -96,7 +65,7 @@ public class FlatBuffersTypeNameVisitor : ITypeFuncVisitor<string>
 
     public string Accept(TBean type)
     {
-        return type.Bean.FlatBuffersFullName;
+        return TypeUtil.MakeFlatBuffersFullName(type.DefBean.Namespace, type.DefBean.Name);
     }
 
     public string Accept(TArray type)

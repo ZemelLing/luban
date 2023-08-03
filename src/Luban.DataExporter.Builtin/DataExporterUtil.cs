@@ -57,12 +57,12 @@ public static class DataExporterUtil
                 });
                 if (dataType == "data_json")
                 {
-                    JsonExportor.Ins.WriteAsArray(records, jsonWriter);
+                    JsonDataVisitor.Ins.WriteAsArray(records, jsonWriter);
                 }
                 else
                 {
 
-                    Json2Exportor.Ins.WriteAsObject(table, records, jsonWriter);
+                    Json2DataVisitor.Ins.WriteAsObject(table, records, jsonWriter);
                 }
                 jsonWriter.Flush();
                 return DataUtil.StreamToBytes(ss);
@@ -138,7 +138,7 @@ public static class DataExporterUtil
                     SkipValidation = false,
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
                 });
-                ProtobufJsonExportor.Ins.WriteAsTable(records, jsonWriter);
+                ProtobufJsonDataVisitor.Ins.WriteAsTable(records, jsonWriter);
                 jsonWriter.Flush();
                 return DataUtil.StreamToBytes(ss);
             }
@@ -159,7 +159,7 @@ public static class DataExporterUtil
                     SkipValidation = false,
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All),
                 });
-                FlatBuffersJsonExportor.Ins.WriteAsTable(records, jsonWriter);
+                FlatBuffersJsonDataVisitor.Ins.WriteAsTable(records, jsonWriter);
                 jsonWriter.Flush();
                 return DataUtil.StreamToBytes(ss);
             }

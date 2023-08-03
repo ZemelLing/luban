@@ -1,10 +1,13 @@
 ﻿using System.Text;
+using Luban.Core;
+using Luban.Core.DataExport;
 using Luban.Core.Datas;
 using Luban.Core.Defs;
 
 namespace Luban.DataExporter.Builtin.Erlang;
 
-public class ErlangExport
+[TableExporter("erlang")]
+public class ErlangExport : TableExporterBase
 {
     public static ErlangExport Ins { get; } = new();
 
@@ -41,5 +44,25 @@ public class ErlangExport
 
         s.Append($"get_key_list() ->").AppendLine();
         s.Append($"\t[{string.Join(',', records.Select(r => r.Data.GetField(t.Index).Apply(ToErlangLiteralVisitor.Ins)))}].");
+    }
+
+    protected override string OutputFileExt => "erl";
+    
+    public override OutputFile Export(DefTable table, List<Record> records)
+    {
+        var s = new StringBuilder();
+        if (table.IsMapTable)
+        {
+            ExportTableMap(table, records, s);
+        }
+        else
+        {
+            ExportTableSingleton(table, records[0], s);
+        }
+        return new OutputFile() 
+        {
+            File = $"{table.OutputDataFile}.{OutputFileExt}",
+            Content = s.ToString(),
+        };
     }
 }
