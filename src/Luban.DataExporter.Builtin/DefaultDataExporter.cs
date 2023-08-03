@@ -10,6 +10,7 @@ public class DefaultDataExporter : DataExporterBase
     protected override void ExportTable(DefTable table, OutputFileManifest manifest, ITableExporter tableExporter)
     {
         GenerationContext ctx = GenerationContext.Ins;
-        tableExporter.Export(table, ctx.GetTableExportDataList(table));
+        var outputFile = tableExporter.Export(table, ctx.GetTableExportDataList(table));
+        manifest.AddFile(outputFile);
     }
 }

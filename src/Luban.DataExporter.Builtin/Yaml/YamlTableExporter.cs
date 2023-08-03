@@ -1,22 +1,16 @@
-using System.Text.Json;
-using System.Xml;
 using Luban.Core;
 using Luban.Core.DataExport;
 using Luban.Core.Defs;
 using Luban.Core.Utils;
-using Luban.DataExporter.Builtin.Json;
-using Luban.DataExporter.Builtin.Yaml;
 using YamlDotNet.RepresentationModel;
 
-namespace Luban.DataExporter.Builtin.Xml;
+namespace Luban.DataExporter.Builtin.Yaml;
 
 [TableExporter("yaml")]
 public class YamlTableExporter : TableExporterBase
 {
     protected override string OutputFileExt => "yml";
     
-
-
     public YamlNode WriteAsArray(List<Record> datas)
     {
 

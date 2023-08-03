@@ -6,8 +6,8 @@ using Newtonsoft.Json.Bson;
 
 namespace Luban.DataExporter.Builtin.Bson;
 
-[TableExporter("json")]
-public class JsonTableExporter : TableExporterBase
+[TableExporter("bson")]
+public class BsonTableExporter : TableExporterBase
 {
     protected override string OutputFileExt => "json";
     

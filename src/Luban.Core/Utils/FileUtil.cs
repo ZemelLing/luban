@@ -194,7 +194,7 @@ public static class FileUtil
                 return false;
             }
         }
-        WriteAllBytes(file, bytes);
+        File.WriteAllBytes(file, bytes);
         return true;
     }
 

@@ -11,6 +11,7 @@ using Luban.Core.PostProcess;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
 using Luban.Core.Tmpl;
+using Luban.DataExporter.Builtin;
 using Luban.DataLoader.Builtin;
 using Luban.Plugin;
 using Luban.Schema.Default;
@@ -54,6 +55,7 @@ internal class Program
         scanAssemblies.Add(typeof(CsharpBin).Assembly);
         scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
         scanAssemblies.Add(typeof(FieldNames).Assembly);
+        scanAssemblies.Add(typeof(DefaultDataExporter).Assembly);
 
         foreach (var assembly in scanAssemblies)
         {
@@ -84,7 +86,8 @@ internal class Program
         {
             Target = "all",
             CodeMissions = new List<string>{ "cs-bin"},
-            DataMissions = new List<string>{ "data-bin"},
+            DataMissions = new List<string>{ "bin"},
+            ExcludeTags = new List<string>(),
             GeneralArgs = new()
             {
                 {"schemaCollector", "default"},
@@ -93,7 +96,6 @@ internal class Program
                 {"outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
                 {"outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
                 {"dataExporter", "default"},
-                {"tableExporter", "bin"},
             },
         };
         var pipeline = new Pipeline(genArgs);

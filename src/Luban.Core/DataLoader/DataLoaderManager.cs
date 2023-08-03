@@ -33,7 +33,7 @@ public class DataLoaderManager
             var options = new Dictionary<string, string>();
             foreach (var atomFile in FileUtil.GetFileOrDirectory(Path.Combine(inputDataDir, actualFile)))
             {
-                tasks.Add(Task.Run(() => LoadTableFile(ctx, table, actualFile, subAssetName, options)));
+                tasks.Add(Task.Run(() => LoadTableFile(ctx, table, atomFile, subAssetName, options)));
             }
         }
 
