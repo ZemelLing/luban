@@ -21,7 +21,6 @@
 
     <ItemGroup>
       <Folder Include="DataConvert\" />
-      <Folder Include="DataExport\" />
     </ItemGroup>
 
 </Project>
