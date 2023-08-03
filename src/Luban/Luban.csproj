@@ -25,10 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Templates\common\cs\enum.tpl">
+      <None Update="Templates\common\cs\enum.sbn">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Templates\common\flatbuffers\enum.tpl">
+      <None Update="Templates\common\flatbuffers\enum.sbn">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Templates\common\go\enum.tpl">

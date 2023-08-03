@@ -42,7 +42,7 @@ public class TemplateManager
         }
         foreach (var searchPath in _templateSearchPaths)
         {
-            var fullPath = $"{searchPath}/{templateName}.tpl";
+            var fullPath = $"{searchPath}/{templateName}.sbn";
             if (File.Exists(fullPath))
             {
                 result = File.ReadAllText(fullPath, Encoding.UTF8);
@@ -60,7 +60,7 @@ public class TemplateManager
         {
             return strTpl;
         }
-        throw new FileNotFoundException($"can't find {templateName}.tpl in paths:{string.Join(';', _templateSearchPaths)}");
+        throw new FileNotFoundException($"can't find {templateName}.sbn in paths:{string.Join(';', _templateSearchPaths)}");
     }
 
     public Scriban.Template GetTemplate(string templateName)

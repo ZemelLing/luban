@@ -31,13 +31,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Templates\cs-bin\bean.tpl">
+      <None Update="Templates\cs-bin\bean.sbn">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Templates\cs-bin\table.tpl">
+      <None Update="Templates\cs-bin\table.sbn">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Templates\cs-bin\tables.tpl">
+      <None Update="Templates\cs-bin\tables.sbn">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
