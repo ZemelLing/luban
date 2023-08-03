@@ -235,7 +235,7 @@ public class GenerationContext
     
     public void AddDataTable(DefTable table, List<Record> mainRecords, List<Record> patchRecords)
     {
-        s_logger.Info("AddDataTable name:{} record count:{}", table.FullName, mainRecords.Count);
+        s_logger.Debug("AddDataTable name:{} record count:{}", table.FullName, mainRecords.Count);
         _recordsByTables[table.FullName] = new TableDataInfo(table, mainRecords, patchRecords);
     }
 

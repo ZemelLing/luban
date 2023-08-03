@@ -14,9 +14,9 @@ public class GenerationArguments
 
     public List<string> ExcludeTags { get; set; }
     
-    public List<string> CodeMissions { get; set; }
+    public List<string> CodeTargets { get; set; }
     
-    public List<string> DataMissions { get; set; }
+    public List<string> DataTargets { get; set; }
     
     public Dictionary<string, string> GeneralArgs { get; set; }
 

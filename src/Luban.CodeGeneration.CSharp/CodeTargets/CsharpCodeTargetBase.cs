@@ -1,7 +1,7 @@
 using Luban.CodeGeneration.CSharp.TemplateExtensions;
 using Luban.Core;
 using Luban.Core.CodeFormat;
-using Luban.Core.CodeGeneration;
+using Luban.Core.CodeTarget;
 using Luban.Core.Defs;
 using Scriban;
 

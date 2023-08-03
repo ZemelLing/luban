@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.Schema.Builtin", "Lub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPlugin", "DemoPlugin\DemoPlugin.csproj", "{6D48EBA0-B6DE-414B-AEAB-0CE874281D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataExporter.Builtin", "Luban.DataExporter.Builtin\Luban.DataExporter.Builtin.csproj", "{7D1DC8E2-6581-4E35-A098-A8ED9264361C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Luban.DataTarget.Builtin", "Luban.DataTarget.Builtin\Luban.DataTarget.Builtin.csproj", "{7D1DC8E2-6581-4E35-A098-A8ED9264361C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

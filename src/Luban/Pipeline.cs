@@ -1,6 +1,6 @@
 using Luban.Core;
-using Luban.Core.CodeGeneration;
-using Luban.Core.DataExport;
+using Luban.Core.CodeTarget;
+using Luban.Core.DataTarget;
 using Luban.Core.Defs;
 using Luban.Core.OutputSaver;
 using Luban.Core.PostProcess;
@@ -51,21 +51,21 @@ public class Pipeline
     private void ProcessMissions()
     {
         var tasks = new List<Task>();
-        foreach (string mission in _genArgs.CodeMissions)
+        foreach (string mission in _genArgs.CodeTargets)
         {
             ICodeTarget m = CodeTargetManager.Ins.GetCodeTarget(mission);
             tasks.Add(Task.Run(() => ProcessCodeTarget(mission, m)));
         }
 
-        if (_genArgs.DataMissions.Count > 0)
+        if (_genArgs.DataTargets.Count > 0)
         {
             _genCtx.LoadDatas();
             string dataExporterName = _genCtx.GetOptionOrDefault("global", "dataExporter", true, "default");
-            IDataExporter dataExporter = DataExporterManager.Ins.GetDataExporter(dataExporterName);
-            foreach (string mission in _genArgs.DataMissions)
+            IDataExporter dataExporter = DataTargetManager.Ins.GetDataExporter(dataExporterName);
+            foreach (string mission in _genArgs.DataTargets)
             {
-                ITableExporter tableExporter = DataExporterManager.Ins.GetTableExporter(mission);
-                tasks.Add(Task.Run(() => ProcessDataTarget(mission, dataExporter, tableExporter)));
+                IDataTarget dataTarget = DataTargetManager.Ins.GetTableExporter(mission);
+                tasks.Add(Task.Run(() => ProcessDataTarget(mission, dataExporter, dataTarget)));
             }
         }
         Task.WaitAll(tasks.ToArray());
@@ -91,10 +91,10 @@ public class Pipeline
         saver.Save(outputManifest, outputDir);
     }
     
-    private void ProcessDataTarget(string name, IDataExporter mission, ITableExporter tableExporter)
+    private void ProcessDataTarget(string name, IDataExporter mission, IDataTarget dataTarget)
     {
         var outputManifest = new OutputFileManifest();
-        mission.Handle(_genCtx, tableExporter, outputManifest);
+        mission.Handle(_genCtx, dataTarget, outputManifest);
         
         if (_genArgs.TryGetOption(name, "postprocess", true, out string postProcessName))
         {

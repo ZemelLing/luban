@@ -19,8 +19,4 @@
       <PackageReference Include="Scriban" Version="5.7.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DataConvert\" />
-    </ItemGroup>
-
 </Project>

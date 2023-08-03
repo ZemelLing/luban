@@ -2,9 +2,9 @@
 using Luban.CodeGeneration.CSharp.CodeTargets;
 using Luban.Core;
 using Luban.Core.CodeFormat;
-using Luban.Core.CodeGeneration;
-using Luban.Core.DataExport;
+using Luban.Core.CodeTarget;
 using Luban.Core.DataLoader;
+using Luban.Core.DataTarget;
 using Luban.Core.Defs;
 using Luban.Core.OutputSaver;
 using Luban.Core.PostProcess;
@@ -47,7 +47,7 @@ internal class Program
         PostProcessManager.Ins.Init();
         OutputSaverManager.Ins.Init();
         DataLoaderManager.Ins.Init();
-        DataExporterManager.Ins.Init();
+        DataTargetManager.Ins.Init();
         
         PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
         
@@ -67,8 +67,8 @@ internal class Program
             PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
             OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
             DataLoaderManager.Ins.ScanRegisterDataLoader(assembly);
-            DataExporterManager.Ins.ScanRegisterDataExporter(assembly);
-            DataExporterManager.Ins.ScanRegisterTableExporter(assembly);
+            DataTargetManager.Ins.ScanRegisterDataExporter(assembly);
+            DataTargetManager.Ins.ScanRegisterTableExporter(assembly);
         }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
@@ -85,8 +85,8 @@ internal class Program
         var genArgs = new GenerationArguments()
         {
             Target = "all",
-            CodeMissions = new List<string>{ "cs-bin"},
-            DataMissions = new List<string>{ "bin"},
+            CodeTargets = new List<string>{ "cs-bin"},
+            DataTargets = new List<string>{ "bin"},
             ExcludeTags = new List<string>(),
             GeneralArgs = new()
             {

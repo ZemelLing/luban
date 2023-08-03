@@ -20,7 +20,7 @@ public class DefaultSchemaCollector : SchemaCollectorBase
 
         foreach (var importFile in rootLoader.ImportFiles)
         {
-            s_logger.Info("import schema file:{} type:{}", importFile.FileName, importFile.Type);
+            s_logger.Debug("import schema file:{} type:{}", importFile.FileName, importFile.Type);
             var schemaLoader = SchemaLoaderFactory.Ins.Create(FileUtil.GetExtensionWithDot(importFile.FileName), importFile.Type);
             schemaLoader.Load(importFile.FileName, this);
         }

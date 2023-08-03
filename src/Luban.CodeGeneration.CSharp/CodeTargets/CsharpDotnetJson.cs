@@ -1,5 +1,5 @@
 using Luban.Core;
-using Luban.Core.CodeGeneration;
+using Luban.Core.CodeTarget;
 using Luban.Core.Defs;
 using Scriban;
 
