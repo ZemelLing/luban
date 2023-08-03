@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin.Json;
 
 class Json2Exportor : JsonExportor
 {

@@ -1,8 +1,18 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Xml;
+using Luban.DataExporter.Builtin.Binary;
+using Luban.DataExporter.Builtin.Bson;
+using Luban.DataExporter.Builtin.FlatBuffers;
+using Luban.DataExporter.Builtin.Json;
+using Luban.DataExporter.Builtin.Lua;
+using Luban.DataExporter.Builtin.MsgPack;
+using Luban.DataExporter.Builtin.Protobuf;
+using Luban.DataExporter.Builtin.Res;
+using Luban.DataExporter.Builtin.Xml;
+using Luban.DataExporter.Builtin.Yaml;
 
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin;
 
 public static class DataExporterUtil
 {
@@ -19,7 +29,7 @@ public static class DataExporterUtil
             case "data_bin":
             {
                 var buf = ThreadLocalTemporalByteBufPool.Alloc(1024 * 1024);
-                BinaryExportor.Ins.WriteList(table, records, buf);
+                BinaryDataVisitor.Ins.WriteList(table, records, buf);
                 var bytes = buf.CopyData();
                 ThreadLocalTemporalByteBufPool.Free(buf);
                 return bytes;
@@ -72,7 +82,7 @@ public static class DataExporterUtil
             {
                 var ss = new MemoryStream();
                 var bsonWriter = new BsonDataWriter(ss);
-                BsonExportor.Ins.WriteAsArray(records, bsonWriter);
+                BsonDataVisitor.Ins.WriteAsArray(records, bsonWriter);
                 bsonWriter.Flush();
                 return DataUtil.StreamToBytes(ss);
             }

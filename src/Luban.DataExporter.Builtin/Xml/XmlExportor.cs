@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Xml;
 
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin.Xml;
 
 public class XmlExportor : IDataActionVisitor<XmlWriter>
 {

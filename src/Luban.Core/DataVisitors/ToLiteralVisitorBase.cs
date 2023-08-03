@@ -4,7 +4,7 @@ using Luban.Core.Utils;
 
 namespace Luban.Core.DataVisitors;
 
-abstract class ToLiteralVisitorBase : IDataFuncVisitor<string>
+public abstract class ToLiteralVisitorBase : IDataFuncVisitor<string>
 {
     public virtual string Accept(DBool type)
     {

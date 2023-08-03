@@ -1,4 +1,4 @@
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin.Yaml;
 
 class YamlExportor : IDataFuncVisitor<YamlNode>
 {

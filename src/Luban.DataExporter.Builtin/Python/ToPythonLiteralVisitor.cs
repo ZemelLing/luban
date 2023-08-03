@@ -1,11 +1,16 @@
 using System.Text;
 
-namespace Luban.Any.DataVisitors;
+namespace Luban.DataExporter.Builtin.Python;
 
-class ToJsonLiteralVisitor : ToLiteralVisitorBase
+class ToPythonLiteralVisitor : ToLiteralVisitorBase
 {
-    public static ToJsonLiteralVisitor Ins { get; } = new();
+    public static ToPythonLiteralVisitor Ins { get; } = new();
 
+    public override string Accept(DBool type)
+    {
+        return type.Value ? "True" : "False";
+    }
+        
     public override string Accept(DText type)
     {
         return $"{{\"{DText.KEY_NAME}\":\"{type.Key}\",\"{DText.TEXT_NAME}\":\"{DataUtil.EscapeString(type.TextOfCurrentAssembly)}\"}}";
@@ -14,11 +19,10 @@ class ToJsonLiteralVisitor : ToLiteralVisitorBase
     public override string Accept(DBean type)
     {
         var x = new StringBuilder();
-        bool prevProperty = false;
-        if (type.Type.IsAbstractType)
+        var bean = type.ImplType;
+        if (bean.IsAbstractType)
         {
-            x.Append($"{{ \"_name\":\"{type.ImplType.Name}\"");
-            prevProperty = true;
+            x.Append($"{{ \"_name\":\"{type.ImplType.Name}\",");
         }
         else
         {
@@ -33,16 +37,9 @@ class ToJsonLiteralVisitor : ToLiteralVisitorBase
             {
                 continue;
             }
-            if (prevProperty)
-            {
-                x.Append(',');
-            }
-            else
-            {
-                prevProperty = true;
-            }
             x.Append('\"').Append(defField.Name).Append('\"').Append(':');
             x.Append(f.Apply(this));
+            x.Append(',');
         }
         x.Append('}');
         return x.ToString();
@@ -55,10 +52,11 @@ class ToJsonLiteralVisitor : ToLiteralVisitorBase
         int index = 0;
         foreach (var e in datas)
         {
-            if (index++ > 0)
+            if (index > 0)
             {
                 x.Append(',');
             }
+            ++index;
             x.Append(e.Apply(this));
         }
         x.Append(']');
@@ -92,11 +90,12 @@ class ToJsonLiteralVisitor : ToLiteralVisitorBase
         int index = 0;
         foreach (var e in type.Datas)
         {
-            if (index++ > 0)
+            if (index > 0)
             {
                 x.Append(',');
             }
-            x.Append('"').Append(e.Key.Apply(ToJsonPropertyNameVisitor.Ins)).Append('"');
+            ++index;
+            x.Append(e.Key.Apply(this));
             x.Append(':');
             x.Append(e.Value.Apply(this));
         }

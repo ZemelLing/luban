@@ -1,19 +1,16 @@
 using System.Text;
+using Luban.Core.Datas;
+using Luban.Core.Utils;
 
-namespace Luban.Any.DataVisitors;
+namespace Luban.DataExporter.Builtin.Erlang;
 
-class ToLuaLiteralVisitor : ToLiteralVisitorBase
+class ToErlangLiteralVisitor : ToLiteralVisitorBase
 {
-    public static ToLuaLiteralVisitor Ins { get; } = new();
-
-    public override string Accept(DString type)
-    {
-        return DataUtil.EscapeLuaStringWithQuote(type.Value);
-    }
+    public static ToErlangLiteralVisitor Ins { get; } = new();
 
     public override string Accept(DText type)
     {
-        return $"{{{DText.KEY_NAME}='{type.Key}',{DText.TEXT_NAME}={DataUtil.EscapeLuaStringWithQuote(type.TextOfCurrentAssembly)}}}";
+        return $"#{{{DText.KEY_NAME}=>\"{type.Key}\",{DText.TEXT_NAME}=>\"{DataUtil.EscapeString(type.TextOfCurrentAssembly)}\"}}";
     }
 
     public override string Accept(DBean type)
@@ -21,39 +18,49 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
         var x = new StringBuilder();
         if (type.Type.IsAbstractType)
         {
-            x.Append($"{{ {FieldNames.LUA_TYPE_NAME_KEY}='{DataUtil.GetImplTypeName(type)}',");
+            x.Append($"#{{name__ => \"{DataUtil.GetImplTypeName(type)}\"");
+            if (type.Fields.Count > 0)
+            {
+                x.Append(',');
+            }
         }
         else
         {
-            x.Append('{');
+            x.Append("#{");
         }
 
         int index = 0;
         foreach (var f in type.Fields)
         {
-            var defField = (DefField)type.ImplType.HierarchyFields[index++];
-            if (f == null || !defField.NeedExport)
+            var defField = type.ImplType.HierarchyFields[index++];
+            if (f == null)
             {
                 continue;
             }
-            x.Append(defField.Name).Append('=');
-            x.Append(f.Apply(this));
-            x.Append(',');
+            if (index > 1)
+            {
+                x.Append(',');
+            }
+            x.Append($"{defField.Name} => {f.Apply(this)}");
         }
         x.Append('}');
         return x.ToString();
     }
 
 
-    private void Append(List<DType> datas, StringBuilder x)
+    protected void Append(List<DType> datas, StringBuilder x)
     {
-        x.Append('{');
+        x.Append('[');
+        int index = 0;
         foreach (var e in datas)
         {
+            if (index++ > 0)
+            {
+                x.Append(',');
+            }
             x.Append(e.Apply(this));
-            x.Append(',');
         }
-        x.Append('}');
+        x.Append(']');
     }
 
     public override string Accept(DArray type)
@@ -80,15 +87,15 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
     public override string Accept(DMap type)
     {
         var x = new StringBuilder();
-        x.Append('{');
+        x.Append("#{");
+        int index = 0;
         foreach (var e in type.Datas)
         {
-            x.Append('[');
-            x.Append(e.Key.Apply(this));
-            x.Append(']');
-            x.Append('=');
-            x.Append(e.Value.Apply(this));
-            x.Append(',');
+            if (index++ > 0)
+            {
+                x.Append(',');
+            }
+            x.Append($"{e.Key.Apply(this)} => {e.Value.Apply(this)}");
         }
         x.Append('}');
         return x.ToString();
@@ -97,18 +104,18 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
     public override string Accept(DVector2 type)
     {
         var v = type.Value;
-        return $"{{x={v.X},y={v.Y}}}";
+        return $"#{{x=>{v.X},y=>{v.Y}}}";
     }
 
     public override string Accept(DVector3 type)
     {
         var v = type.Value;
-        return $"{{x={v.X},y={v.Y},z={v.Z}}}";
+        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z}}}";
     }
 
     public override string Accept(DVector4 type)
     {
         var v = type.Value;
-        return $"{{x={v.X},y={v.Y},z={v.Z},w={v.W}}}";
+        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z},w=>{v.W}}}";
     }
 }

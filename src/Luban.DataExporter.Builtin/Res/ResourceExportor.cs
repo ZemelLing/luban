@@ -1,4 +1,4 @@
-namespace Luban.Any.DataVisitors;
+namespace Luban.DataExporter.Builtin.Res;
 
 class ResourceExportor : IDataActionVisitor<TType, List<ResourceInfo>>
 {

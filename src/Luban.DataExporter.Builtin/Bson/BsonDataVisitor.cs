@@ -1,18 +1,16 @@
-namespace Luban.ExportData.Binary;
+using Luban.Core;
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Utils;
+using Luban.DataLoader.Builtin;
+using Newtonsoft.Json.Bson;
 
-class BsonExportor : IDataActionVisitor<BsonDataWriter>
+namespace Luban.DataExporter.Builtin.Bson;
+
+public class BsonDataVisitor : IDataActionVisitor<BsonDataWriter>
 {
-    public static BsonExportor Ins { get; } = new BsonExportor();
-
-    public void WriteAsArray(List<Record> datas, BsonDataWriter x)
-    {
-        x.WriteStartArray();
-        foreach (var d in datas)
-        {
-            d.Data.Apply(this, x);
-        }
-        x.WriteEndArray();
-    }
+    public static BsonDataVisitor Ins { get; } = new BsonDataVisitor();
 
     public void Accept(DBool type, BsonDataWriter x)
     {
@@ -29,27 +27,12 @@ class BsonExportor : IDataActionVisitor<BsonDataWriter>
         x.WriteValue(type.Value);
     }
 
-    public void Accept(DFshort type, BsonDataWriter x)
-    {
-        x.WriteValue(type.Value);
-    }
-
     public void Accept(DInt type, BsonDataWriter x)
     {
         x.WriteValue(type.Value);
     }
 
-    public void Accept(DFint type, BsonDataWriter x)
-    {
-        x.WriteValue(type.Value);
-    }
-
     public void Accept(DLong type, BsonDataWriter x)
-    {
-        x.WriteValue(type.Value);
-    }
-
-    public void Accept(DFlong type, BsonDataWriter x)
     {
         x.WriteValue(type.Value);
     }
@@ -74,19 +57,14 @@ class BsonExportor : IDataActionVisitor<BsonDataWriter>
         x.WriteValue(type.Value);
     }
 
-    public void Accept(DBytes type, BsonDataWriter x)
-    {
-        throw new NotImplementedException();
-    }
-
     public virtual void Accept(DText type, BsonDataWriter x)
     {
-        x.WriteStartObject();
-        x.WritePropertyName(DText.KEY_NAME);
         x.WriteValue(type.Key);
-        x.WritePropertyName(DText.TEXT_NAME);
-        x.WriteValue(type.TextOfCurrentAssembly);
-        x.WriteEndObject();
+    }
+
+    public virtual void Accept(DDateTime type, BsonDataWriter x)
+    {
+        x.WriteValue(type.GetUnixTime(GenerationContext.Ins.Arguments.TimeZone));
     }
 
     public virtual void Accept(DBean type, BsonDataWriter x)
@@ -107,7 +85,7 @@ class BsonExportor : IDataActionVisitor<BsonDataWriter>
 
             // 特殊处理 bean 多态类型
             // 另外，不生成  xxx:null 这样
-            if (d == null || !defField.NeedExport)
+            if (d == null || !defField.NeedExport())
             {
                 //x.WriteNullValue();
             }
@@ -156,37 +134,5 @@ class BsonExportor : IDataActionVisitor<BsonDataWriter>
             x.WriteEndArray();
         }
         x.WriteEndArray();
-    }
-
-    public void Accept(DVector2 type, BsonDataWriter x)
-    {
-        x.WriteStartObject();
-        x.WritePropertyName("x"); x.WriteValue(type.Value.X);
-        x.WritePropertyName("y"); x.WriteValue(type.Value.Y);
-        x.WriteEndObject();
-    }
-
-    public void Accept(DVector3 type, BsonDataWriter x)
-    {
-        x.WriteStartObject();
-        x.WritePropertyName("x"); x.WriteValue(type.Value.X);
-        x.WritePropertyName("y"); x.WriteValue(type.Value.Y);
-        x.WritePropertyName("z"); x.WriteValue(type.Value.Z);
-        x.WriteEndObject();
-    }
-
-    public void Accept(DVector4 type, BsonDataWriter x)
-    {
-        x.WriteStartObject();
-        x.WritePropertyName("x"); x.WriteValue(type.Value.X);
-        x.WritePropertyName("y"); x.WriteValue(type.Value.Y);
-        x.WritePropertyName("z"); x.WriteValue(type.Value.Z);
-        x.WritePropertyName("w"); x.WriteValue(type.Value.W);
-        x.WriteEndObject();
-    }
-
-    public virtual void Accept(DDateTime type, BsonDataWriter x)
-    {
-        x.WriteValue(type.UnixTimeOfCurrentAssembly);
     }
 }

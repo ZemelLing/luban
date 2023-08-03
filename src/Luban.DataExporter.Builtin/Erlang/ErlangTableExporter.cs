@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
 
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin.Erlang;
 
-class ErlangExport
+public class ErlangExport
 {
     public static ErlangExport Ins { get; } = new();
 

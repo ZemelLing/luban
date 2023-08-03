@@ -1,4 +1,4 @@
-﻿namespace Luban.Any.DataVisitors;
+﻿namespace Luban.DataExporter.Builtin.Json;
 
 class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
 {

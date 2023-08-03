@@ -1,52 +1,55 @@
 using System.Text;
 
-namespace Luban.Any.DataVisitors;
+namespace Luban.DataExporter.Builtin.Json;
 
-class ToErlangLiteralVisitor : ToLiteralVisitorBase
+class ToJsonLiteralVisitor : ToLiteralVisitorBase
 {
-    public static ToErlangLiteralVisitor Ins { get; } = new();
+    public static ToJsonLiteralVisitor Ins { get; } = new();
 
     public override string Accept(DText type)
     {
-        return $"#{{{DText.KEY_NAME}=>\"{type.Key}\",{DText.TEXT_NAME}=>\"{DataUtil.EscapeString(type.TextOfCurrentAssembly)}\"}}";
+        return $"{{\"{DText.KEY_NAME}\":\"{type.Key}\",\"{DText.TEXT_NAME}\":\"{DataUtil.EscapeString(type.TextOfCurrentAssembly)}\"}}";
     }
 
     public override string Accept(DBean type)
     {
         var x = new StringBuilder();
+        bool prevProperty = false;
         if (type.Type.IsAbstractType)
         {
-            x.Append($"#{{name__ => \"{DataUtil.GetImplTypeName(type)}\"");
-            if (type.Fields.Count > 0)
-            {
-                x.Append(',');
-            }
+            x.Append($"{{ \"_name\":\"{type.ImplType.Name}\"");
+            prevProperty = true;
         }
         else
         {
-            x.Append("#{");
+            x.Append('{');
         }
 
         int index = 0;
         foreach (var f in type.Fields)
         {
-            var defField = type.ImplType.HierarchyFields[index++];
-            if (f == null)
+            var defField = (DefField)type.ImplType.HierarchyFields[index++];
+            if (f == null || !defField.NeedExport)
             {
                 continue;
             }
-            if (index > 1)
+            if (prevProperty)
             {
                 x.Append(',');
             }
-            x.Append($"{defField.Name} => {f.Apply(this)}");
+            else
+            {
+                prevProperty = true;
+            }
+            x.Append('\"').Append(defField.Name).Append('\"').Append(':');
+            x.Append(f.Apply(this));
         }
         x.Append('}');
         return x.ToString();
     }
 
 
-    protected void Append(List<DType> datas, StringBuilder x)
+    protected virtual void Append(List<DType> datas, StringBuilder x)
     {
         x.Append('[');
         int index = 0;
@@ -85,7 +88,7 @@ class ToErlangLiteralVisitor : ToLiteralVisitorBase
     public override string Accept(DMap type)
     {
         var x = new StringBuilder();
-        x.Append("#{");
+        x.Append('{');
         int index = 0;
         foreach (var e in type.Datas)
         {
@@ -93,7 +96,9 @@ class ToErlangLiteralVisitor : ToLiteralVisitorBase
             {
                 x.Append(',');
             }
-            x.Append($"{e.Key.Apply(this)} => {e.Value.Apply(this)}");
+            x.Append('"').Append(e.Key.Apply(ToJsonPropertyNameVisitor.Ins)).Append('"');
+            x.Append(':');
+            x.Append(e.Value.Apply(this));
         }
         x.Append('}');
         return x.ToString();
@@ -102,18 +107,18 @@ class ToErlangLiteralVisitor : ToLiteralVisitorBase
     public override string Accept(DVector2 type)
     {
         var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y}}}";
+        return $"{{\"x\":{v.X},\"y\":{v.Y}}}";
     }
 
     public override string Accept(DVector3 type)
     {
         var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z}}}";
+        return $"{{\"x\":{v.X},\"y\":{v.Y},\"z\":{v.Z}}}";
     }
 
     public override string Accept(DVector4 type)
     {
         var v = type.Value;
-        return $"#{{x=>{v.X},y=>{v.Y},z=>{v.Z},w=>{v.W}}}";
+        return $"{{\"x\":{v.X},\"y\":{v.Y},\"z\":{v.Z},\"w\":{v.W}}}";
     }
 }

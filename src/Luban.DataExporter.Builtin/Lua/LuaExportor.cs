@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Luban.ExportData.Binary;
+namespace Luban.DataExporter.Builtin.Lua;
 
 class LuaExportor
 {

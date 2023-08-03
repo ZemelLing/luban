@@ -1,4 +1,8 @@
-namespace Luban.ExportData.Binary;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
+using Luban.Core.Serialization;
+
+namespace Luban.DataExporter.Builtin.Binary;
 
 class BinaryIndexExportor
 {
@@ -13,13 +17,13 @@ class BinaryIndexExportor
         foreach (var d in datas)
         {
             int offset = tableDataBuf.Size;
-            d.Data.Apply(BinaryExportor.Ins, tableDataBuf);
+            d.Data.Apply(BinaryDataVisitor.Ins, tableDataBuf);
 
             string keyStr = "";
             foreach (IndexInfo index in table.IndexList)
             {
                 DType key = d.Data.Fields[index.IndexFieldIdIndex];
-                key.Apply(BinaryExportor.Ins, x);
+                key.Apply(BinaryDataVisitor.Ins, x);
                 keyStr += key.ToString() + ",";
             }
             x.WriteSize(offset);

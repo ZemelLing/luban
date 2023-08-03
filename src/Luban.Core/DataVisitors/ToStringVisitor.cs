@@ -3,7 +3,7 @@ using Luban.Core.Datas;
 
 namespace Luban.Core.DataVisitors;
 
-class ToStringVisitor : ToLiteralVisitorBase
+public class ToStringVisitor : ToLiteralVisitorBase
 {
     public static ToStringVisitor Ins { get; } = new ToStringVisitor();
 

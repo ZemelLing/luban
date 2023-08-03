@@ -1,17 +1,15 @@
-namespace Luban.ExportData.Binary;
+using Luban.Core;
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Serialization;
+using Luban.Core.Utils;
 
-class BinaryExportor : IDataActionVisitor<ByteBuf>
+namespace Luban.DataExporter.Builtin.Binary;
+
+public class BinaryDataVisitor : IDataActionVisitor<ByteBuf>
 {
-    public static BinaryExportor Ins { get; } = new BinaryExportor();
-
-    public void WriteList(DefTable table, List<Record> datas, ByteBuf x)
-    {
-        x.WriteSize(datas.Count);
-        foreach (var d in datas)
-        {
-            d.Data.Apply(this, x);
-        }
-    }
+    public static BinaryDataVisitor Ins { get; } = new BinaryDataVisitor();
 
     public void Accept(DBool type, ByteBuf x)
     {
@@ -28,29 +26,14 @@ class BinaryExportor : IDataActionVisitor<ByteBuf>
         x.WriteShort(type.Value);
     }
 
-    public void Accept(DFshort type, ByteBuf x)
-    {
-        x.WriteFshort(type.Value);
-    }
-
     public void Accept(DInt type, ByteBuf x)
     {
         x.WriteInt(type.Value);
     }
 
-    public void Accept(DFint type, ByteBuf x)
-    {
-        x.WriteFint(type.Value);
-    }
-
     public void Accept(DLong type, ByteBuf x)
     {
         x.WriteLong(type.Value);
-    }
-
-    public void Accept(DFlong type, ByteBuf x)
-    {
-        x.WriteFlong(type.Value);
     }
 
     public void Accept(DFloat type, ByteBuf x)
@@ -73,15 +56,14 @@ class BinaryExportor : IDataActionVisitor<ByteBuf>
         x.WriteString(type.Value);
     }
 
-    public void Accept(DBytes type, ByteBuf x)
-    {
-        x.WriteBytes(type.Value);
-    }
-
     public void Accept(DText type, ByteBuf x)
     {
         x.WriteString(type.Key);
-        x.WriteString(type.TextOfCurrentAssembly);
+    }
+
+    public void Accept(DDateTime type, ByteBuf x)
+    {
+        x.WriteLong(type.GetUnixTime(GenerationContext.Ins.Arguments.TimeZone));
     }
 
     public void Accept(DBean type, ByteBuf x)
@@ -97,7 +79,7 @@ class BinaryExportor : IDataActionVisitor<ByteBuf>
         foreach (var field in type.Fields)
         {
             var defField = (DefField)defFields[index++];
-            if (!defField.NeedExport)
+            if (!defField.NeedExport())
             {
                 continue;
             }
@@ -153,25 +135,5 @@ class BinaryExportor : IDataActionVisitor<ByteBuf>
             e.Key.Apply(this, x);
             e.Value.Apply(this, x);
         }
-    }
-
-    public void Accept(DVector2 type, ByteBuf x)
-    {
-        x.WriteVector2(type.Value);
-    }
-
-    public void Accept(DVector3 type, ByteBuf x)
-    {
-        x.WriteVector3(type.Value);
-    }
-
-    public void Accept(DVector4 type, ByteBuf x)
-    {
-        x.WriteVector4(type.Value);
-    }
-
-    public void Accept(DDateTime type, ByteBuf x)
-    {
-        x.WriteLong(type.UnixTimeOfCurrentAssembly);
     }
 }
