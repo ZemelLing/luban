@@ -1,10 +1,15 @@
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Types;
+
 namespace Luban.DataExporter.Builtin.Res;
 
-class ResourceExportor : IDataActionVisitor<TType, List<ResourceInfo>>
+public class ResDataVisitor : IDataActionVisitor<TType, List<ResourceInfo>>
 {
     public const string ResTagName = "res";
 
-    public static ResourceExportor Ins { get; } = new ResourceExportor();
+    public static ResDataVisitor Ins { get; } = new ResDataVisitor();
 
     public void Accept(DBool type, TType x, List<ResourceInfo> y)
     {
@@ -21,27 +26,12 @@ class ResourceExportor : IDataActionVisitor<TType, List<ResourceInfo>>
 
     }
 
-    public void Accept(DFshort type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
     public void Accept(DInt type, TType x, List<ResourceInfo> y)
     {
 
     }
 
-    public void Accept(DFint type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
     public void Accept(DLong type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
-    public void Accept(DFlong type, TType x, List<ResourceInfo> y)
     {
 
     }
@@ -74,27 +64,7 @@ class ResourceExportor : IDataActionVisitor<TType, List<ResourceInfo>>
 
     }
 
-    public void Accept(DBytes type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
     public void Accept(DDateTime type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
-    public void Accept(DVector2 type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
-    public void Accept(DVector3 type, TType x, List<ResourceInfo> y)
-    {
-
-    }
-
-    public void Accept(DVector4 type, TType x, List<ResourceInfo> y)
     {
 
     }

@@ -1,21 +1,17 @@
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Utils;
+using Luban.DataLoader.Builtin;
+using YamlDotNet.Core;
+using YamlDotNet.RepresentationModel;
+
 namespace Luban.DataExporter.Builtin.Yaml;
 
-class YamlExportor : IDataFuncVisitor<YamlNode>
+public class YamlDataVisitor : IDataFuncVisitor<YamlNode>
 {
-    public static YamlExportor Ins { get; } = new YamlExportor();
-
-    public YamlNode WriteAsArray(List<Record> datas)
-    {
-
-        var seqNode = new YamlSequenceNode();
-        foreach (var d in datas)
-        {
-            seqNode.Add(d.Data.Apply(this));
-        }
-        return seqNode;
-    }
-
-
+    public static YamlDataVisitor Ins { get; } = new YamlDataVisitor();
+    
     private static YamlScalarNode ToPlainNode(string x)
     {
         return new YamlScalarNode(x) { Style = ScalarStyle.Plain };
@@ -41,27 +37,12 @@ class YamlExportor : IDataFuncVisitor<YamlNode>
         return ToPlainNode(type.Value.ToString());
     }
 
-    public YamlNode Accept(DFshort type)
-    {
-        return ToPlainNode(type.Value.ToString());
-    }
-
     public YamlNode Accept(DInt type)
     {
         return ToPlainNode(type.Value.ToString());
     }
 
-    public YamlNode Accept(DFint type)
-    {
-        return ToPlainNode(type.Value.ToString());
-    }
-
     public YamlNode Accept(DLong type)
-    {
-        return ToPlainNode(type.Value.ToString());
-    }
-
-    public YamlNode Accept(DFlong type)
     {
         return ToPlainNode(type.Value.ToString());
     }
@@ -86,17 +67,14 @@ class YamlExportor : IDataFuncVisitor<YamlNode>
         return ToText(type.Value);
     }
 
-    public YamlNode Accept(DBytes type)
-    {
-        throw new NotSupportedException();
-    }
-
     public YamlNode Accept(DText type)
     {
-        var m = new YamlMappingNode();
-        m.Add(DText.KEY_NAME, ToText(type.Key));
-        m.Add(DText.TEXT_NAME, ToText(type.TextOfCurrentAssembly));
-        return m;
+        return ToText(type.Key);
+    }
+
+    public YamlNode Accept(DDateTime type)
+    {
+        return ToPlainNode(type.UnixTimeOfCurrentContext.ToString());
     }
 
     public YamlNode Accept(DBean type)
@@ -115,7 +93,7 @@ class YamlExportor : IDataFuncVisitor<YamlNode>
 
             // 特殊处理 bean 多态类型
             // 另外，不生成  xxx:null 这样
-            if (d == null || !defField.NeedExport)
+            if (d == null || !defField.NeedExport())
             {
                 //x.WriteNullValue();
             }
@@ -164,37 +142,5 @@ class YamlExportor : IDataFuncVisitor<YamlNode>
             seqNode.Add(e);
         }
         return seqNode;
-    }
-
-    public YamlNode Accept(DVector2 type)
-    {
-        var m = new YamlMappingNode();
-        m.Add("x", type.Value.X.ToString());
-        m.Add("y", type.Value.Y.ToString());
-        return m;
-    }
-
-    public YamlNode Accept(DVector3 type)
-    {
-        var m = new YamlMappingNode();
-        m.Add("x", type.Value.X.ToString());
-        m.Add("y", type.Value.Y.ToString());
-        m.Add("z", type.Value.Z.ToString());
-        return m;
-    }
-
-    public YamlNode Accept(DVector4 type)
-    {
-        var m = new YamlMappingNode();
-        m.Add("x", type.Value.X.ToString());
-        m.Add("y", type.Value.Y.ToString());
-        m.Add("z", type.Value.Z.ToString());
-        m.Add("w", type.Value.W.ToString());
-        return m;
-    }
-
-    public YamlNode Accept(DDateTime type)
-    {
-        return ToPlainNode(type.UnixTimeOfCurrentAssembly.ToString());
     }
 }
