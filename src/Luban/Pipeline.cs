@@ -1,9 +1,7 @@
 using Luban.Core;
 using Luban.Core.CodeGeneration;
 using Luban.Core.DataExport;
-using Luban.Core.DataLoader;
 using Luban.Core.Defs;
-using Luban.Core.Mission;
 using Luban.Core.OutputSaver;
 using Luban.Core.PostProcess;
 using Luban.Core.RawDefs;
@@ -66,16 +64,17 @@ public class Pipeline
             IDataExporter dataExporter = DataExporterManager.Ins.GetDataExporter(dataExporterName);
             foreach (string mission in _genArgs.DataMissions)
             {
-            
+                ITableExporter tableExporter = DataExporterManager.Ins.GetTableExporter(mission);
+                tasks.Add(Task.Run(() => ProcessDataTarget(mission, dataExporter, tableExporter)));
             }
         }
         Task.WaitAll(tasks.ToArray());
     }
 
-    private void ProcessCodeTarget(string name, ICodeTarget mission)
+    private void ProcessCodeTarget(string name, ICodeTarget codeTarget)
     {
         var outputManifest = new OutputFileManifest();
-        mission.Handle(_genCtx, outputManifest);
+        codeTarget.Handle(_genCtx, outputManifest);
         
         if (_genArgs.TryGetOption(name, "postprocess", true, out string postProcessName))
         {
@@ -88,13 +87,14 @@ public class Pipeline
             ? outputSaver
             : "local";
         var saver = OutputSaverManager.Ins.GetOutputSaver(outputSaverName);
-        saver.Save(outputManifest);
+        string outputDir = _genArgs.GetOption($"{CodeTargetBase.FamilyPrefix}.{name}", "outputCodeDir", true);
+        saver.Save(outputManifest, outputDir);
     }
     
-    private void ProcessDataTarget(string name, IDataExporter mission)
+    private void ProcessDataTarget(string name, IDataExporter mission, ITableExporter tableExporter)
     {
         var outputManifest = new OutputFileManifest();
-        mission.Handle(_genCtx, outputManifest);
+        mission.Handle(_genCtx, tableExporter, outputManifest);
         
         if (_genArgs.TryGetOption(name, "postprocess", true, out string postProcessName))
         {
@@ -107,6 +107,7 @@ public class Pipeline
             ? outputSaver
             : "local";
         var saver = OutputSaverManager.Ins.GetOutputSaver(outputSaverName);
-        saver.Save(outputManifest);
+        string outputDir = _genArgs.GetOption($"{DataExporterBase.FamilyPrefix}.{name}", "outputDataDir", true);
+        saver.Save(outputManifest, outputDir);
     }
 }

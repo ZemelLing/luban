@@ -6,17 +6,15 @@ namespace Luban.Core.OutputSaver;
 public class LocalFileSaver : OutputSaverBase
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
-    
-    private string OutputDir => GenerationContext.Ins.GetOutputCodePath("local");
 
-    protected override void BeforeSave(OutputFileManifest outputFileManifest)
+    protected override void BeforeSave(OutputFileManifest outputFileManifest, string outputDir)
     {
-        FileCleaner.Clean(OutputDir, outputFileManifest.DataFiles.Select(f => f.File).ToList());
+        FileCleaner.Clean(outputDir, outputFileManifest.DataFiles.Select(f => f.File).ToList());
     }
 
-    public override void SaveFile(OutputFileManifest fileManifest, OutputFile outputFile)
+    public override void SaveFile(OutputFileManifest fileManifest, string outputDir, OutputFile outputFile)
     {
-        string fullOutputPath = $"{OutputDir}/{outputFile.File}";
+        string fullOutputPath = $"{outputDir}/{outputFile.File}";
         Directory.CreateDirectory(Path.GetDirectoryName(fullOutputPath));
         if (FileUtil.WriteAllBytes(fullOutputPath, outputFile.GetContentBytes()))
         {

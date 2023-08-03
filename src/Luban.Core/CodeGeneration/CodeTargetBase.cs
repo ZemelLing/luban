@@ -5,6 +5,8 @@ namespace Luban.Core.CodeGeneration;
 
 public abstract class CodeTargetBase : ICodeTarget
 {
+    public const string FamilyPrefix = "codeTarget";
+    
     public virtual void Handle(GenerationContext ctx, OutputFileManifest manifest)
     {
         List<Task<OutputFile>> tasks = new();

@@ -1,10 +1,11 @@
 using Luban.Core.Defs;
-using Luban.Core.Mission;
 
 namespace Luban.Core.CodeGeneration;
 
-public interface ICodeTarget : IMission
+public interface ICodeTarget
 {
+    void Handle(GenerationContext ctx, OutputFileManifest manifest);
+    
     string FileHeader { get; }
 
     string GetPathFromFullName(string fullName);

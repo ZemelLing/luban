@@ -87,13 +87,13 @@ internal class Program
             DataMissions = new List<string>{ "data-bin"},
             GeneralArgs = new()
             {
-                {"global.schemaCollector", "default"},
-                {"global.rootSchemaFile", @"D:\workspace2\luban_examples\DesignerConfigs\Defines\__root__.xml"},
-                {"global.inputDataDir", @"D:\workspace2\luban_examples\DesignerConfigs\Datas"},
-                {"global.outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
-                {"global.outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
-                {"global.dataExporter", "default"},
-                {"global.tableExporter", "bin"},
+                {"schemaCollector", "default"},
+                {"rootSchemaFile", @"D:\workspace2\luban_examples\DesignerConfigs\Defines\__root__.xml"},
+                {"inputDataDir", @"D:\workspace2\luban_examples\DesignerConfigs\Datas"},
+                {"outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
+                {"outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
+                {"dataExporter", "default"},
+                {"tableExporter", "bin"},
             },
         };
         var pipeline = new Pipeline(genArgs);

@@ -27,7 +27,7 @@ public class GenerationArguments
         {
             return value;
         }
-        if (useGlobalIfNotExits && GeneralArgs.TryGetValue("global." + name, out value))
+        if (useGlobalIfNotExits && GeneralArgs.TryGetValue(name, out value))
         {
             return value;
         }
