@@ -1,4 +1,4 @@
-namespace Luban.CodeGeneration.CSharp;
+namespace Luban.CodeTarget.CSharp;
 
 public static class ConstStrings
 {

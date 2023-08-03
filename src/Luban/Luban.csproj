@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Luban.CodeGeneration.CSharp\Luban.CodeGeneration.CSharp.csproj" />
+      <ProjectReference Include="..\Luban.CodeTarget.CSharp\Luban.CodeTarget.CSharp.csproj" />
       <ProjectReference Include="..\Luban.DataTarget.Builtin\Luban.DataTarget.Builtin.csproj" />
       <ProjectReference Include="..\Luban.DataLoader.Builtin\Luban.DataLoader.Builtin.csproj" />
       <ProjectReference Include="..\Luban.Plugin\Luban.Plugin.csproj" />

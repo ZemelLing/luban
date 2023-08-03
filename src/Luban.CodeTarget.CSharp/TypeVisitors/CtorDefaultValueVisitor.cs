@@ -1,7 +1,7 @@
 ﻿using Luban.Core.Types;
 using Luban.Core.TypeVisitors;
 
-namespace Luban.CodeGeneration.CSharp.TypeVisitors;
+namespace Luban.CodeTarget.CSharp.TypeVisitors;
 
 public class CtorDefaultValueVisitor : DecoratorFuncVisitor<string>
 {

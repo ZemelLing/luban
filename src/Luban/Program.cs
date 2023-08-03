@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using Luban.CodeGeneration.CSharp.CodeTargets;
+using Luban.CodeTarget.CSharp;
 using Luban.Core;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeTarget;
@@ -27,7 +27,7 @@ internal class Program
     
     private static ILogger s_logger;
 
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         ConsoleUtil.EnableQuickEditMode(false);
         Console.OutputEncoding = Encoding.UTF8;
@@ -51,29 +51,23 @@ internal class Program
         
         PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
         
-        var scanAssemblies = PluginManager.Ins.Plugins.Select(p => p.GetType().Assembly).ToList();
-        scanAssemblies.Add(typeof(CsharpBin).Assembly);
-        scanAssemblies.Add(typeof(DefaultSchemaCollector).Assembly);
-        scanAssemblies.Add(typeof(FieldNames).Assembly);
-        scanAssemblies.Add(typeof(DefaultDataExporter).Assembly);
+        var scanAssemblies = new List<Assembly>()
+        {
+            typeof(CsharpBinCodeTarget).Assembly,
+            typeof(DefaultSchemaCollector).Assembly,
+            typeof(FieldNames).Assembly,
+            typeof(DefaultDataExporter).Assembly,
+        };
 
         foreach (var assembly in scanAssemblies)
         {
-            SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(assembly);
-            SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(assembly);
-            CodeFormatManager.Ins.ScanRegisterFormatters(assembly);
-            CodeFormatManager.Ins.ScanRegisterCodeStyle(assembly);
-            CodeTargetManager.Ins.ScanResisterCodeTarget(assembly);
-            PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
-            OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
-            DataLoaderManager.Ins.ScanRegisterDataLoader(assembly);
-            DataTargetManager.Ins.ScanRegisterDataExporter(assembly);
-            DataTargetManager.Ins.ScanRegisterTableExporter(assembly);
+            ScanRegisterAssembly(assembly);
         }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
         {
             templateManager.AddTemplateSearchPath($"{plugin.Location}/Templates", false);
+            ScanRegisterAssembly(plugin.GetType().Assembly);
         }
 
         int processorCount = Environment.ProcessorCount;
@@ -104,6 +98,19 @@ internal class Program
         s_logger.Info("bye~");
     }
 
+    private static void ScanRegisterAssembly(Assembly assembly)
+    {
+        SchemaCollectorFactory.Ins.ScanRegisterCollectorCreator(assembly);
+        SchemaLoaderFactory.Ins.ScanRegisterSchemaLoaderCreator(assembly);
+        CodeFormatManager.Ins.ScanRegisterFormatters(assembly);
+        CodeFormatManager.Ins.ScanRegisterCodeStyle(assembly);
+        CodeTargetManager.Ins.ScanResisterCodeTarget(assembly);
+        PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
+        OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
+        DataLoaderManager.Ins.ScanRegisterDataLoader(assembly);
+        DataTargetManager.Ins.ScanRegisterDataExporter(assembly);
+        DataTargetManager.Ins.ScanRegisterTableExporter(assembly);
+    }
     
     private static void InitSimpleNLogConfigure(NLog.LogLevel minConsoleLogLevel)
     {

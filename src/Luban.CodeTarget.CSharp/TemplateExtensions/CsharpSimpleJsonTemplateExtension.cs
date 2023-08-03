@@ -1,15 +1,15 @@
-using Luban.CodeGeneration.CSharp.TypeVisitors;
+using Luban.CodeTarget.CSharp.TypeVisitors;
 using Luban.Core.CodeFormat;
 using Luban.Core.Defs;
 using Luban.Core.Types;
 using Luban.Core.Utils;
 using Scriban.Runtime;
 
-namespace Luban.CodeGeneration.CSharp.TemplateExtensions;
+namespace Luban.CodeTarget.CSharp.TemplateExtensions;
 
 public class CsharpSimpleJsonTemplateExtension : ScriptObject
 {
-    public static string SimpleJsonDeserialize(string bufName, string fieldName, string jsonFieldName, TType type)
+    public static string Deserialize(string bufName, string fieldName, string jsonFieldName, TType type)
     {
         if (type.IsNullable)
         {

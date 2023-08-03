@@ -3,7 +3,7 @@ using Luban.Core.Types;
 using Luban.Core.TypeVisitors;
 using Luban.Core.Utils;
 
-namespace Luban.CodeGeneration.CSharp.TypeVisitors;
+namespace Luban.CodeTarget.CSharp.TypeVisitors;
 
 public class UnderlyingDeclaringTypeNameVisitor : ITypeFuncVisitor<string>
 {

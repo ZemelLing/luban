@@ -1,11 +1,9 @@
-using Luban.CodeGeneration.CSharp.TemplateExtensions;
-using Luban.Core;
+using Luban.CodeTarget.CSharp.TemplateExtensions;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeTarget;
-using Luban.Core.Defs;
 using Scriban;
 
-namespace Luban.CodeGeneration.CSharp.CodeTargets;
+namespace Luban.CodeTarget.CSharp;
 
 public abstract class CsharpCodeTargetBase : TemplateCodeTargetBase
 {

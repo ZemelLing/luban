@@ -1,13 +1,11 @@
-using Luban.CodeGeneration.CSharp.TemplateExtensions;
-using Luban.Core;
+using Luban.CodeTarget.CSharp.TemplateExtensions;
 using Luban.Core.CodeTarget;
-using Luban.Core.Defs;
 using Scriban;
 
-namespace Luban.CodeGeneration.CSharp.CodeTargets;
+namespace Luban.CodeTarget.CSharp;
 
 [CodeTarget("cs-bin")]
-public class CsharpBin : CsharpCodeTargetBase
+public class CsharpBinCodeTarget : CsharpCodeTargetBase
 {
     protected override void OnCreateTemplateContext(TemplateContext ctx)
     {
