@@ -4,11 +4,23 @@ namespace Luban.Core.DataExport;
 
 public abstract class DataExporterBase : IDataExporter
 {
+    public const string FamilyPrefix = "dataExporter";
+    
     public virtual void Handle(GenerationContext ctx, OutputFileManifest manifest)
     {
-        var tasks = ctx.ExportTables.Select(table => Task.Run(() => ExportTable(table, manifest))).ToArray();
-        Task.WaitAll(tasks);
+        ITableExporter tableExporter = TableExporter;
+        if (!tableExporter.AllTablesInOneFile)
+        {
+            var tasks = ctx.ExportTables.Select(table => Task.Run(() => ExportTable(table, manifest, tableExporter))).ToArray();
+            Task.WaitAll(tasks);
+        }
+        else
+        {
+            manifest.AddFile(tableExporter.ExportAllInOne(ctx.ExportTables));
+        }
     }
+    
+    protected abstract ITableExporter TableExporter { get; }
 
-    protected abstract void ExportTable(DefTable table, OutputFileManifest manifest);
+    protected abstract void ExportTable(DefTable table, OutputFileManifest manifest, ITableExporter tableExporter);
 }

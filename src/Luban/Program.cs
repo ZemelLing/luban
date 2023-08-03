@@ -3,6 +3,7 @@ using Luban.CodeGeneration.CSharp.CodeTargets;
 using Luban.Core;
 using Luban.Core.CodeFormat;
 using Luban.Core.CodeGeneration;
+using Luban.Core.DataExport;
 using Luban.Core.DataLoader;
 using Luban.Core.Defs;
 using Luban.Core.OutputSaver;
@@ -45,6 +46,7 @@ internal class Program
         PostProcessManager.Ins.Init();
         OutputSaverManager.Ins.Init();
         DataLoaderManager.Ins.Init();
+        DataExporterManager.Ins.Init();
         
         PluginManager.Ins.Init(new DefaultPluginCollector($"{curDir}/Plugins"));
         
@@ -63,6 +65,8 @@ internal class Program
             PostProcessManager.Ins.ScanRegisterPostProcess(assembly);
             OutputSaverManager.Ins.ScanRegisterOutputSaver(assembly);
             DataLoaderManager.Ins.ScanRegisterDataLoader(assembly);
+            DataExporterManager.Ins.ScanRegisterDataExporter(assembly);
+            DataExporterManager.Ins.ScanRegisterTableExporter(assembly);
         }
 
         foreach (var plugin in PluginManager.Ins.Plugins)
@@ -79,7 +83,8 @@ internal class Program
         var genArgs = new GenerationArguments()
         {
             Target = "all",
-            Missions = new List<string>{"cs-bin", "data-bin"},
+            CodeMissions = new List<string>{ "cs-bin"},
+            DataMissions = new List<string>{ "data-bin"},
             GeneralArgs = new()
             {
                 {"global.schemaCollector", "default"},
@@ -87,6 +92,8 @@ internal class Program
                 {"global.inputDataDir", @"D:\workspace2\luban_examples\DesignerConfigs\Datas"},
                 {"global.outputCodeDir", @"D:\workspace2\luban_examples\Projects\Csharp_Unity_bin\Assets\Gen"},
                 {"global.outputDataDir", @"D:\workspace2\luban_examples\Projects\GenerateDatas\bytes"},
+                {"global.dataExporter", "default"},
+                {"global.tableExporter", "bin"},
             },
         };
         var pipeline = new Pipeline(genArgs);

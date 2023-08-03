@@ -9,11 +9,14 @@ public class OutputFileManifest
 
     public void AddFile(string file, object content)
     {
-        _dataFiles.Add(new OutputFile { File = file, Content = content });
+        AddFile(new OutputFile { File = file, Content = content });
     }
     
     public void AddFile(OutputFile file)
     {
-        _dataFiles.Add(file);
+        lock (this)
+        {
+            _dataFiles.Add(file);
+        }
     }
 }

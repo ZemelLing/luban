@@ -19,15 +19,8 @@ public class DataLoaderManager
 
     public void LoadDatas(GenerationContext ctx)
     {
-        var tasks = new List<Task>();
-        foreach (var table in ctx.Tables)
-        {
-            tasks.Add(Task.Run(() =>
-            {
-                LoadTable(ctx, table);
-            }));
-        }
-        Task.WaitAll(tasks.ToArray());
+        var tasks = ctx.Tables.Select(t => Task.Run(() => LoadTable(ctx, t))).ToArray();
+        Task.WaitAll(tasks);
     }
 
     private void LoadTable(GenerationContext ctx, DefTable table)

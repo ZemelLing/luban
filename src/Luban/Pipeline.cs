@@ -1,5 +1,7 @@
 using Luban.Core;
 using Luban.Core.CodeGeneration;
+using Luban.Core.DataExport;
+using Luban.Core.DataLoader;
 using Luban.Core.Defs;
 using Luban.Core.Mission;
 using Luban.Core.OutputSaver;
@@ -51,20 +53,49 @@ public class Pipeline
     private void ProcessMissions()
     {
         var tasks = new List<Task>();
-        foreach (string mission in _genArgs.Missions)
+        foreach (string mission in _genArgs.CodeMissions)
         {
-            IMission m = MissionManager.Ins.GetMission(mission);
-            tasks.Add(Task.Run(() => ProcessMission(mission, m)));
+            ICodeTarget m = CodeTargetManager.Ins.GetCodeTarget(mission);
+            tasks.Add(Task.Run(() => ProcessCodeTarget(mission, m)));
+        }
+
+        if (_genArgs.DataMissions.Count > 0)
+        {
+            _genCtx.LoadDatas();
+            string dataExporterName = _genCtx.GetOptionOrDefault("global", "dataExporter", true, "default");
+            IDataExporter dataExporter = DataExporterManager.Ins.GetDataExporter(dataExporterName);
+            foreach (string mission in _genArgs.DataMissions)
+            {
+            
+            }
         }
         Task.WaitAll(tasks.ToArray());
     }
 
-    private void ProcessMission(string name, IMission mission)
+    private void ProcessCodeTarget(string name, ICodeTarget mission)
     {
         var outputManifest = new OutputFileManifest();
         mission.Handle(_genCtx, outputManifest);
         
+        if (_genArgs.TryGetOption(name, "postprocess", true, out string postProcessName))
+        {
+            var oldManifest = outputManifest;
+            outputManifest = new OutputFileManifest();
+            PostProcessManager.Ins.GetPostProcess(postProcessName).PostProcess(oldManifest, outputManifest);
+        }
 
+        string outputSaverName = _genArgs.TryGetOption(name, "outputSaver", true, out string outputSaver)
+            ? outputSaver
+            : "local";
+        var saver = OutputSaverManager.Ins.GetOutputSaver(outputSaverName);
+        saver.Save(outputManifest);
+    }
+    
+    private void ProcessDataTarget(string name, IDataExporter mission)
+    {
+        var outputManifest = new OutputFileManifest();
+        mission.Handle(_genCtx, outputManifest);
+        
         if (_genArgs.TryGetOption(name, "postprocess", true, out string postProcessName))
         {
             var oldManifest = outputManifest;

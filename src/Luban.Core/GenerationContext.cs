@@ -304,6 +304,21 @@ public class GenerationContext
     {
         return Arguments.GetOption(family, "outputDataDir", true);
     }
+    
+    public string GetOption(string family, string name, bool useGlobalIfNotExits)
+    {
+        return Arguments.GetOption(family, name, useGlobalIfNotExits);
+    }
+    
+    public bool TryGetOption(string family, string name, bool useGlobalIfNotExits, out string value)
+    {
+        return Arguments.TryGetOption(family, name, useGlobalIfNotExits, out value);
+    }
+    
+    public string GetOptionOrDefault(string family, string name, bool useGlobalIfNotExits, string defaultValue)
+    {
+        return Arguments.TryGetOption(family, name, useGlobalIfNotExits, out string value) ? value : defaultValue;
+    }
 
     public ICodeStyle GetCodeStyle(string family)
     {
