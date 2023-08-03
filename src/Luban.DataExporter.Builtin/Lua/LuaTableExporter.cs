@@ -1,11 +1,14 @@
 using System.Text;
+using Luban.Core;
+using Luban.Core.DataExport;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
 
 namespace Luban.DataExporter.Builtin.Lua;
 
-class LuaExportor
+[TableExporter("lua")]
+public class LuaTableExporter : TableExporterBase
 {
-    public static LuaExportor Ins { get; } = new LuaExportor();
-
     public void ExportTableSingleton(DefTable t, Record record, StringBuilder result)
     {
         result.Append("return ").AppendLine();
@@ -37,5 +40,29 @@ class LuaExportor
             s.Append(',').AppendLine();
         }
         s.Append('}');
+    }
+
+    protected override string OutputFileExt => "lua";
+    
+    public override OutputFile Export(DefTable table, List<Record> records)
+    {
+        var ss = new StringBuilder();
+        if (table.IsMapTable)
+        {
+            ExportTableMap(table, records, ss);
+        }
+        else if (table.IsSingletonTable)
+        {
+            ExportTableSingleton(table, records[0], ss);
+        }
+        else
+        {
+            ExportTableList(table, records, ss);
+        }
+        return new OutputFile()
+        {
+            File = $"{table.OutputDataFile}.{OutputFileExt}",
+            Content = ss.ToString(),
+        };
     }
 }

@@ -1,37 +1,16 @@
 using System.Text.Json;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
+using Luban.Core.Types;
+using Luban.Core.Utils;
 using Luban.DataExporter.Builtin.FlatBuffers;
 using Luban.DataExporter.Builtin.Json;
 
 namespace Luban.DataExporter.Builtin.Protobuf;
 
-class ProtobufJsonDataVisitor : JsonDataVisitor
+public class ProtobufJsonDataVisitor : JsonDataVisitor
 {
     public static new FlatBuffersJsonDataVisitor Ins { get; } = new();
-
-    public void WriteAsTable(List<Record> datas, Utf8JsonWriter x)
-    {
-        x.WriteStartObject();
-        // 如果修改了这个名字，请同时修改table.tpl
-        x.WritePropertyName("data_list");
-        x.WriteStartArray();
-        foreach (var d in datas)
-        {
-            d.Data.Apply(this, x);
-        }
-        x.WriteEndArray();
-        x.WriteEndObject();
-    }
-
-    public override void Accept(DText type, Utf8JsonWriter x)
-    {
-        // 不支持本地化。只能简单起见这么做了
-        //x.WriteStartObject();
-        //x.WritePropertyName(DText.KEY_NAME);
-        //x.WriteStringValue(type.Key);
-        //x.WritePropertyName(DText.TEXT_NAME);
-        x.WriteStringValue(type.TextOfCurrentAssembly);
-        //x.WriteEndObject();
-    }
 
     public override void Accept(DBean type, Utf8JsonWriter x)
     {
@@ -52,7 +31,7 @@ class ProtobufJsonDataVisitor : JsonDataVisitor
 
             // 特殊处理 bean 多态类型
             // 另外，不生成  xxx:null 这样
-            if (d == null || !defField.NeedExport)
+            if (d == null || !defField.NeedExport())
             {
                 //x.WriteNullValue();
             }

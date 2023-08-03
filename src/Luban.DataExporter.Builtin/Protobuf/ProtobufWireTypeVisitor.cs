@@ -1,4 +1,8 @@
-﻿namespace Luban.Any.TypeVisitors;
+﻿using Google.Protobuf;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
+
+namespace Luban.DataExporter.Builtin.Protobuf;
 
 public class ProtobufWireTypeVisitor : ITypeFuncVisitor<WireFormat.WireType>
 {
@@ -19,29 +23,14 @@ public class ProtobufWireTypeVisitor : ITypeFuncVisitor<WireFormat.WireType>
         return WireFormat.WireType.Varint;
     }
 
-    public WireFormat.WireType Accept(TFshort type)
-    {
-        return WireFormat.WireType.Varint;
-    }
-
     public WireFormat.WireType Accept(TInt type)
     {
         return WireFormat.WireType.Varint;
     }
 
-    public WireFormat.WireType Accept(TFint type)
-    {
-        return WireFormat.WireType.Fixed32;
-    }
-
     public WireFormat.WireType Accept(TLong type)
     {
         return WireFormat.WireType.Varint;
-    }
-
-    public WireFormat.WireType Accept(TFlong type)
-    {
-        return WireFormat.WireType.Fixed64;
     }
 
     public WireFormat.WireType Accept(TFloat type)
@@ -65,26 +54,6 @@ public class ProtobufWireTypeVisitor : ITypeFuncVisitor<WireFormat.WireType>
     }
 
     public WireFormat.WireType Accept(TText type)
-    {
-        return WireFormat.WireType.LengthDelimited;
-    }
-
-    public WireFormat.WireType Accept(TBytes type)
-    {
-        return WireFormat.WireType.LengthDelimited;
-    }
-
-    public WireFormat.WireType Accept(TVector2 type)
-    {
-        return WireFormat.WireType.LengthDelimited;
-    }
-
-    public WireFormat.WireType Accept(TVector3 type)
-    {
-        return WireFormat.WireType.LengthDelimited;
-    }
-
-    public WireFormat.WireType Accept(TVector4 type)
     {
         return WireFormat.WireType.LengthDelimited;
     }

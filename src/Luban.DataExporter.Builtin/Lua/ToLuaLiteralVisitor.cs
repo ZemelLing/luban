@@ -1,8 +1,13 @@
 using System.Text;
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Utils;
+using Luban.DataLoader.Builtin;
 
 namespace Luban.DataExporter.Builtin.Lua;
 
-class ToLuaLiteralVisitor : ToLiteralVisitorBase
+public class ToLuaLiteralVisitor : ToLiteralVisitorBase
 {
     public static ToLuaLiteralVisitor Ins { get; } = new();
 
@@ -13,7 +18,7 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
 
     public override string Accept(DText type)
     {
-        return $"{{{DText.KEY_NAME}='{type.Key}',{DText.TEXT_NAME}={DataUtil.EscapeLuaStringWithQuote(type.TextOfCurrentAssembly)}}}";
+        return DataUtil.EscapeLuaStringWithQuote(type.Key);
     }
 
     public override string Accept(DBean type)
@@ -32,7 +37,7 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
         foreach (var f in type.Fields)
         {
             var defField = (DefField)type.ImplType.HierarchyFields[index++];
-            if (f == null || !defField.NeedExport)
+            if (f == null || !defField.NeedExport())
             {
                 continue;
             }
@@ -92,23 +97,5 @@ class ToLuaLiteralVisitor : ToLiteralVisitorBase
         }
         x.Append('}');
         return x.ToString();
-    }
-
-    public override string Accept(DVector2 type)
-    {
-        var v = type.Value;
-        return $"{{x={v.X},y={v.Y}}}";
-    }
-
-    public override string Accept(DVector3 type)
-    {
-        var v = type.Value;
-        return $"{{x={v.X},y={v.Y},z={v.Z}}}";
-    }
-
-    public override string Accept(DVector4 type)
-    {
-        var v = type.Value;
-        return $"{{x={v.X},y={v.Y},z={v.Z},w={v.W}}}";
     }
 }

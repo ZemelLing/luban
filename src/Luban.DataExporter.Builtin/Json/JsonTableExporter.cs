@@ -15,6 +15,8 @@ public class JsonTableExporter : TableExporterBase
     protected override string OutputFileExt => "json";
 
     public static bool UseCompactJson => GenerationContext.Ins.GetBoolOptionOrDefault($"{FamilyPrefix}.json", "compact", true, false);
+    
+    protected virtual JsonDataVisitor ImplJsonDataVisitor => JsonDataVisitor.Ins;
 
     public void WriteAsArray(List<Record> datas, Utf8JsonWriter x, JsonDataVisitor jsonDataVisitor)
     {
@@ -35,7 +37,7 @@ public class JsonTableExporter : TableExporterBase
             SkipValidation = false,
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         });
-        WriteAsArray(records, jsonWriter, JsonDataVisitor.Ins);
+        WriteAsArray(records, jsonWriter, ImplJsonDataVisitor);
         jsonWriter.Flush();
         return new OutputFile()
         {

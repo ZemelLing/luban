@@ -1,19 +1,16 @@
-﻿namespace Luban.DataExporter.Builtin.Protobuf;
+﻿using Google.Protobuf;
+using Luban.Core;
+using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
+using Luban.Core.Defs;
+using Luban.Core.Types;
+using Luban.Core.Utils;
 
-class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
+namespace Luban.DataExporter.Builtin.Protobuf;
+
+public class ProtobufBinDataVisitor : IDataActionVisitor<CodedOutputStream>
 {
-    public static ProtobufBinExportor Ins { get; } = new();
-
-    public void WriteList(DefTable table, List<Record> datas, MemoryStream x)
-    {
-        var cos = new CodedOutputStream(x);
-        foreach (var d in datas)
-        {
-            cos.WriteTag(1, WireFormat.WireType.LengthDelimited);
-            d.Data.Apply(this, cos);
-        }
-        cos.Flush();
-    }
+    public static ProtobufBinDataVisitor Ins { get; } = new();
 
     public void Accept(DBool type, CodedOutputStream x)
     {
@@ -30,29 +27,14 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
         x.WriteInt32(type.Value);
     }
 
-    public void Accept(DFshort type, CodedOutputStream x)
-    {
-        x.WriteInt32(type.Value);
-    }
-
     public void Accept(DInt type, CodedOutputStream x)
     {
         x.WriteInt32(type.Value);
     }
 
-    public void Accept(DFint type, CodedOutputStream x)
-    {
-        x.WriteSFixed32(type.Value);
-    }
-
     public void Accept(DLong type, CodedOutputStream x)
     {
         x.WriteInt64(type.Value);
-    }
-
-    public void Accept(DFlong type, CodedOutputStream x)
-    {
-        x.WriteSFixed64(type.Value);
     }
 
     public void Accept(DFloat type, CodedOutputStream x)
@@ -72,7 +54,7 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
 
     public void Accept(DDateTime type, CodedOutputStream x)
     {
-        x.WriteInt64(type.UnixTimeOfCurrentAssembly);
+        x.WriteInt64(type.GetUnixTime(GenerationContext.Ins.Arguments.TimeZone));
     }
 
     public void Accept(DString type, CodedOutputStream x)
@@ -80,16 +62,9 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
         x.WriteString(type.Value);
     }
 
-    public void Accept(DBytes type, CodedOutputStream x)
-    {
-        x.WriteBytes(ByteString.CopyFrom(type.Value));
-    }
-
     public void Accept(DText type, CodedOutputStream x)
     {
-        // 此处与 binary格式不同. binary格式还包含了key
-        // 意味pb格式是无法支持动态本土化的。
-        x.WriteString(type.TextOfCurrentAssembly);
+        x.WriteString(type.Key);
     }
 
     private MemoryStream AllocMemoryStream()
@@ -101,54 +76,6 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
     private void FreeMemoryStream(MemoryStream cos)
     {
         cos.Seek(0, SeekOrigin.Begin);
-    }
-
-    public void Accept(DVector2 type, CodedOutputStream x)
-    {
-        var ms = AllocMemoryStream();
-        var temp = new CodedOutputStream(ms);
-        temp.WriteTag(1, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.X);
-        temp.WriteTag(2, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.Y);
-        temp.Flush();
-        ms.Seek(0, SeekOrigin.Begin);
-        x.WriteBytes(ByteString.FromStream(ms));
-        FreeMemoryStream(ms);
-    }
-
-    public void Accept(DVector3 type, CodedOutputStream x)
-    {
-        var ms = AllocMemoryStream();
-        var temp = new CodedOutputStream(ms);
-        temp.WriteTag(1, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.X);
-        temp.WriteTag(2, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.Y);
-        temp.WriteTag(3, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.Z);
-        temp.Flush();
-        ms.Seek(0, SeekOrigin.Begin);
-        x.WriteBytes(ByteString.FromStream(ms));
-        FreeMemoryStream(ms);
-    }
-
-    public void Accept(DVector4 type, CodedOutputStream x)
-    {
-        var ms = AllocMemoryStream();
-        var temp = new CodedOutputStream(ms);
-        temp.WriteTag(1, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.X);
-        temp.WriteTag(2, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.Y);
-        temp.WriteTag(3, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.Z);
-        temp.WriteTag(4, WireFormat.WireType.Fixed32);
-        temp.WriteFloat(type.Value.W);
-        temp.Flush();
-        ms.Seek(0, SeekOrigin.Begin);
-        x.WriteBytes(ByteString.FromStream(ms));
-        FreeMemoryStream(ms);
     }
 
     private void WriteRawMessageWithoutLength(DBean type, CodedOutputStream temp)
@@ -165,7 +92,7 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
         foreach (var field in type.Fields)
         {
             var defField = (DefField)defFields[index++];
-            if (!defField.NeedExport)
+            if (!defField.NeedExport())
             {
                 continue;
             }
@@ -231,7 +158,7 @@ class ProtobufBinExportor : IDataActionVisitor<CodedOutputStream>
 
             if (bean.IsAbstractType)
             {
-                cos.WriteTag(type.ImplType.AutoId, WireFormat.WireType.LengthDelimited);
+                cos.WriteTag(type.ImplType.Id, WireFormat.WireType.LengthDelimited);
                 EnterScope(cos, cos2 => WriteRawMessageWithoutLength(type, cos2));
             }
             else

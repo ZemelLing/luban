@@ -1,4 +1,8 @@
-﻿namespace Luban.Any.TypeVisitors;
+﻿using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
+using Luban.Core.Utils;
+
+namespace Luban.DataExporter.Builtin.Protobuf;
 
 public class ProtobufTypeNameVisitor : ITypeFuncVisitor<string>
 {
@@ -19,29 +23,14 @@ public class ProtobufTypeNameVisitor : ITypeFuncVisitor<string>
         return "int32";
     }
 
-    public string Accept(TFshort type)
-    {
-        return "int32";
-    }
-
     public string Accept(TInt type)
     {
         return "int32";
     }
 
-    public string Accept(TFint type)
-    {
-        return "sfixed32";
-    }
-
     public string Accept(TLong type)
     {
         return "int64";
-    }
-
-    public string Accept(TFlong type)
-    {
-        return "sfixed64";
     }
 
     public string Accept(TFloat type)
@@ -56,7 +45,7 @@ public class ProtobufTypeNameVisitor : ITypeFuncVisitor<string>
 
     public string Accept(TEnum type)
     {
-        return type.DefineEnum.PbFullName;
+        return TypeUtil.MakePbFullName(type.DefineEnum.Namespace, type.DefineEnum.Name);
     }
 
     public string Accept(TString type)
@@ -69,26 +58,6 @@ public class ProtobufTypeNameVisitor : ITypeFuncVisitor<string>
         return "string";
     }
 
-    public string Accept(TBytes type)
-    {
-        return "bytes";
-    }
-
-    public string Accept(TVector2 type)
-    {
-        return "Vector2";
-    }
-
-    public string Accept(TVector3 type)
-    {
-        return "Vector3";
-    }
-
-    public string Accept(TVector4 type)
-    {
-        return "Vector4";
-    }
-
     public string Accept(TDateTime type)
     {
         return "int64";
@@ -96,7 +65,7 @@ public class ProtobufTypeNameVisitor : ITypeFuncVisitor<string>
 
     public string Accept(TBean type)
     {
-        return type.Bean.PbFullName;
+        return TypeUtil.MakePbFullName(type.DefBean.Namespace, type.DefBean.Name);
     }
 
     public string Accept(TArray type)

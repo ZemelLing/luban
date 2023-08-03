@@ -20,6 +20,8 @@ public class DefField
     public bool IsNullable => CType.IsNullable;
 
     public string Comment { get; }
+    
+    public int AutoId { get; set; }
 
     // public string EscapeComment => DefUtil.EscapeCommentByCurrentLanguage(Comment);
 
@@ -149,21 +151,23 @@ public class DefField
     public static void CompileFields<T>(DefTypeBase hostType, List<T> fields) where T : DefField
     {
         var names = new HashSet<string>();
+        int nextAutoId = 0;
         foreach (var f in fields)
         {
-            var fname = f.Name;
-            if (fname.Length == 0)
+            var name = f.Name;
+            if (name.Length == 0)
             {
                 throw new Exception($"type:'{hostType.FullName}' field name can't be empty");
             }
-            if (!names.Add(fname))
+            if (!names.Add(name))
             {
-                throw new Exception($"type:'{hostType.FullName}' 'field:{fname}' duplicate");
+                throw new Exception($"type:'{hostType.FullName}' 'field:{name}' duplicate");
             }
-            if (TypeUtil.ToCsStyleName(fname) == hostType.Name)
+            if (TypeUtil.ToCsStyleName(name) == hostType.Name)
             {
-                throw new Exception($"type:'{hostType.FullName}' field:'{fname}' 生成的c#字段名与类型名相同，会引起编译错误");
+                throw new Exception($"type:'{hostType.FullName}' field:'{name}' 生成的c#字段名与类型名相同，会引起编译错误");
             }
+            f.AutoId = nextAutoId++;
         }
 
         foreach (var f in fields)

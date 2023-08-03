@@ -1,4 +1,7 @@
-namespace Luban.Any.TypeVisitors;
+using Luban.Core.Types;
+using Luban.Core.TypeVisitors;
+
+namespace Luban.DataExporter.Builtin.Protobuf;
 
 public class IsProtobufPackedType : AllTrueVisitor
 {
@@ -6,31 +9,6 @@ public class IsProtobufPackedType : AllTrueVisitor
 
 
     public override bool Accept(TString type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TText type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TBytes type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector2 type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector3 type)
-    {
-        return false;
-    }
-
-    public override bool Accept(TVector4 type)
     {
         return false;
     }
