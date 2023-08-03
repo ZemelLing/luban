@@ -1,6 +1,9 @@
-﻿namespace Luban.DataExporter.Builtin.Json;
+﻿using Luban.Core.Datas;
+using Luban.Core.DataVisitors;
 
-class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
+namespace Luban.DataExporter.Builtin.Json;
+
+public class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
 {
     public static ToJsonPropertyNameVisitor Ins { get; } = new();
 
@@ -19,27 +22,12 @@ class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
         return type.Value.ToString();
     }
 
-    public string Accept(DFshort type)
-    {
-        return type.Value.ToString();
-    }
-
     public string Accept(DInt type)
     {
         return type.Value.ToString();
     }
 
-    public string Accept(DFint type)
-    {
-        return type.Value.ToString();
-    }
-
     public string Accept(DLong type)
-    {
-        return type.Value.ToString();
-    }
-
-    public string Accept(DFlong type)
     {
         return type.Value.ToString();
     }
@@ -61,15 +49,15 @@ class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
 
     public string Accept(DString type)
     {
-        return type.Value.ToString();
-    }
-
-    public string Accept(DBytes type)
-    {
-        throw new NotSupportedException();
+        return type.Value;
     }
 
     public string Accept(DText type)
+    {
+        return type.Key;
+    }
+
+    public string Accept(DDateTime type)
     {
         throw new NotSupportedException();
     }
@@ -95,26 +83,6 @@ class ToJsonPropertyNameVisitor : IDataFuncVisitor<string>
     }
 
     public string Accept(DMap type)
-    {
-        throw new NotSupportedException();
-    }
-
-    public string Accept(DVector2 type)
-    {
-        throw new NotSupportedException();
-    }
-
-    public string Accept(DVector3 type)
-    {
-        throw new NotSupportedException();
-    }
-
-    public string Accept(DVector4 type)
-    {
-        throw new NotSupportedException();
-    }
-
-    public string Accept(DDateTime type)
     {
         throw new NotSupportedException();
     }

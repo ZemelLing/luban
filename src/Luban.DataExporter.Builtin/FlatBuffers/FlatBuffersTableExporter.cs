@@ -5,6 +5,7 @@ using Luban.Core.Defs;
 using Luban.Core.Serialization;
 using Luban.Core.Utils;
 using Luban.DataExporter.Builtin.Binary;
+using Luban.DataExporter.Builtin.Json;
 
 namespace Luban.DataExporter.Builtin.FlatBuffers;
 
