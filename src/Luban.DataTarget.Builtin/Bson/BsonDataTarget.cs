@@ -22,7 +22,7 @@ public class BsonDataTarget : DataTargetBase
         x.WriteEndArray();
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var ss = new MemoryStream();
         var bsonWriter = new BsonDataWriter(ss);

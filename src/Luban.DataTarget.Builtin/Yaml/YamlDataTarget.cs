@@ -22,7 +22,7 @@ public class YamlDataTarget : DataTargetBase
         return seqNode;
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var node = WriteAsArray(records);
         var ys = new YamlStream(new YamlDocument(node));

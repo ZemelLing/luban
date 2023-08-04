@@ -2,11 +2,23 @@ using Luban.Core.Defs;
 
 namespace Luban.Core.DataTarget;
 
+public enum AggregationType
+{
+    Table,
+    Tables,
+    Record,
+    Other,
+}
+
 public interface IDataTarget
 {
-    bool AllTablesInOneFile { get; }
+    AggregationType AggregationType { get; }
     
-    OutputFile Export(DefTable table, List<Record> records);
+    bool ExportAllRecords { get; }
+
+    OutputFile ExportTable(DefTable table, List<Record> records);
     
-    OutputFile ExportAllInOne(List<DefTable> tables);
+    OutputFile ExportTables(List<DefTable> tables);
+    
+    OutputFile ExportRecord(DefTable table, Record record);
 }

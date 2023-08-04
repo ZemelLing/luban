@@ -5,11 +5,8 @@ public class DataTargetAttribute : System.Attribute
 {
     public string Name { get; }
     
-    public bool AllTablesInOneFile { get; }
-    
-    public DataTargetAttribute(string name, bool allTablesInOneFile = false)
+    public DataTargetAttribute(string name)
     {
         Name = name;
-        AllTablesInOneFile = allTablesInOneFile;
     }
 }

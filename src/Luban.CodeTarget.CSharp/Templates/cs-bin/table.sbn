@@ -12,10 +12,6 @@ using Luban;
         ret 'System.Collections.Generic.Dictionary<(' + (array.each __table.index_list @index_type_name | array.join ', ') + '), ' + (declaring_type_name value_type)  + '>'
     end
     
-    func record_key_field_name
-        ret $0 + (format_property_name __code_style __table.key_field.name)
-    end
-    
     func table_key_list
         varName = $0
         indexList = __table.index_list |array.each do; ret varName + '.' + (format_property_name __code_style $0.index_field.name); end;

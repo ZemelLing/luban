@@ -48,7 +48,7 @@ public class ErlangExport : DataTargetBase
 
     protected override string OutputFileExt => "erl";
     
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var s = new StringBuilder();
         if (table.IsMapTable)

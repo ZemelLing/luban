@@ -1,20 +1,13 @@
 ﻿using System.Text.Json;
+using Luban.Core.Datas;
+using Luban.Core.Defs;
+using Luban.DataLoader.Builtin;
 
-namespace Luban.DataConvertor;
+namespace Luban.DataExporter.Builtin.Json;
 
-class JsonConvertor : DataExporters.JsonExportor
+public class JsonConvertor : JsonDataVisitor
 {
     public static new JsonConvertor Ins { get; } = new();
-
-    public override void Accept(DText type, Utf8JsonWriter x)
-    {
-        x.WriteStartObject();
-        x.WritePropertyName(DText.KEY_NAME);
-        x.WriteStringValue(type.Key);
-        x.WritePropertyName(DText.TEXT_NAME);
-        x.WriteStringValue(type.RawValue);
-        x.WriteEndObject();
-    }
 
     public override void Accept(DEnum type, Utf8JsonWriter x)
     {

@@ -27,7 +27,7 @@ public class XmlDataTarget : DataTargetBase
         w.WriteEndDocument();
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var xwSetting = new XmlWriterSettings() { Indent = true };
         var ms = new MemoryStream();

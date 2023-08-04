@@ -19,7 +19,7 @@ public class BinaryDataTarget : DataTargetBase
         }
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var bytes = new ByteBuf();
         WriteList(table, records, bytes);

@@ -24,7 +24,7 @@ public class ProtobufBinDataTarget : DataTargetBase
         cos.Flush();
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {
         var ss = new MemoryStream();
         WriteList(table, records, ss);

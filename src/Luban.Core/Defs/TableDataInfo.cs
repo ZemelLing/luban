@@ -26,6 +26,12 @@ public class TableDataInfo
         PatchRecords = patchRecords;
 
         BuildIndexs();
+
+        int index = 0;
+        foreach (var record in FinalRecords)
+        {
+            record.AutoIndex = index++;
+        }
     }
 
     private void BuildIndexs()

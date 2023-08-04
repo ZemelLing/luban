@@ -49,7 +49,7 @@ public class Json2DataTarget : JsonDataTarget
         }
     }
 
-    public override OutputFile Export(DefTable table, List<Record> records)
+    public override OutputFile ExportTable(DefTable table, List<Record> records)
     {                  
         var ss = new MemoryStream();
         var jsonWriter = new Utf8JsonWriter(ss, new JsonWriterOptions()

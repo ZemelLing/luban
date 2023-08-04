@@ -6,18 +6,52 @@ public abstract class DataExporterBase : IDataExporter
 {
     public const string FamilyPrefix = "dataExporter";
     
+    
     public virtual void Handle(GenerationContext ctx, IDataTarget dataTarget, OutputFileManifest manifest)
     {
-        if (!dataTarget.AllTablesInOneFile)
+        List<DefTable> tables = dataTarget.ExportAllRecords ? ctx.Tables : ctx.ExportTables;
+        switch (dataTarget.AggregationType)
         {
-            var tasks = ctx.ExportTables.Select(table => Task.Run(() => ExportTable(table, manifest, dataTarget))).ToArray();
-            Task.WaitAll(tasks);
-        }
-        else
-        {
-            manifest.AddFile(dataTarget.ExportAllInOne(ctx.ExportTables));
+            case AggregationType.Table:
+            {
+                var tasks = tables.Select(table => Task.Run(() =>
+                {
+                    manifest.AddFile(dataTarget.ExportTable(table, ctx.GetTableExportDataList(table)));
+                })).ToArray();
+                Task.WaitAll(tasks);
+                break;
+            }
+            case AggregationType.Tables:
+            {
+                manifest.AddFile(dataTarget.ExportTables(ctx.ExportTables));
+                break;
+            }
+            case AggregationType.Record:
+            {
+                var tasks = new List<Task>();
+                foreach (var table in tables)
+                {
+                    foreach (var record in ctx.GetTableExportDataList(table))
+                    {
+                        tasks.Add(Task.Run(() =>
+                        {
+                            manifest.AddFile(dataTarget.ExportRecord(table, record));
+                        }));
+                    }
+                }
+                Task.WaitAll(tasks.ToArray());
+                break;
+            }
+            case AggregationType.Other:
+            {
+                ExportCustom(tables, manifest, dataTarget);
+                break;
+            }
         }
     }
 
-    protected abstract void ExportTable(DefTable table, OutputFileManifest manifest, IDataTarget dataTarget);
+    protected virtual void ExportCustom(List<DefTable> tables, OutputFileManifest manifest, IDataTarget dataTarget)
+    {
+        
+    }
 }
