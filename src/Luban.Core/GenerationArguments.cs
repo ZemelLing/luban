@@ -18,6 +18,17 @@ public class GenerationArguments
     
     public List<string> DataTargets { get; set; }
     
+    public string SchemaCollector { get; set; }
+    
+    
+    public string SchemaPath { get; set; }
+
+    public List<string> Tables { get; set; }
+    
+    public List<string> IncludedTables { get; set; }
+    
+    public List<string> ExcludedTables { get; set; }
+
     public Dictionary<string, string> GeneralArgs { get; set; }
 
     public string GetOption(string family, string name, bool useGlobalIfNotExits)

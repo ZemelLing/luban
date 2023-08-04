@@ -6,6 +6,7 @@ using Luban.Core.OutputSaver;
 using Luban.Core.PostProcess;
 using Luban.Core.RawDefs;
 using Luban.Core.Schema;
+using NLog;
 
 namespace Luban;
 
@@ -30,37 +31,45 @@ public class Pipeline
     {
         LoadSchema();
         PrepareGenerationContext();
-        ProcessMissions();
+        ProcessTargets();
+        CleanUp();
+    }
+
+    private void CleanUp()
+    {
+        GenerationContext.Ins = null;
     }
 
     private void LoadSchema()
     {
-        string schemaRootFile = _genArgs.GetOption("defaultSchema","rootSchemaFile", true);
-        string schemaCollectorName = _genArgs.GetOption("defaultSchema", "schemaCollector", true);
+        string schemaCollectorName = _genArgs.SchemaCollector;
+        s_logger.Info("load schema. collector: {}  path:{}", schemaCollectorName, _genArgs.SchemaPath);
         var schemaCollector = SchemaCollectorFactory.Ins.CreateSchemaCollector(schemaCollectorName);
-        schemaCollector.Load(schemaRootFile);
+        schemaCollector.Load(_genArgs.SchemaPath);
         _rawAssembly = schemaCollector.CreateRawAssembly();
     }
 
     private void PrepareGenerationContext()
     {
+        s_logger.Info("prepare generation context");
         _defAssembly = new DefAssembly(_rawAssembly);
         _genCtx = new GenerationContext(_defAssembly, _genArgs);
     }
 
-    private void ProcessMissions()
+    private void ProcessTargets()
     {
         var tasks = new List<Task>();
-        foreach (string mission in _genArgs.CodeTargets)
+        foreach (string target in _genArgs.CodeTargets)
         {
-            ICodeTarget m = CodeTargetManager.Ins.GetCodeTarget(mission);
-            tasks.Add(Task.Run(() => ProcessCodeTarget(mission, m)));
+            ICodeTarget m = CodeTargetManager.Ins.GetCodeTarget(target);
+            tasks.Add(Task.Run(() => ProcessCodeTarget(target, m)));
         }
 
         if (_genArgs.DataTargets.Count > 0)
         {
             _genCtx.LoadDatas();
             string dataExporterName = _genCtx.GetOptionOrDefault("global", "dataExporter", true, "default");
+            s_logger.Info("dataExporter: {}", dataExporterName);
             IDataExporter dataExporter = DataTargetManager.Ins.GetDataExporter(dataExporterName);
             foreach (string mission in _genArgs.DataTargets)
             {
@@ -73,6 +82,7 @@ public class Pipeline
 
     private void ProcessCodeTarget(string name, ICodeTarget codeTarget)
     {
+        s_logger.Info("process code target:{} begin", name);
         var outputManifest = new OutputFileManifest();
         codeTarget.Handle(_genCtx, outputManifest);
         
@@ -89,10 +99,12 @@ public class Pipeline
         var saver = OutputSaverManager.Ins.GetOutputSaver(outputSaverName);
         string outputDir = _genArgs.GetOption($"{CodeTargetBase.FamilyPrefix}.{name}", "outputCodeDir", true);
         saver.Save(outputManifest, outputDir);
+        s_logger.Info("process code target:{} end", name);
     }
     
     private void ProcessDataTarget(string name, IDataExporter mission, IDataTarget dataTarget)
     {
+        s_logger.Info("process data target:{} begin", name);
         var outputManifest = new OutputFileManifest();
         mission.Handle(_genCtx, dataTarget, outputManifest);
         
@@ -109,5 +121,6 @@ public class Pipeline
         var saver = OutputSaverManager.Ins.GetOutputSaver(outputSaverName);
         string outputDir = _genArgs.GetOption($"{DataExporterBase.FamilyPrefix}.{name}", "outputDataDir", true);
         saver.Save(outputManifest, outputDir);
+        s_logger.Info("process data target:{} end", name);
     }
 }

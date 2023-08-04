@@ -23,7 +23,7 @@ public abstract class SchemaCollectorBase : ISchemaCollector
 
     private readonly List<RawRefGroup> _refGroups = new();
     
-    public abstract void Load(string rootFile);
+    public abstract void Load(string schemaPath);
     
     public RawAssembly CreateRawAssembly()
     {

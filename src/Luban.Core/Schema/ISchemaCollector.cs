@@ -4,7 +4,7 @@ namespace Luban.Core.Schema;
 
 public interface ISchemaCollector
 {
-    void Load(string rootFile);
+    void Load(string schemaPath);
     
     RawAssembly CreateRawAssembly();
     

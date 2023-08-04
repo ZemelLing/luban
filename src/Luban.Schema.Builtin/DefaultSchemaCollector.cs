@@ -1,3 +1,4 @@
+using Luban.Core;
 using Luban.Core.Schema;
 using Luban.Core.Utils;
 
@@ -13,10 +14,10 @@ public class DefaultSchemaCollector : SchemaCollectorBase
         
     }
 
-    public override void Load(string rootXml)
+    public override void Load(string schemaPath)
     {
-        var rootLoader = (IRootSchemaLoader)SchemaLoaderFactory.Ins.Create(FileUtil.GetExtensionWithDot(rootXml), "root");
-        rootLoader.Load(rootXml, this);
+        var rootLoader = (IRootSchemaLoader)SchemaLoaderFactory.Ins.Create(FileUtil.GetExtensionWithDot(schemaPath), "root");
+        rootLoader.Load(schemaPath, this);
 
         foreach (var importFile in rootLoader.ImportFiles)
         {

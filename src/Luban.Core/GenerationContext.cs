@@ -13,8 +13,8 @@ namespace Luban.Core;
 public class GenerationContext
 {
     private static readonly NLog.Logger s_logger = NLog.LogManager.GetCurrentClassLogger();
-    
-    public static GenerationContext Ins { get; private set; }
+
+    public static GenerationContext Ins { get; set; }
 
     public DefAssembly Assembly { get; set; }
     
@@ -58,19 +58,11 @@ public class GenerationContext
     
     private readonly Dictionary<string, RawExternalType> _externalTypesByTypeName = new();
 
-    private bool _dataLoaded;
-
     public void LoadDatas()
     {
-        lock(this)
-        {
-            if (_dataLoaded)
-            {
-                return;
-            }
-            DataLoaderManager.Ins.LoadDatas(this);
-            _dataLoaded = true;
-        }
+        s_logger.Info("load datas begin");
+        DataLoaderManager.Ins.LoadDatas(this);
+        s_logger.Info("load datas end");
     }
 
     public GenerationContext(DefAssembly assembly, GenerationArguments args)
@@ -139,18 +131,6 @@ public class GenerationContext
     {
         var refTypes = new Dictionary<string, DefTypeBase>();
         var types = Assembly.TypeList;
-        // var targetService = CfgTargetService;
-        // foreach (var refType in targetService.Refs)
-        // {
-        //     if (!this.Types.ContainsKey(refType))
-        //     {
-        //         throw new Exception($"service:'{targetService.Name}' ref:'{refType}' 类型不存在");
-        //     }
-        //     if (!refTypes.TryAdd(refType, this.Types[refType]))
-        //     {
-        //         throw new Exception($"service:'{targetService.Name}' ref:'{refType}' 重复引用");
-        //     }
-        // }
         foreach (var t in types)
         {
             if (!refTypes.ContainsKey(t.FullName))
@@ -189,43 +169,6 @@ public class GenerationContext
     public string GetEnvOrDefault(string name, string defaultValue)
     {
         return Assembly.Envs.TryGetValue(name, out var value) ? value : defaultValue;
-    }
-
-    public List<string> CurrentExternalSelectors { get; private set; }
-
-    private void SetCurrentExternalSelectors(string selectors)
-    {
-        if (string.IsNullOrEmpty(selectors))
-        {
-            CurrentExternalSelectors = new List<string>();
-        }
-        else
-        {
-
-            CurrentExternalSelectors = selectors.Split(',').Select(s => s.Trim()).ToList();
-            foreach (var selector in CurrentExternalSelectors)
-            {
-                if (!Assembly.ExternalSelectors.Contains(selector))
-                {
-                    throw new Exception($"未知 external selector:{selector}, 有效值应该为 '{StringUtil.CollectionToString(Assembly.ExternalSelectors)}'");
-                }
-            }
-        }
-    }
-
-    public ExternalTypeMapper GetExternalTypeMapper(TType type, string language)
-    {
-        return GetExternalTypeMapper(type.Apply(RawDefineTypeNameVisitor.Ins), language);
-    }
-
-    public ExternalTypeMapper GetExternalTypeMapper(string typeName, string language)
-    {
-        RawExternalType rawExternalType = _externalTypesByTypeName.GetValueOrDefault(typeName);
-        if (rawExternalType == null)
-        {
-            return null;
-        }
-        return rawExternalType.Mappers.Find(m => m.Language == language && CurrentExternalSelectors.Contains(m.Selector));
     }
 
     private static IEnumerable<string> SplitTableList(string tables)
